@@ -2,6 +2,7 @@
 //  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
+var config = require('./config.json');
 
 
 /**
@@ -39,11 +40,11 @@ var SampleApp = function() {
      */
     self.populateCache = function() {
         if (typeof self.zcache === "undefined") {
-            self.zcache = { 'index.html': '' };
+            self.zcache = { 'app.html': '' };
         }
 
         //  Local cache for static content.
-        self.zcache['index.html'] = fs.readFileSync('./public/index.html');
+        self.zcache['app.html'] = fs.readFileSync('./public/app.html');
     };
 
 
@@ -102,7 +103,7 @@ var SampleApp = function() {
 
         self.routes['/'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
-            res.send(self.cache_get('index.html') );
+            res.send(self.cache_get('app.html') );
         };
     };
 
@@ -114,6 +115,21 @@ var SampleApp = function() {
     self.initializeServer = function() {
         self.createRoutes();
         self.app = express.createServer();
+
+
+        self.app.get('/getprojects', function(req, res){
+          res.json([{name:'Bitshares2',id:'000'},{name:'BlockchainJS',id:'001'}]);
+        });
+
+
+
+        self.app.get('/ajaxtest', function(req, res){
+          res.type('text/plain');
+          res.send('ajax test worked');
+        });
+
+
+
         self.app.use(express.static(__dirname + '/public'));
 
         //  Add handlers for the app (from the routes).
@@ -142,6 +158,7 @@ var SampleApp = function() {
     self.start = function() {
         //  Start the app on the specific interface (and port).
         self.app.listen(self.port, self.ipaddress, function() {
+            console.log('config key1 = ' + config.key1);
             console.log('%s: Node server started on %s:%d ...',
                         Date(Date.now() ), self.ipaddress, self.port);
         });
