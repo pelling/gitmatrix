@@ -1,4 +1,11 @@
 {
   "key1": "abcd",
-  "key2": "efgh"
+  "key2": "efgh",
+
+  "projects": [ {"name":"Bitshares2","id":"000"},
+                {"name":"BlockchainJS","id":"001"}],
+
+  "contributors": [ {"name":"bytemaster2","tokens":"13000"},
+                    {"name":"pelling","tokens":"20500"},
+                    {"name":"willhelm","tokens":"1250"}]
 }

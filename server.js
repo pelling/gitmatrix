@@ -118,10 +118,12 @@ var SampleApp = function() {
 
 
         self.app.get('/getprojects', function(req, res){
-          res.json([{name:'Bitshares2',id:'000'},{name:'BlockchainJS',id:'001'}]);
+          res.json(config.projects);
         });
 
-
+        self.app.get('/getcontributors', function(req, res){
+          res.json(config.contributors);
+        });
 
         self.app.get('/ajaxtest', function(req, res){
           res.type('text/plain');

@@ -59,8 +59,8 @@ var SelectProjectComponent = React.createClass({
 
 var TopNavComponent = React.createClass({
 
-    handleClickProject: function(event) {
-      React.render(<BacklogComponent />, document.getElementById('app'));
+    handleClickSignOut: function(event) {
+      React.render(<LoginComponent />, document.getElementById('app'));
       // Ajax details ommitted since we never get here via onClick
     },
 
@@ -80,7 +80,7 @@ var TopNavComponent = React.createClass({
                        <span className="caret"></span></a>
                        <ul className="dropdown-menu">
                          <li><a href="./documentation.html">GitMatrix Documentation</a></li>
-                         <li><a href="./index.html">Sign Out</a></li>
+                         <li><a href="#" onClick={this.handleClickSignOut}>Sign Out</a></li>
                        </ul>
                      </div>
                   </div>

@@ -13,7 +13,8 @@ var LoginComponent = React.createClass({
           <div>
             <div className="page-header">
               <span className="gm-login-header">[ GitMatrix ]</span><br/>
-              <h3>Prioritize your backlog by voting with tokens.</h3>
+              <h3>Project governance for open source projects.</h3>
+              <h5>Prioritize you backlog by voting with tokens.</h5>
             </div>
             <a href="#" className="btn btn-lg btn-primary" role="button" onClick={this.handleClickLogin}>Login with GitHub</a>
           </div>
