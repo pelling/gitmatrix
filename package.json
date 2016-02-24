@@ -1,19 +1,23 @@
 {
-  "name": "OpenShift-Sample-App",
+  "name": "GitMatrix",
   "version": "1.0.0",
-  "description": "OpenShift Sample Application",
+  "description": "GitMatrix - backlog prioritization system",
   "keywords": [
-    "OpenShift",
+    "GitMatrix",
     "Node.js",
     "application",
     "openshift"
   ],
   "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
+    "name": "Chris Pelling",
+    "email": "cppelling@gmail.com",
     "url": "http://www.openshift.com/"
   },
-  "homepage": "http://www.openshift.com/",
+  "scripts": {
+    "prestart": "nodejs node_modules/.bin/webpack",
+    "start": "nodejs server.js"
+  },
+  "homepage": "http://www.gitmatrix.com/",
   "repository": {
     "type": "git",
     "url": "https://github.com/openshift/origin-server"
@@ -24,12 +28,14 @@
   },
   "dependencies": {
     "express": "~3.4.8",
-    "react-dom": "~0.14.6",
-    "react": "~0.14.6",
-    "babelify": "~7.2.0",
-    "babel-preset-react": "~6.3.13"
+    "react": "~0.14.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-core": "^5.8.*",
+    "babel-loader": "^5.3.*",
+    "webpack": "^1.12.*",
+    "webpack-dev-server": "^1.10.*"
+  },
   "bundleDependencies": [],
   "private": true,
   "main": "server.js"

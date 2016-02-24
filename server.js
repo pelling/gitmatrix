@@ -1,4 +1,3 @@
-#!/bin/env node
 //  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
@@ -44,7 +43,7 @@ var SampleApp = function() {
         }
 
         //  Local cache for static content.
-        self.zcache['app.html'] = fs.readFileSync('./public/app.html');
+        self.zcache['app.html'] = fs.readFileSync('./build/app.html');
     };
 
 
@@ -132,7 +131,7 @@ var SampleApp = function() {
 
 
 
-        self.app.use(express.static(__dirname + '/public'));
+        self.app.use(express.static(__dirname + '/build'));
 
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {
