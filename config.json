@@ -1,6 +1,6 @@
 {
   "key1": "abcd",
-  "key2": "efgh",
+  "user": {"name":"Chris Pelling","id":"000"},
 
   "projects": [ {"name":"Bitshares2","id":"000"},
                 {"name":"BlockchainJS","id":"001"}],

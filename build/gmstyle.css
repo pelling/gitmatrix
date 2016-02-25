@@ -9,5 +9,7 @@ span.gm-login-header { font-family: Kreon, serif;
 .top-pink { border-top:1px solid pink; }
 
 .gm-nav-bar-logo {  font-family: 'Kreon', serif;  color:#F20C4D;  font-size:1.6em;}
-.gm-user-dropdown {text-align:right; }
-.gm-user-dropdown-icons { color:#F20C4D; font-size:1.5em; cursor:pointer; }
+.gm-align-right {text-align:right; }
+
+.gm-hidden { display:none; }
+.gm-visible { display:block; }

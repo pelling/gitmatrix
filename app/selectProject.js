@@ -1,49 +1,51 @@
 import React from 'react';
-import TopNavComponent from './topnav.js';
+import TopNav from './topnav.js';
 import BacklogComponent from './backlog.js';
+import 'whatwg-fetch';
+
+
+var SelectProjectContainer = React.createClass({
+
+
+  getInitialState : function() {
+    return {
+      "projects": []
+    };
+  },
+
+
+  componentDidMount: function() {
+      fetch('getprojects')
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({projects: responseData});
+      })
+      .catch((error) => {
+        console.log('Error fetching and parsing data from getprojects', error);
+      });
+    },
+
+    render : function() {
+      return (
+        <SelectProjectComponent projects={this.state.projects} />
+      );
+    }
+
+});
 
 var SelectProjectComponent = React.createClass({
 
 
-    getInitialState : function() {
-      return {
-        /*projects : []*/
-
-        "projects": [ {"name":"Bitshares2","id":"000"},
-                      {"name":"BlockchainJS","id":"001"}]
-      };
-    },
-
-
-    componentDidMount: function () {
-
-      $.ajax({url: "getprojects", success: function(result){
-          this.setState( { projects: result });
-        }.bind(this)
-      });
-
-    },
-
-
-
-    handleClickProject: function(id) {
-
-      React.render(<BacklogComponent id={id} />, document.getElementById('root'));
-      // Ajax details ommitted since we never get here via onClick
-    },
-
-
     render: function () {
-        var projectComponents = this.state.projects.map(function(project) {
-            return <a href="#" className="list-group-item" onClick={this.handleClickProject.bind(this, project.id)}>{project.name}</a>;
-        }.bind(this));
+        var projects = this.props.projects.map((project) => {
+          return <Project id={project.id} name={project.name} />
+        });
+
         return (
           <div>
 
-              <TopNavComponent />
-
                 <div className="row-fluid">
-                    <div className="col-md-12 top-pink" >
+                    <div className="col-md-12" >
                       <h3>pelling</h3>
                     </div>
                 </div>
@@ -54,7 +56,9 @@ var SelectProjectComponent = React.createClass({
                       </div>
                       <div className="col-md-10">
                         <h4>Select Project:</h4>
-                            <div className="list-group">{projectComponents}</div>
+                            <div className="list-group">
+                                {projects}
+                            </div>
                       </div>
                 </div>
 
@@ -63,4 +67,25 @@ var SelectProjectComponent = React.createClass({
     }
 });
 
-export default SelectProjectComponent;
+
+
+
+
+var Project = React.createClass({
+
+    handleClickProject: function(id) {
+      React.render(<BacklogComponent id={id} />, document.getElementById('app'));
+      // Ajax details ommitted since we never get here via onClick
+    },
+
+    render: function () {
+        return (
+                <a href="#" className="list-group-item" onClick={this.handleClickProject.bind(this, this.props.id)}>{this.props.name}</a>
+        );
+    }
+});
+
+
+
+
+export default SelectProjectContainer;

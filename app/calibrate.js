@@ -1,5 +1,4 @@
 import React from 'react';
-import TopNavComponent from './topnav.js';
 
 var CalibrateComponent = React.createClass({
 
@@ -18,11 +17,9 @@ var CalibrateComponent = React.createClass({
         return (
           <div>
 
-                <TopNavComponent />
-
 
                 <div className="row-fluid">
-                  <div className="col-md-12 top-pink">
+                  <div className="col-md-12">
                     <h3><a href="#" onClick={this.handleClickSelect}>pelling</a> / <a href="#" onClick={this.handleClickBacklog}>gitmatrix</a></h3>
                   </div>
                 </div>

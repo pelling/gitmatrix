@@ -1,5 +1,4 @@
 import React from 'react';
-import TopNavComponent from './topnav.js';
 import CalibrateComponent from './backlog.js';
 
 var BacklogComponent = React.createClass({
@@ -28,12 +27,12 @@ var BacklogComponent = React.createClass({
 
 
     handleClickSelect: function(event) {
-      React.render(<SelectProjectComponent />, document.getElementById('root'));
+      React.render(<SelectProjectComponent />, document.getElementById('app'));
     },
 
 
     handleClickCalibrate: function(event) {
-      React.render(<CalibrateComponent />, document.getElementById('root'));
+      React.render(<CalibrateComponent />, document.getElementById('app'));
     },
 
 
@@ -44,11 +43,9 @@ var BacklogComponent = React.createClass({
         return (
           <div>
 
-                <TopNavComponent />
-
 
                 <div className="row-fluid">
-                      <div className="col-md-12 top-pink">
+                      <div className="col-md-12">
                         <h3><a href="#" onClick={this.handleClickSelect}>pelling</a> / gitmatrix</h3>
 
                         <ul className="nav nav-pills" role="tablist">

@@ -115,6 +115,9 @@ var SampleApp = function() {
         self.createRoutes();
         self.app = express.createServer();
 
+        self.app.get('/getuser', function(req, res){
+          res.json(config.user);
+        });
 
         self.app.get('/getprojects', function(req, res){
           res.json(config.projects);

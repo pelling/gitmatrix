@@ -52,67 +52,16 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _selectProjectJs = __webpack_require__(158);
+	var _topnavJs = __webpack_require__(158);
 
-	var _selectProjectJs2 = _interopRequireDefault(_selectProjectJs);
+	var _topnavJs2 = _interopRequireDefault(_topnavJs);
 
-	var LoginComponent = _react2['default'].createClass({
-	  displayName: 'LoginComponent',
+	var _loginJs = __webpack_require__(159);
 
-	  handleClickLogin: function handleClickLogin(event) {
-	    _react2['default'].render(_react2['default'].createElement(_selectProjectJs2['default'], null), document.getElementById('root'));
-	    // Ajax details ommitted since we never get here via onClick
-	  },
+	var _loginJs2 = _interopRequireDefault(_loginJs);
 
-	  render: function render() {
-
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'page-header' },
-	        _react2['default'].createElement(
-	          'span',
-	          { className: 'gm-login-header' },
-	          '[ GitMatrix ]'
-	        ),
-	        _react2['default'].createElement('br', null),
-	        _react2['default'].createElement(
-	          'h3',
-	          null,
-	          'Project governance for open source projects.'
-	        ),
-	        _react2['default'].createElement(
-	          'h5',
-	          null,
-	          'Prioritize you backlog by voting with tokens.'
-	        )
-	      ),
-	      _react2['default'].createElement(
-	        'a',
-	        { href: '#', className: 'btn btn-lg btn-primary', role: 'button', onClick: this.handleClickLogin },
-	        'Login with GitHub'
-	      )
-	    );
-	  }
-	});
-
-	_react2['default'].render(_react2['default'].createElement(LoginComponent, null), document.getElementById('root'));
-
-	/*
-	import React from 'react';
-
-	class Hello extends React.Component {
-	  render() {
-	    return (
-	        <h1>Hello React World revised</h1>
-	    );
-	  }
-	}
-
-	React.render(<Hello />, document.getElementById('root'));
-	*/
+	_react2['default'].render(_react2['default'].createElement(_topnavJs2['default'], { authenticated: false }), document.getElementById('topnav'));
+	_react2['default'].render(_react2['default'].createElement(_loginJs2['default'], null), document.getElementById('app'));
 
 /***/ },
 /* 1 */
@@ -19717,6 +19666,83 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _loginJs = __webpack_require__(159);
+
+	var _loginJs2 = _interopRequireDefault(_loginJs);
+
+	var TopNav = _react2['default'].createClass({
+	    displayName: 'TopNav',
+
+	    handleClickSignOut: function handleClickSignOut(event) {
+	        _react2['default'].render(_react2['default'].createElement(TopNav, { authenticated: false }), document.getElementById('topnav'));
+	        _react2['default'].render(_react2['default'].createElement(_loginJs2['default'], null), document.getElementById('app'));
+	        // Ajax details ommitted since we never get here via onClick
+	    },
+
+	    render: function render() {
+	        var wrapperClass = "gm-visible";
+	        if (!this.props.authenticated) {
+	            wrapperClass = "gm-hidden";
+	        }
+	        return _react2['default'].createElement(
+	            'div',
+	            { className: wrapperClass },
+	            _react2['default'].createElement(
+	                'div',
+	                { className: 'row-fluid' },
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'col-md-6' },
+	                    _react2['default'].createElement(
+	                        'span',
+	                        { className: 'gm-nav-bar-logo' },
+	                        '[ GitMatrix ]'
+	                    )
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'col-md-6 gm-align-right' },
+	                    _react2['default'].createElement(
+	                        'a',
+	                        { href: '#', onClick: this.handleClickSignOut },
+	                        'Chris Pelling'
+	                    ),
+	                    '  |  ',
+	                    _react2['default'].createElement(
+	                        'a',
+	                        { href: '#', onClick: this.handleClickSignOut },
+	                        'Sign Out'
+	                    )
+	                )
+	            ),
+	            _react2['default'].createElement(
+	                'div',
+	                { className: 'row-fluid' },
+	                _react2['default'].createElement('div', { className: 'col-md-12 top-pink' })
+	            )
+	        );
+	    }
+	});
+
+	exports['default'] = TopNav;
+	module.exports = exports['default'];
+
+/***/ },
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 
@@ -19726,57 +19752,125 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _topnavJs = __webpack_require__(159);
+	var _topnavJs = __webpack_require__(158);
 
 	var _topnavJs2 = _interopRequireDefault(_topnavJs);
 
-	var _backlogJs = __webpack_require__(160);
+	var _selectProjectJs = __webpack_require__(160);
 
-	var _backlogJs2 = _interopRequireDefault(_backlogJs);
+	var _selectProjectJs2 = _interopRequireDefault(_selectProjectJs);
 
-	var SelectProjectComponent = _react2['default'].createClass({
-	  displayName: 'SelectProjectComponent',
+	var Login = _react2['default'].createClass({
+	  displayName: 'Login',
 
-	  getInitialState: function getInitialState() {
-	    return {
-	      /*projects : []*/
-
-	      "projects": [{ "name": "Bitshares2", "id": "000" }, { "name": "BlockchainJS", "id": "001" }]
-	    };
-	  },
-
-	  componentDidMount: function componentDidMount() {
-
-	    $.ajax({ url: "getprojects", success: (function (result) {
-	        this.setState({ projects: result });
-	      }).bind(this)
-	    });
-	  },
-
-	  handleClickProject: function handleClickProject(id) {
-
-	    _react2['default'].render(_react2['default'].createElement(_backlogJs2['default'], { id: id }), document.getElementById('root'));
+	  handleClickLogin: function handleClickLogin(event) {
+	    _react2['default'].render(_react2['default'].createElement(_topnavJs2['default'], { authenticated: true }), document.getElementById('topnav'));
+	    _react2['default'].render(_react2['default'].createElement(_selectProjectJs2['default'], null), document.getElementById('app'));
 	    // Ajax details ommitted since we never get here via onClick
 	  },
 
 	  render: function render() {
-	    var projectComponents = this.state.projects.map((function (project) {
-	      return _react2['default'].createElement(
-	        'a',
-	        { href: '#', className: 'list-group-item', onClick: this.handleClickProject.bind(this, project.id) },
-	        project.name
-	      );
-	    }).bind(this));
+
+	    return _react2['default'].createElement(
+	      'div',
+	      { className: 'row-fluid' },
+	      _react2['default'].createElement(
+	        'div',
+	        { className: 'col-md-12' },
+	        _react2['default'].createElement(
+	          'span',
+	          { className: 'gm-login-header' },
+	          '[ GitMatrix ]'
+	        ),
+	        _react2['default'].createElement('br', null),
+	        _react2['default'].createElement(
+	          'h3',
+	          null,
+	          'Backlog prioritization via the consensus of the team.'
+	        ),
+	        _react2['default'].createElement(
+	          'a',
+	          { href: '#', className: 'btn btn-lg btn-primary', role: 'button', onClick: this.handleClickLogin },
+	          'Login with GitHub'
+	        )
+	      )
+	    );
+	  }
+	});
+
+	exports['default'] = Login;
+	module.exports = exports['default'];
+
+/***/ },
+/* 160 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _topnavJs = __webpack_require__(158);
+
+	var _topnavJs2 = _interopRequireDefault(_topnavJs);
+
+	var _backlogJs = __webpack_require__(161);
+
+	var _backlogJs2 = _interopRequireDefault(_backlogJs);
+
+	__webpack_require__(162);
+
+	var SelectProjectContainer = _react2['default'].createClass({
+	  displayName: 'SelectProjectContainer',
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      "projects": []
+	    };
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
+	    fetch('getprojects').then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.setState({ projects: responseData });
+	    })['catch'](function (error) {
+	      console.log('Error fetching and parsing data from getprojects', error);
+	    });
+	  },
+
+	  render: function render() {
+	    return _react2['default'].createElement(SelectProjectComponent, { projects: this.state.projects });
+	  }
+
+	});
+
+	var SelectProjectComponent = _react2['default'].createClass({
+	  displayName: 'SelectProjectComponent',
+
+	  render: function render() {
+	    var projects = this.props.projects.map(function (project) {
+	      return _react2['default'].createElement(Project, { id: project.id, name: project.name });
+	    });
+
 	    return _react2['default'].createElement(
 	      'div',
 	      null,
-	      _react2['default'].createElement(_topnavJs2['default'], null),
 	      _react2['default'].createElement(
 	        'div',
 	        { className: 'row-fluid' },
 	        _react2['default'].createElement(
 	          'div',
-	          { className: 'col-md-12 top-pink' },
+	          { className: 'col-md-12' },
 	          _react2['default'].createElement(
 	            'h3',
 	            null,
@@ -19803,7 +19897,7 @@
 	          _react2['default'].createElement(
 	            'div',
 	            { className: 'list-group' },
-	            projectComponents
+	            projects
 	          )
 	        )
 	      )
@@ -19811,96 +19905,28 @@
 	  }
 	});
 
-	exports['default'] = SelectProjectComponent;
-	module.exports = exports['default'];
+	var Project = _react2['default'].createClass({
+	  displayName: 'Project',
 
-/***/ },
-/* 159 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var TopNavComponent = _react2['default'].createClass({
-	  displayName: 'TopNavComponent',
-
-	  handleClickSignOut: function handleClickSignOut(event) {
-	    _react2['default'].render(_react2['default'].createElement(LoginComponent, null), document.getElementById('root'));
+	  handleClickProject: function handleClickProject(id) {
+	    _react2['default'].render(_react2['default'].createElement(_backlogJs2['default'], { id: id }), document.getElementById('app'));
 	    // Ajax details ommitted since we never get here via onClick
 	  },
 
 	  render: function render() {
-
 	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'row-fluid ' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-11' },
-	          _react2['default'].createElement(
-	            'span',
-	            { className: 'gm-nav-bar-logo' },
-	            '[ GitMatrix ]'
-	          )
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-1 gm-user-dropdown' },
-	          _react2['default'].createElement(
-	            'div',
-	            { className: 'dropdown' },
-	            _react2['default'].createElement(
-	              'a',
-	              { className: 'dropdown-toggle gm-user-dropdown-icons', type: 'button', 'data-toggle': 'dropdown' },
-	              _react2['default'].createElement('i', { className: 'fa fa-user' }),
-	              _react2['default'].createElement('span', { className: 'caret' })
-	            ),
-	            _react2['default'].createElement(
-	              'ul',
-	              { className: 'dropdown-menu' },
-	              _react2['default'].createElement(
-	                'li',
-	                null,
-	                _react2['default'].createElement(
-	                  'a',
-	                  { href: './documentation.html' },
-	                  'GitMatrix Documentation'
-	                )
-	              ),
-	              _react2['default'].createElement(
-	                'li',
-	                null,
-	                _react2['default'].createElement(
-	                  'a',
-	                  { href: '#', onClick: this.handleClickSignOut },
-	                  'Sign Out'
-	                )
-	              )
-	            )
-	          )
-	        )
-	      )
+	      'a',
+	      { href: '#', className: 'list-group-item', onClick: this.handleClickProject.bind(this, this.props.id) },
+	      this.props.name
 	    );
 	  }
 	});
 
-	exports['default'] = TopNavComponent;
+	exports['default'] = SelectProjectContainer;
 	module.exports = exports['default'];
 
 /***/ },
-/* 160 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19915,11 +19941,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _topnavJs = __webpack_require__(159);
-
-	var _topnavJs2 = _interopRequireDefault(_topnavJs);
-
-	var _backlogJs = __webpack_require__(160);
+	var _backlogJs = __webpack_require__(161);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
@@ -19943,11 +19965,11 @@
 	  },
 
 	  handleClickSelect: function handleClickSelect(event) {
-	    _react2['default'].render(_react2['default'].createElement(SelectProjectComponent, null), document.getElementById('root'));
+	    _react2['default'].render(_react2['default'].createElement(SelectProjectComponent, null), document.getElementById('app'));
 	  },
 
 	  handleClickCalibrate: function handleClickCalibrate(event) {
-	    _react2['default'].render(_react2['default'].createElement(_backlogJs2['default'], null), document.getElementById('root'));
+	    _react2['default'].render(_react2['default'].createElement(_backlogJs2['default'], null), document.getElementById('app'));
 	  },
 
 	  render: function render() {
@@ -19970,13 +19992,12 @@
 	    return _react2['default'].createElement(
 	      'div',
 	      null,
-	      _react2['default'].createElement(_topnavJs2['default'], null),
 	      _react2['default'].createElement(
 	        'div',
 	        { className: 'row-fluid' },
 	        _react2['default'].createElement(
 	          'div',
-	          { className: 'col-md-12 top-pink' },
+	          { className: 'col-md-12' },
 	          _react2['default'].createElement(
 	            'h3',
 	            null,
@@ -20009,6 +20030,400 @@
 
 	exports['default'] = BacklogComponent;
 	module.exports = exports['default'];
+
+/***/ },
+/* 162 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	(function (self) {
+	  'use strict';
+
+	  if (self.fetch) {
+	    return;
+	  }
+
+	  function normalizeName(name) {
+	    if (typeof name !== 'string') {
+	      name = String(name);
+	    }
+	    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+	      throw new TypeError('Invalid character in header field name');
+	    }
+	    return name.toLowerCase();
+	  }
+
+	  function normalizeValue(value) {
+	    if (typeof value !== 'string') {
+	      value = String(value);
+	    }
+	    return value;
+	  }
+
+	  function Headers(headers) {
+	    this.map = {};
+
+	    if (headers instanceof Headers) {
+	      headers.forEach(function (value, name) {
+	        this.append(name, value);
+	      }, this);
+	    } else if (headers) {
+	      Object.getOwnPropertyNames(headers).forEach(function (name) {
+	        this.append(name, headers[name]);
+	      }, this);
+	    }
+	  }
+
+	  Headers.prototype.append = function (name, value) {
+	    name = normalizeName(name);
+	    value = normalizeValue(value);
+	    var list = this.map[name];
+	    if (!list) {
+	      list = [];
+	      this.map[name] = list;
+	    }
+	    list.push(value);
+	  };
+
+	  Headers.prototype['delete'] = function (name) {
+	    delete this.map[normalizeName(name)];
+	  };
+
+	  Headers.prototype.get = function (name) {
+	    var values = this.map[normalizeName(name)];
+	    return values ? values[0] : null;
+	  };
+
+	  Headers.prototype.getAll = function (name) {
+	    return this.map[normalizeName(name)] || [];
+	  };
+
+	  Headers.prototype.has = function (name) {
+	    return this.map.hasOwnProperty(normalizeName(name));
+	  };
+
+	  Headers.prototype.set = function (name, value) {
+	    this.map[normalizeName(name)] = [normalizeValue(value)];
+	  };
+
+	  Headers.prototype.forEach = function (callback, thisArg) {
+	    Object.getOwnPropertyNames(this.map).forEach(function (name) {
+	      this.map[name].forEach(function (value) {
+	        callback.call(thisArg, value, name, this);
+	      }, this);
+	    }, this);
+	  };
+
+	  function consumed(body) {
+	    if (body.bodyUsed) {
+	      return Promise.reject(new TypeError('Already read'));
+	    }
+	    body.bodyUsed = true;
+	  }
+
+	  function fileReaderReady(reader) {
+	    return new Promise(function (resolve, reject) {
+	      reader.onload = function () {
+	        resolve(reader.result);
+	      };
+	      reader.onerror = function () {
+	        reject(reader.error);
+	      };
+	    });
+	  }
+
+	  function readBlobAsArrayBuffer(blob) {
+	    var reader = new FileReader();
+	    reader.readAsArrayBuffer(blob);
+	    return fileReaderReady(reader);
+	  }
+
+	  function readBlobAsText(blob) {
+	    var reader = new FileReader();
+	    reader.readAsText(blob);
+	    return fileReaderReady(reader);
+	  }
+
+	  var support = {
+	    blob: 'FileReader' in self && 'Blob' in self && (function () {
+	      try {
+	        new Blob();
+	        return true;
+	      } catch (e) {
+	        return false;
+	      }
+	    })(),
+	    formData: 'FormData' in self,
+	    arrayBuffer: 'ArrayBuffer' in self
+	  };
+
+	  function Body() {
+	    this.bodyUsed = false;
+
+	    this._initBody = function (body) {
+	      this._bodyInit = body;
+	      if (typeof body === 'string') {
+	        this._bodyText = body;
+	      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+	        this._bodyBlob = body;
+	      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+	        this._bodyFormData = body;
+	      } else if (!body) {
+	        this._bodyText = '';
+	      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+	        // Only support ArrayBuffers for POST method.
+	        // Receiving ArrayBuffers happens via Blobs, instead.
+	      } else {
+	          throw new Error('unsupported BodyInit type');
+	        }
+
+	      if (!this.headers.get('content-type')) {
+	        if (typeof body === 'string') {
+	          this.headers.set('content-type', 'text/plain;charset=UTF-8');
+	        } else if (this._bodyBlob && this._bodyBlob.type) {
+	          this.headers.set('content-type', this._bodyBlob.type);
+	        }
+	      }
+	    };
+
+	    if (support.blob) {
+	      this.blob = function () {
+	        var rejected = consumed(this);
+	        if (rejected) {
+	          return rejected;
+	        }
+
+	        if (this._bodyBlob) {
+	          return Promise.resolve(this._bodyBlob);
+	        } else if (this._bodyFormData) {
+	          throw new Error('could not read FormData body as blob');
+	        } else {
+	          return Promise.resolve(new Blob([this._bodyText]));
+	        }
+	      };
+
+	      this.arrayBuffer = function () {
+	        return this.blob().then(readBlobAsArrayBuffer);
+	      };
+
+	      this.text = function () {
+	        var rejected = consumed(this);
+	        if (rejected) {
+	          return rejected;
+	        }
+
+	        if (this._bodyBlob) {
+	          return readBlobAsText(this._bodyBlob);
+	        } else if (this._bodyFormData) {
+	          throw new Error('could not read FormData body as text');
+	        } else {
+	          return Promise.resolve(this._bodyText);
+	        }
+	      };
+	    } else {
+	      this.text = function () {
+	        var rejected = consumed(this);
+	        return rejected ? rejected : Promise.resolve(this._bodyText);
+	      };
+	    }
+
+	    if (support.formData) {
+	      this.formData = function () {
+	        return this.text().then(decode);
+	      };
+	    }
+
+	    this.json = function () {
+	      return this.text().then(JSON.parse);
+	    };
+
+	    return this;
+	  }
+
+	  // HTTP methods whose capitalization should be normalized
+	  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT'];
+
+	  function normalizeMethod(method) {
+	    var upcased = method.toUpperCase();
+	    return methods.indexOf(upcased) > -1 ? upcased : method;
+	  }
+
+	  function Request(input, options) {
+	    options = options || {};
+	    var body = options.body;
+	    if (Request.prototype.isPrototypeOf(input)) {
+	      if (input.bodyUsed) {
+	        throw new TypeError('Already read');
+	      }
+	      this.url = input.url;
+	      this.credentials = input.credentials;
+	      if (!options.headers) {
+	        this.headers = new Headers(input.headers);
+	      }
+	      this.method = input.method;
+	      this.mode = input.mode;
+	      if (!body) {
+	        body = input._bodyInit;
+	        input.bodyUsed = true;
+	      }
+	    } else {
+	      this.url = input;
+	    }
+
+	    this.credentials = options.credentials || this.credentials || 'omit';
+	    if (options.headers || !this.headers) {
+	      this.headers = new Headers(options.headers);
+	    }
+	    this.method = normalizeMethod(options.method || this.method || 'GET');
+	    this.mode = options.mode || this.mode || null;
+	    this.referrer = null;
+
+	    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+	      throw new TypeError('Body not allowed for GET or HEAD requests');
+	    }
+	    this._initBody(body);
+	  }
+
+	  Request.prototype.clone = function () {
+	    return new Request(this);
+	  };
+
+	  function decode(body) {
+	    var form = new FormData();
+	    body.trim().split('&').forEach(function (bytes) {
+	      if (bytes) {
+	        var split = bytes.split('=');
+	        var name = split.shift().replace(/\+/g, ' ');
+	        var value = split.join('=').replace(/\+/g, ' ');
+	        form.append(decodeURIComponent(name), decodeURIComponent(value));
+	      }
+	    });
+	    return form;
+	  }
+
+	  function headers(xhr) {
+	    var head = new Headers();
+	    var pairs = xhr.getAllResponseHeaders().trim().split('\n');
+	    pairs.forEach(function (header) {
+	      var split = header.trim().split(':');
+	      var key = split.shift().trim();
+	      var value = split.join(':').trim();
+	      head.append(key, value);
+	    });
+	    return head;
+	  }
+
+	  Body.call(Request.prototype);
+
+	  function Response(bodyInit, options) {
+	    if (!options) {
+	      options = {};
+	    }
+
+	    this.type = 'default';
+	    this.status = options.status;
+	    this.ok = this.status >= 200 && this.status < 300;
+	    this.statusText = options.statusText;
+	    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers);
+	    this.url = options.url || '';
+	    this._initBody(bodyInit);
+	  }
+
+	  Body.call(Response.prototype);
+
+	  Response.prototype.clone = function () {
+	    return new Response(this._bodyInit, {
+	      status: this.status,
+	      statusText: this.statusText,
+	      headers: new Headers(this.headers),
+	      url: this.url
+	    });
+	  };
+
+	  Response.error = function () {
+	    var response = new Response(null, { status: 0, statusText: '' });
+	    response.type = 'error';
+	    return response;
+	  };
+
+	  var redirectStatuses = [301, 302, 303, 307, 308];
+
+	  Response.redirect = function (url, status) {
+	    if (redirectStatuses.indexOf(status) === -1) {
+	      throw new RangeError('Invalid status code');
+	    }
+
+	    return new Response(null, { status: status, headers: { location: url } });
+	  };
+
+	  self.Headers = Headers;
+	  self.Request = Request;
+	  self.Response = Response;
+
+	  self.fetch = function (input, init) {
+	    return new Promise(function (resolve, reject) {
+	      var request;
+	      if (Request.prototype.isPrototypeOf(input) && !init) {
+	        request = input;
+	      } else {
+	        request = new Request(input, init);
+	      }
+
+	      var xhr = new XMLHttpRequest();
+
+	      function responseURL() {
+	        if ('responseURL' in xhr) {
+	          return xhr.responseURL;
+	        }
+
+	        // Avoid security warnings on getResponseHeader when not allowed by CORS
+	        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+	          return xhr.getResponseHeader('X-Request-URL');
+	        }
+
+	        return;
+	      }
+
+	      xhr.onload = function () {
+	        var status = xhr.status === 1223 ? 204 : xhr.status;
+	        if (status < 100 || status > 599) {
+	          reject(new TypeError('Network request failed'));
+	          return;
+	        }
+	        var options = {
+	          status: status,
+	          statusText: xhr.statusText,
+	          headers: headers(xhr),
+	          url: responseURL()
+	        };
+	        var body = 'response' in xhr ? xhr.response : xhr.responseText;
+	        resolve(new Response(body, options));
+	      };
+
+	      xhr.onerror = function () {
+	        reject(new TypeError('Network request failed'));
+	      };
+
+	      xhr.open(request.method, request.url, true);
+
+	      if (request.credentials === 'include') {
+	        xhr.withCredentials = true;
+	      }
+
+	      if ('responseType' in xhr && support.blob) {
+	        xhr.responseType = 'blob';
+	      }
+
+	      request.headers.forEach(function (value, name) {
+	        xhr.setRequestHeader(name, value);
+	      });
+
+	      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit);
+	    });
+	  };
+	  self.fetch.polyfill = true;
+	})(typeof self !== 'undefined' ? self : undefined);
 
 /***/ }
 /******/ ]);

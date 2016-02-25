@@ -1,38 +1,38 @@
 import React from 'react';
+import Login from './login.js';
 
-
-var TopNavComponent = React.createClass({
+var TopNav = React.createClass({
 
     handleClickSignOut: function(event) {
-      React.render(<LoginComponent />, document.getElementById('root'));
+      React.render(<TopNav authenticated={false} />, document.getElementById('topnav'));
+      React.render(<Login />, document.getElementById('app'));
       // Ajax details ommitted since we never get here via onClick
     },
 
 
     render: function () {
-
+        var wrapperClass = "gm-visible";
+        if (!this.props.authenticated) { wrapperClass = "gm-hidden"; }
         return (
-          <div>
-
-                <div className="row-fluid ">
-                  <div className="col-md-11">
-                    <span className="gm-nav-bar-logo">[ GitMatrix ]</span>
+             <div className={wrapperClass}>
+                  <div className="row-fluid">
+                      <div className="col-md-6">
+                        <span className="gm-nav-bar-logo">[ GitMatrix ]</span>
+                      </div>
+                      <div className="col-md-6 gm-align-right">
+                        <a href="#" onClick={this.handleClickSignOut}>Chris Pelling</a>
+                        &nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="#" onClick={this.handleClickSignOut}>Sign Out</a>
+                      </div>
                   </div>
-                  <div className="col-md-1 gm-user-dropdown">
-                      <div className="dropdown">
-                       <a className="dropdown-toggle gm-user-dropdown-icons" type="button" data-toggle="dropdown"><i className="fa fa-user"></i>
-                       <span className="caret"></span></a>
-                       <ul className="dropdown-menu">
-                         <li><a href="./documentation.html">GitMatrix Documentation</a></li>
-                         <li><a href="#" onClick={this.handleClickSignOut}>Sign Out</a></li>
-                       </ul>
-                     </div>
-                  </div>
-                </div>
 
-          </div>
+                  <div className="row-fluid">
+                      <div className="col-md-12 top-pink">
+                      </div>
+                  </div>
+             </div>
         );
     }
 });
 
-export default TopNavComponent;
+export default TopNav;
