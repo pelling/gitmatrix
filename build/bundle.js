@@ -56,12 +56,12 @@
 
 	var _topnavJs2 = _interopRequireDefault(_topnavJs);
 
-	var _loginJs = __webpack_require__(159);
+	var _homeJs = __webpack_require__(159);
 
-	var _loginJs2 = _interopRequireDefault(_loginJs);
+	var _homeJs2 = _interopRequireDefault(_homeJs);
 
-	_react2['default'].render(_react2['default'].createElement(_topnavJs2['default'], { authenticated: false }), document.getElementById('topnav'));
-	_react2['default'].render(_react2['default'].createElement(_loginJs2['default'], null), document.getElementById('app'));
+	_react2['default'].render(_react2['default'].createElement(_topnavJs2['default'], { session: false }), document.getElementById('topnav'));
+	_react2['default'].render(_react2['default'].createElement(_homeJs2['default'], { session: false }), document.getElementById('app'));
 
 /***/ },
 /* 1 */
@@ -19666,7 +19666,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
-	    value: true
+	  value: true
 	});
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -19675,62 +19675,65 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _loginJs = __webpack_require__(159);
+	var _homeJs = __webpack_require__(159);
 
-	var _loginJs2 = _interopRequireDefault(_loginJs);
+	var _homeJs2 = _interopRequireDefault(_homeJs);
 
 	var TopNav = _react2['default'].createClass({
-	    displayName: 'TopNav',
+	  displayName: 'TopNav',
 
-	    handleClickSignOut: function handleClickSignOut(event) {
-	        _react2['default'].render(_react2['default'].createElement(TopNav, { authenticated: false }), document.getElementById('topnav'));
-	        _react2['default'].render(_react2['default'].createElement(_loginJs2['default'], null), document.getElementById('app'));
-	        // Ajax details ommitted since we never get here via onClick
-	    },
+	  handleClickHome: function handleClickHome(event) {
+	    _react2['default'].render(_react2['default'].createElement(_homeJs2['default'], { session: this.props.session }), document.getElementById('app'));
+	  },
 
-	    render: function render() {
-	        var wrapperClass = "gm-visible";
-	        if (!this.props.authenticated) {
-	            wrapperClass = "gm-hidden";
-	        }
-	        return _react2['default'].createElement(
-	            'div',
-	            { className: wrapperClass },
-	            _react2['default'].createElement(
-	                'div',
-	                { className: 'row-fluid' },
-	                _react2['default'].createElement(
-	                    'div',
-	                    { className: 'col-md-6' },
-	                    _react2['default'].createElement(
-	                        'span',
-	                        { className: 'gm-nav-bar-logo' },
-	                        '[ GitMatrix ]'
-	                    )
-	                ),
-	                _react2['default'].createElement(
-	                    'div',
-	                    { className: 'col-md-6 gm-align-right' },
-	                    _react2['default'].createElement(
-	                        'a',
-	                        { href: '#', onClick: this.handleClickSignOut },
-	                        'Chris Pelling'
-	                    ),
-	                    '  |  ',
-	                    _react2['default'].createElement(
-	                        'a',
-	                        { href: '#', onClick: this.handleClickSignOut },
-	                        'Sign Out'
-	                    )
-	                )
-	            ),
-	            _react2['default'].createElement(
-	                'div',
-	                { className: 'row-fluid' },
-	                _react2['default'].createElement('div', { className: 'col-md-12 top-pink' })
-	            )
-	        );
+	  handleClickSignOut: function handleClickSignOut(event) {
+	    _react2['default'].render(_react2['default'].createElement(TopNav, { session: false }), document.getElementById('topnav'));
+	    _react2['default'].render(_react2['default'].createElement(_homeJs2['default'], { session: false }), document.getElementById('app'));
+	  },
+
+	  render: function render() {
+	    var wrapperClass = "gm-visible";
+	    if (!this.props.session) {
+	      wrapperClass = "gm-hidden";
 	    }
+	    return _react2['default'].createElement(
+	      'div',
+	      { className: wrapperClass },
+	      _react2['default'].createElement(
+	        'div',
+	        { className: 'row-fluid' },
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'col-md-6' },
+	          _react2['default'].createElement(
+	            'a',
+	            { href: '#', className: 'gm-nav-bar-logo', onClick: this.handleClickHome },
+	            '[ GitMatrix ]'
+	          )
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'col-md-6 gm-align-right' },
+	          _react2['default'].createElement(
+	            'a',
+	            { href: '#', onClick: this.handleClickSignOut },
+	            this.props.session.userName
+	          ),
+	          '  |  ',
+	          _react2['default'].createElement(
+	            'a',
+	            { href: '#', onClick: this.handleClickSignOut },
+	            'Sign Out'
+	          )
+	        )
+	      ),
+	      _react2['default'].createElement(
+	        'div',
+	        { className: 'row-fluid' },
+	        _react2['default'].createElement('div', { className: 'col-md-12 top-pink' })
+	      )
+	    );
+	  }
 	});
 
 	exports['default'] = TopNav;
@@ -19752,24 +19755,18 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _topnavJs = __webpack_require__(158);
+	var _loginJs = __webpack_require__(160);
 
-	var _topnavJs2 = _interopRequireDefault(_topnavJs);
+	var _loginJs2 = _interopRequireDefault(_loginJs);
 
-	var _selectProjectJs = __webpack_require__(160);
-
-	var _selectProjectJs2 = _interopRequireDefault(_selectProjectJs);
-
-	var Login = _react2['default'].createClass({
-	  displayName: 'Login',
-
-	  handleClickLogin: function handleClickLogin(event) {
-	    _react2['default'].render(_react2['default'].createElement(_topnavJs2['default'], { authenticated: true }), document.getElementById('topnav'));
-	    _react2['default'].render(_react2['default'].createElement(_selectProjectJs2['default'], null), document.getElementById('app'));
-	    // Ajax details ommitted since we never get here via onClick
-	  },
+	var Home = _react2['default'].createClass({
+	  displayName: 'Home',
 
 	  render: function render() {
+	    var loginControl = _react2['default'].createElement(_loginJs2['default'], null);
+	    if (this.props.session) {
+	      loginControl = "You are currently signed in as " + this.props.session.userName;
+	    }
 
 	    return _react2['default'].createElement(
 	      'div',
@@ -19788,17 +19785,13 @@
 	          null,
 	          'Backlog prioritization via the consensus of the team.'
 	        ),
-	        _react2['default'].createElement(
-	          'a',
-	          { href: '#', className: 'btn btn-lg btn-primary', role: 'button', onClick: this.handleClickLogin },
-	          'Login with GitHub'
-	        )
+	        loginControl
 	      )
 	    );
 	  }
 	});
 
-	exports['default'] = Login;
+	exports['default'] = Home;
 	module.exports = exports['default'];
 
 /***/ },
@@ -19821,11 +19814,62 @@
 
 	var _topnavJs2 = _interopRequireDefault(_topnavJs);
 
-	var _backlogJs = __webpack_require__(161);
+	var _selectProjectJs = __webpack_require__(161);
+
+	var _selectProjectJs2 = _interopRequireDefault(_selectProjectJs);
+
+	var Login = _react2['default'].createClass({
+	  displayName: 'Login',
+
+	  handleClickLogin: function handleClickLogin(event) {
+	    var session = {
+	      userName: "Chris Pelling",
+	      userId: "444555"
+	    };
+
+	    _react2['default'].render(_react2['default'].createElement(_topnavJs2['default'], { session: session }), document.getElementById('topnav'));
+	    _react2['default'].render(_react2['default'].createElement(_selectProjectJs2['default'], { session: session }), document.getElementById('app'));
+	    // Ajax details ommitted since we never get here via onClick
+	  },
+
+	  render: function render() {
+
+	    return _react2['default'].createElement(
+	      'a',
+	      { href: '#', className: 'btn btn-lg btn-primary', role: 'button', onClick: this.handleClickLogin },
+	      'Login with GitHub'
+	    );
+	  }
+	});
+
+	exports['default'] = Login;
+	module.exports = exports['default'];
+
+/***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _topnavJs = __webpack_require__(158);
+
+	var _topnavJs2 = _interopRequireDefault(_topnavJs);
+
+	var _backlogJs = __webpack_require__(162);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	__webpack_require__(162);
+	__webpack_require__(163);
 
 	var SelectProjectContainer = _react2['default'].createClass({
 	  displayName: 'SelectProjectContainer',
@@ -19926,7 +19970,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19941,7 +19985,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _backlogJs = __webpack_require__(161);
+	var _backlogJs = __webpack_require__(162);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
@@ -20032,7 +20076,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 162 */
+/* 163 */
 /***/ function(module, exports) {
 
 	'use strict';

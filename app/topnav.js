@@ -1,26 +1,30 @@
 import React from 'react';
-import Login from './login.js';
+import Home from './home.js';
 
 var TopNav = React.createClass({
 
+    handleClickHome: function(event) {
+      React.render(<Home session={this.props.session}  />, document.getElementById('app'));
+    },
+
+
     handleClickSignOut: function(event) {
-      React.render(<TopNav authenticated={false} />, document.getElementById('topnav'));
-      React.render(<Login />, document.getElementById('app'));
-      // Ajax details ommitted since we never get here via onClick
+      React.render(<TopNav session={false} />, document.getElementById('topnav'));
+      React.render(<Home session={false}  />, document.getElementById('app'));
     },
 
 
     render: function () {
         var wrapperClass = "gm-visible";
-        if (!this.props.authenticated) { wrapperClass = "gm-hidden"; }
+        if (!this.props.session) { wrapperClass = "gm-hidden"; }
         return (
              <div className={wrapperClass}>
                   <div className="row-fluid">
                       <div className="col-md-6">
-                        <span className="gm-nav-bar-logo">[ GitMatrix ]</span>
+                        <a href="#" className="gm-nav-bar-logo" onClick={this.handleClickHome}>[ GitMatrix ]</a>
                       </div>
                       <div className="col-md-6 gm-align-right">
-                        <a href="#" onClick={this.handleClickSignOut}>Chris Pelling</a>
+                        <a href="#" onClick={this.handleClickSignOut}>{this.props.session.userName}</a>
                         &nbsp;&nbsp;|&nbsp;&nbsp;
                         <a href="#" onClick={this.handleClickSignOut}>Sign Out</a>
                       </div>
