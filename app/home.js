@@ -5,7 +5,7 @@ import Login from './login.js';
 var Home = React.createClass({
 
     render: function () {
-      var loginControl = <Login />
+      var loginControl = <Login session={this.props.session} onSessionChange={this.props.onSessionChange} onPageChange={this.props.onPageChange} />
       if (this.props.session) { loginControl = "You are currently signed in as " + this.props.session.userName; }
 
         return (

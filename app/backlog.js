@@ -1,7 +1,7 @@
 import React from 'react';
 import CalibrateComponent from './backlog.js';
 
-var BacklogComponent = React.createClass({
+var Backlog = React.createClass({
 
 
   getInitialState : function() {
@@ -62,4 +62,4 @@ var BacklogComponent = React.createClass({
 });
 
 
-export default BacklogComponent;
+export default Backlog;

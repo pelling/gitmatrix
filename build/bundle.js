@@ -60,8 +60,88 @@
 
 	var _homeJs2 = _interopRequireDefault(_homeJs);
 
-	_react2['default'].render(_react2['default'].createElement(_topnavJs2['default'], { session: false }), document.getElementById('topnav'));
-	_react2['default'].render(_react2['default'].createElement(_homeJs2['default'], { session: false }), document.getElementById('app'));
+	var _projectLoaderJs = __webpack_require__(161);
+
+	var _projectLoaderJs2 = _interopRequireDefault(_projectLoaderJs);
+
+	var _selectProjectJs = __webpack_require__(163);
+
+	var _selectProjectJs2 = _interopRequireDefault(_selectProjectJs);
+
+	var _backlogJs = __webpack_require__(164);
+
+	var _backlogJs2 = _interopRequireDefault(_backlogJs);
+
+	__webpack_require__(162);
+
+	var Main = _react2['default'].createClass({
+	  displayName: 'Main',
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      session: false,
+	      page: "home",
+	      projects: [],
+	      projectsLoaded: false
+	    };
+	  },
+
+	  handleSessionChange: function handleSessionChange(newSession) {
+	    this.setState({ session: newSession });
+	    if (newSession) {
+	      consoleLog('session started');
+	    }
+	    if (!newSession) {
+	      this.setState({ projectsLoaded: false });
+	      consoleLog('session killed');
+	    }
+	  },
+
+	  handlePageChange: function handlePageChange(newPage) {
+	    this.setState({ page: newPage });
+	  },
+
+	  handleProjectsLoaded: function handleProjectsLoaded(newProjects) {
+	    this.setState({ projects: newProjects });
+	    this.setState({ projectsLoaded: true });
+	    consoleLog('projects loaded');
+	  },
+
+	  render: function render() {
+	    var page = _react2['default'].createElement(_homeJs2['default'], { session: this.state.session, onSessionChange: this.handleSessionChange.bind(this), onPageChange: this.handlePageChange.bind(this) });
+	    if (this.state.page === "selectProject" && !this.state.projectsLoaded) {
+	      page = _react2['default'].createElement(_projectLoaderJs2['default'], { onProjectsLoaded: this.handleProjectsLoaded.bind(this), onPageChange: this.handlePageChange.bind(this) });
+	    }
+	    if (this.state.page === "selectProject" && this.state.projectsLoaded) {
+	      page = _react2['default'].createElement(_selectProjectJs2['default'], { projects: this.state.projects, onPageChange: this.handlePageChange.bind(this) });
+	    }
+	    if (this.state.page === "backlog") {
+	      page = _react2['default'].createElement(_backlogJs2['default'], { session: this.state.session, onPageChange: this.handlePageChange.bind(this) });
+	    }
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      _react2['default'].createElement(
+	        'div',
+	        { id: 'topnav' },
+	        _react2['default'].createElement(_topnavJs2['default'], { session: this.state.session, onSessionChange: this.handleSessionChange.bind(this), onPageChange: this.handlePageChange.bind(this) })
+	      ),
+	      _react2['default'].createElement(
+	        'div',
+	        { id: 'app' },
+	        page
+	      )
+	    );
+	  }
+	});
+
+	_react2['default'].render(_react2['default'].createElement(Main, null), document.getElementById('root'));
+
+	function consoleLog(message) {
+	  var d = new Date();
+	  var n = d.getTime();
+	  fetch('consoleLog?message=' + n + ' ' + message);
+	}
 
 /***/ },
 /* 1 */
@@ -19663,32 +19743,32 @@
 /* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _homeJs = __webpack_require__(159);
-
-	var _homeJs2 = _interopRequireDefault(_homeJs);
-
-	var TopNav = _react2['default'].createClass({
-	  displayName: 'TopNav',
+	var TopNav = _react2["default"].createClass({
+	  displayName: "TopNav",
 
 	  handleClickHome: function handleClickHome(event) {
-	    _react2['default'].render(_react2['default'].createElement(_homeJs2['default'], { session: this.props.session }), document.getElementById('app'));
+	    this.props.onPageChange("home");
+	  },
+
+	  handleClickUserName: function handleClickUserName(event) {
+	    this.props.onPageChange("selectProject");
 	  },
 
 	  handleClickSignOut: function handleClickSignOut(event) {
-	    _react2['default'].render(_react2['default'].createElement(TopNav, { session: false }), document.getElementById('topnav'));
-	    _react2['default'].render(_react2['default'].createElement(_homeJs2['default'], { session: false }), document.getElementById('app'));
+	    this.props.onSessionChange(false);
+	    this.props.onPageChange("home");
 	  },
 
 	  render: function render() {
@@ -19696,48 +19776,53 @@
 	    if (!this.props.session) {
 	      wrapperClass = "gm-hidden";
 	    }
-	    return _react2['default'].createElement(
-	      'div',
+	    return _react2["default"].createElement(
+	      "div",
 	      { className: wrapperClass },
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'row-fluid' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-6' },
-	          _react2['default'].createElement(
-	            'a',
-	            { href: '#', className: 'gm-nav-bar-logo', onClick: this.handleClickHome },
-	            '[ GitMatrix ]'
+	      _react2["default"].createElement(
+	        "div",
+	        { className: "row-fluid" },
+	        _react2["default"].createElement(
+	          "div",
+	          { className: "col-md-6" },
+	          _react2["default"].createElement(
+	            "a",
+	            { href: "#", className: "gm-nav-bar-logo", onClick: this.handleClickHome.bind(this) },
+	            "[ GitMatrix ]"
 	          )
 	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-6 gm-align-right' },
-	          _react2['default'].createElement(
-	            'a',
-	            { href: '#', onClick: this.handleClickSignOut },
+	        _react2["default"].createElement(
+	          "div",
+	          { className: "col-md-6 gm-align-right" },
+	          _react2["default"].createElement(
+	            "a",
+	            { href: "#", onClick: this.handleClickUserName.bind(this) },
 	            this.props.session.userName
 	          ),
-	          '  |  ',
-	          _react2['default'].createElement(
-	            'a',
-	            { href: '#', onClick: this.handleClickSignOut },
-	            'Sign Out'
+	          "  |  ",
+	          _react2["default"].createElement(
+	            "a",
+	            { href: "#", onClick: this.handleClickSignOut.bind(this) },
+	            "Sign Out"
 	          )
 	        )
 	      ),
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'row-fluid' },
-	        _react2['default'].createElement('div', { className: 'col-md-12 top-pink' })
+	      _react2["default"].createElement(
+	        "div",
+	        { className: "row-fluid" },
+	        _react2["default"].createElement("div", { className: "col-md-12 top-pink" })
 	      )
 	    );
 	  }
 	});
 
-	exports['default'] = TopNav;
-	module.exports = exports['default'];
+	exports["default"] = TopNav;
+
+	/*
+
+
+	*/
+	module.exports = exports["default"];
 
 /***/ },
 /* 159 */
@@ -19763,7 +19848,7 @@
 	  displayName: 'Home',
 
 	  render: function render() {
-	    var loginControl = _react2['default'].createElement(_loginJs2['default'], null);
+	    var loginControl = _react2['default'].createElement(_loginJs2['default'], { session: this.props.session, onSessionChange: this.props.onSessionChange, onPageChange: this.props.onPageChange });
 	    if (this.props.session) {
 	      loginControl = "You are currently signed in as " + this.props.session.userName;
 	    }
@@ -19798,28 +19883,20 @@
 /* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _topnavJs = __webpack_require__(158);
-
-	var _topnavJs2 = _interopRequireDefault(_topnavJs);
-
-	var _selectProjectJs = __webpack_require__(161);
-
-	var _selectProjectJs2 = _interopRequireDefault(_selectProjectJs);
-
-	var Login = _react2['default'].createClass({
-	  displayName: 'Login',
+	var Login = _react2["default"].createClass({
+	  displayName: "Login",
 
 	  handleClickLogin: function handleClickLogin(event) {
 	    var session = {
@@ -19827,23 +19904,24 @@
 	      userId: "444555"
 	    };
 
-	    _react2['default'].render(_react2['default'].createElement(_topnavJs2['default'], { session: session }), document.getElementById('topnav'));
-	    _react2['default'].render(_react2['default'].createElement(_selectProjectJs2['default'], { session: session }), document.getElementById('app'));
+	    this.props.onSessionChange(session);
+	    this.props.onPageChange("selectProject");
+	    // React.render(<SelectProjectContainer session={session} />, document.getElementById('app'));
 	    // Ajax details ommitted since we never get here via onClick
 	  },
 
 	  render: function render() {
 
-	    return _react2['default'].createElement(
-	      'a',
-	      { href: '#', className: 'btn btn-lg btn-primary', role: 'button', onClick: this.handleClickLogin },
-	      'Login with GitHub'
+	    return _react2["default"].createElement(
+	      "a",
+	      { href: "#", className: "btn btn-lg btn-primary", role: "button", onClick: this.handleClickLogin },
+	      "Login with GitHub"
 	    );
 	  }
 	});
 
-	exports['default'] = Login;
-	module.exports = exports['default'];
+	exports["default"] = Login;
+	module.exports = exports["default"];
 
 /***/ },
 /* 161 */
@@ -19861,24 +19939,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _topnavJs = __webpack_require__(158);
+	__webpack_require__(162);
 
-	var _topnavJs2 = _interopRequireDefault(_topnavJs);
-
-	var _backlogJs = __webpack_require__(162);
-
-	var _backlogJs2 = _interopRequireDefault(_backlogJs);
-
-	__webpack_require__(163);
-
-	var SelectProjectContainer = _react2['default'].createClass({
-	  displayName: 'SelectProjectContainer',
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      "projects": []
-	    };
-	  },
+	var ProjectLoader = _react2['default'].createClass({
+	  displayName: 'ProjectLoader',
 
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
@@ -19886,197 +19950,28 @@
 	    fetch('getprojects').then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
-	      _this.setState({ projects: responseData });
+	      _this.props.onProjectsLoaded(responseData);
+	      _this.props.onPageChange("selectProject");
 	    })['catch'](function (error) {
 	      console.log('Error fetching and parsing data from getprojects', error);
 	    });
 	  },
 
 	  render: function render() {
-	    return _react2['default'].createElement(SelectProjectComponent, { projects: this.state.projects });
-	  }
-
-	});
-
-	var SelectProjectComponent = _react2['default'].createClass({
-	  displayName: 'SelectProjectComponent',
-
-	  render: function render() {
-	    var projects = this.props.projects.map(function (project) {
-	      return _react2['default'].createElement(Project, { id: project.id, name: project.name });
-	    });
-
 	    return _react2['default'].createElement(
 	      'div',
 	      null,
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'row-fluid' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-12' },
-	          _react2['default'].createElement(
-	            'h3',
-	            null,
-	            'pelling'
-	          )
-	        )
-	      ),
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'row-fluid' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-2' },
-	          _react2['default'].createElement('i', { className: 'fa fa-user fa-5x' })
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-10' },
-	          _react2['default'].createElement(
-	            'h4',
-	            null,
-	            'Select Project:'
-	          ),
-	          _react2['default'].createElement(
-	            'div',
-	            { className: 'list-group' },
-	            projects
-	          )
-	        )
-	      )
+	      'Loading...'
 	    );
 	  }
+
 	});
 
-	var Project = _react2['default'].createClass({
-	  displayName: 'Project',
-
-	  handleClickProject: function handleClickProject(id) {
-	    _react2['default'].render(_react2['default'].createElement(_backlogJs2['default'], { id: id }), document.getElementById('app'));
-	    // Ajax details ommitted since we never get here via onClick
-	  },
-
-	  render: function render() {
-	    return _react2['default'].createElement(
-	      'a',
-	      { href: '#', className: 'list-group-item', onClick: this.handleClickProject.bind(this, this.props.id) },
-	      this.props.name
-	    );
-	  }
-	});
-
-	exports['default'] = SelectProjectContainer;
+	exports['default'] = ProjectLoader;
 	module.exports = exports['default'];
 
 /***/ },
 /* 162 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _backlogJs = __webpack_require__(162);
-
-	var _backlogJs2 = _interopRequireDefault(_backlogJs);
-
-	var BacklogComponent = _react2['default'].createClass({
-	  displayName: 'BacklogComponent',
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      /*contributors : []*/
-
-	      "contributors": [{ "name": "bytemaster2", "tokens": "13000" }, { "name": "pelling", "tokens": "20500" }, { "name": "willhelm", "tokens": "1250" }]
-	    };
-	  },
-
-	  componentDidMount: function componentDidMount() {
-
-	    $.ajax({ url: "getcontributors", success: (function (result) {
-	        this.setState({ contributors: result });
-	      }).bind(this)
-	    });
-	  },
-
-	  handleClickSelect: function handleClickSelect(event) {
-	    _react2['default'].render(_react2['default'].createElement(SelectProjectComponent, null), document.getElementById('app'));
-	  },
-
-	  handleClickCalibrate: function handleClickCalibrate(event) {
-	    _react2['default'].render(_react2['default'].createElement(_backlogJs2['default'], null), document.getElementById('app'));
-	  },
-
-	  render: function render() {
-	    var contributorComponents = this.state.contributors.map((function (contributor) {
-	      return _react2['default'].createElement(
-	        'li',
-	        { role: 'presentation' },
-	        _react2['default'].createElement(
-	          'a',
-	          { href: '#' },
-	          contributor.name,
-	          _react2['default'].createElement(
-	            'span',
-	            { className: 'badge' },
-	            contributor.tokens
-	          )
-	        )
-	      );
-	    }).bind(this));
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'row-fluid' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-12' },
-	          _react2['default'].createElement(
-	            'h3',
-	            null,
-	            _react2['default'].createElement(
-	              'a',
-	              { href: '#', onClick: this.handleClickSelect },
-	              'pelling'
-	            ),
-	            ' / gitmatrix'
-	          ),
-	          _react2['default'].createElement(
-	            'ul',
-	            { className: 'nav nav-pills', role: 'tablist' },
-	            contributorComponents,
-	            _react2['default'].createElement(
-	              'li',
-	              { role: 'presentation' },
-	              _react2['default'].createElement(
-	                'a',
-	                { href: '#', onClick: this.handleClickCalibrate },
-	                'Calibrate'
-	              )
-	            )
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-
-	exports['default'] = BacklogComponent;
-	module.exports = exports['default'];
-
-/***/ },
-/* 163 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -20468,6 +20363,179 @@
 	  };
 	  self.fetch.polyfill = true;
 	})(typeof self !== 'undefined' ? self : undefined);
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var SelectProject = _react2["default"].createClass({
+	    displayName: "SelectProject",
+
+	    render: function render() {
+	        var _this = this;
+
+	        var projects = this.props.projects.map(function (project) {
+	            return _react2["default"].createElement(Project, { id: project.id, name: project.name, onPageChange: _this.props.onPageChange });
+	        });
+
+	        return _react2["default"].createElement(
+	            "div",
+	            { className: "row-fluid" },
+	            _react2["default"].createElement(
+	                "div",
+	                { className: "col-md-2" },
+	                _react2["default"].createElement(
+	                    "h4",
+	                    null,
+	                    "Select Project:"
+	                ),
+	                _react2["default"].createElement(
+	                    "div",
+	                    { className: "list-group" },
+	                    projects
+	                )
+	            ),
+	            _react2["default"].createElement("div", { className: "col-md-10" })
+	        );
+	    }
+	});
+
+	var Project = _react2["default"].createClass({
+	    displayName: "Project",
+
+	    handleClickProject: function handleClickProject(id) {
+	        this.props.onPageChange("backlog");
+	    },
+
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "a",
+	            { href: "#", className: "list-group-item", onClick: this.handleClickProject.bind(this, this.props.id) },
+	            this.props.name
+	        );
+	    }
+	});
+
+	exports["default"] = SelectProject;
+	module.exports = exports["default"];
+
+/***/ },
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _backlogJs = __webpack_require__(164);
+
+	var _backlogJs2 = _interopRequireDefault(_backlogJs);
+
+	var Backlog = _react2['default'].createClass({
+	  displayName: 'Backlog',
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      /*contributors : []*/
+
+	      "contributors": [{ "name": "bytemaster2", "tokens": "13000" }, { "name": "pelling", "tokens": "20500" }, { "name": "willhelm", "tokens": "1250" }]
+	    };
+	  },
+
+	  componentDidMount: function componentDidMount() {
+
+	    $.ajax({ url: "getcontributors", success: (function (result) {
+	        this.setState({ contributors: result });
+	      }).bind(this)
+	    });
+	  },
+
+	  handleClickSelect: function handleClickSelect(event) {
+	    _react2['default'].render(_react2['default'].createElement(SelectProjectComponent, null), document.getElementById('app'));
+	  },
+
+	  handleClickCalibrate: function handleClickCalibrate(event) {
+	    _react2['default'].render(_react2['default'].createElement(_backlogJs2['default'], null), document.getElementById('app'));
+	  },
+
+	  render: function render() {
+	    var contributorComponents = this.state.contributors.map((function (contributor) {
+	      return _react2['default'].createElement(
+	        'li',
+	        { role: 'presentation' },
+	        _react2['default'].createElement(
+	          'a',
+	          { href: '#' },
+	          contributor.name,
+	          _react2['default'].createElement(
+	            'span',
+	            { className: 'badge' },
+	            contributor.tokens
+	          )
+	        )
+	      );
+	    }).bind(this));
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      _react2['default'].createElement(
+	        'div',
+	        { className: 'row-fluid' },
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'col-md-12' },
+	          _react2['default'].createElement(
+	            'h3',
+	            null,
+	            _react2['default'].createElement(
+	              'a',
+	              { href: '#', onClick: this.handleClickSelect },
+	              'pelling'
+	            ),
+	            ' / gitmatrix'
+	          ),
+	          _react2['default'].createElement(
+	            'ul',
+	            { className: 'nav nav-pills', role: 'tablist' },
+	            contributorComponents,
+	            _react2['default'].createElement(
+	              'li',
+	              { role: 'presentation' },
+	              _react2['default'].createElement(
+	                'a',
+	                { href: '#', onClick: this.handleClickCalibrate },
+	                'Calibrate'
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+	exports['default'] = Backlog;
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);

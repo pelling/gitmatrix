@@ -132,6 +132,11 @@ var SampleApp = function() {
           res.send('ajax test worked');
         });
 
+        self.app.get('/consoleLog', function(req, res){
+          var message = req.query.message;
+          console.log(message);
+        });
+
 
 
         self.app.use(express.static(__dirname + '/build'));

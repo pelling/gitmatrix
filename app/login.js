@@ -1,6 +1,4 @@
 import React from 'react';
-import TopNav from './topnav.js';
-import SelectProjectContainer from './selectProject.js';
 
 
 var Login = React.createClass({
@@ -11,8 +9,9 @@ var Login = React.createClass({
         userId:"444555"
       };
 
-      React.render(<TopNav session={session} />, document.getElementById('topnav'));
-      React.render(<SelectProjectContainer session={session} />, document.getElementById('app'));
+      this.props.onSessionChange(session);
+      this.props.onPageChange("selectProject");
+      // React.render(<SelectProjectContainer session={session} />, document.getElementById('app'));
       // Ajax details ommitted since we never get here via onClick
     },
 
