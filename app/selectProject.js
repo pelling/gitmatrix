@@ -1,14 +1,20 @@
 import React from 'react';
-
+import { Router, Route, Link, browserHistory } from 'react-router';
 
 var SelectProject = React.createClass({
 
+
+  componentWillMount: function () {
+    if (!this.props.projectsLoaded) {
+      browserHistory.push('/projectLoader');
+    }
+
+  },
 
     render: function () {
         var projects = this.props.projects.map((project) => {
           return <Project id={project.id} name={project.name} onPageChange={this.props.onPageChange} />
         });
-
         return (
               <div className="row-fluid">
                     <div className="col-md-2">
@@ -31,13 +37,10 @@ var SelectProject = React.createClass({
 
 var Project = React.createClass({
 
-    handleClickProject: function(id) {
-      this.props.onPageChange("backlog");
-    },
-
     render: function () {
+        var backlogLink = "/backlog?id=" + this.props.id;
         return (
-                <a href="#" className="list-group-item" onClick={this.handleClickProject.bind(this, this.props.id)}>{this.props.name}</a>
+                <Link to={backlogLink} className="list-group-item" >{this.props.name}</Link>
         );
     }
 });

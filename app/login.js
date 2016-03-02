@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Router, Route, Link, browserHistory } from 'react-router';
 
 var Login = React.createClass({
 
@@ -10,7 +10,7 @@ var Login = React.createClass({
       };
 
       this.props.onSessionChange(session);
-      this.props.onPageChange("selectProject");
+      browserHistory.push('/selectProject');
       // React.render(<SelectProjectContainer session={session} />, document.getElementById('app'));
       // Ajax details ommitted since we never get here via onClick
     },
