@@ -1,12 +1,15 @@
 import React from 'react';
 import Login from './login.js';
+import { Router, Route, Link, browserHistory } from 'react-router';
 
 
 var Home = React.createClass({
 
     render: function () {
-      var loginControl = <Login session={this.props.session} onSessionChange={this.props.onSessionChange} />
-      if (this.props.session) { loginControl = "You are currently signed in as " + this.props.session.userName; }
+      var loginControl = <Login session={this.props.session} onSessionChange={this.props.onSessionChange} />;
+      if (this.props.session) {
+        loginControl = <div>You are currently signed in as <Link to='/selectProject'>{this.props.session.userName}</Link>.</div>;
+      }
 
         return (
           <div className="row-fluid">

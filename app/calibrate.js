@@ -11,7 +11,7 @@ var Calibrate = React.createClass({
 
                 <div className="row-fluid">
                   <div className="col-md-12">
-                    <h3><Link to="/selectProject">{this.props.session.userName}</Link> / <Link to="/backlog">{this.props.backlog.name}</Link></h3>
+                    <h3><Link to="/selectProject">{this.props.session.userName}</Link> / <Link to="/backlog">{this.props.backlog.name}</Link> / Calibrate</h3>
                   </div>
                 </div>
 

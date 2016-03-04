@@ -25056,7 +25056,7 @@
 	        { className: 'row-fluid' },
 	        _react2['default'].createElement(
 	          'div',
-	          { className: 'col-md-6' },
+	          { className: 'col-md-6 gm-topnav' },
 	          _react2['default'].createElement(
 	            _reactRouter.Link,
 	            { to: '/home', className: 'gm-nav-bar-logo' },
@@ -25065,17 +25065,20 @@
 	        ),
 	        _react2['default'].createElement(
 	          'div',
-	          { className: 'col-md-6 gm-align-right' },
+	          { className: 'col-md-6 gm-align-right gm-topnav' },
 	          _react2['default'].createElement(
 	            _reactRouter.Link,
 	            { to: '/selectProject' },
+	            _react2['default'].createElement('i', { className: 'fa fa-github' }),
+	            '  ',
 	            this.props.session.userName
 	          ),
-	          '  |  ',
+	          '     |     ',
 	          _react2['default'].createElement(
 	            'a',
 	            { href: '#', onClick: this.handleClickSignOut.bind(this) },
-	            'Sign Out'
+	            _react2['default'].createElement('i', { className: 'fa fa-power-off' }),
+	            '  Sign Out'
 	          )
 	        )
 	      ),
@@ -25116,13 +25119,25 @@
 
 	var _loginJs2 = _interopRequireDefault(_loginJs);
 
+	var _reactRouter = __webpack_require__(158);
+
 	var Home = _react2['default'].createClass({
 	  displayName: 'Home',
 
 	  render: function render() {
 	    var loginControl = _react2['default'].createElement(_loginJs2['default'], { session: this.props.session, onSessionChange: this.props.onSessionChange });
 	    if (this.props.session) {
-	      loginControl = "You are currently signed in as " + this.props.session.userName;
+	      loginControl = _react2['default'].createElement(
+	        'div',
+	        null,
+	        'You are currently signed in as ',
+	        _react2['default'].createElement(
+	          _reactRouter.Link,
+	          { to: '/selectProject' },
+	          this.props.session.userName
+	        ),
+	        '.'
+	      );
 	    }
 
 	    return _react2['default'].createElement(
@@ -25699,11 +25714,16 @@
 	            { className: 'row-fluid' },
 	            _react2['default'].createElement(
 	                'div',
-	                { className: 'col-md-2' },
+	                { className: 'col-md-4' },
+	                _react2['default'].createElement(
+	                    'h3',
+	                    null,
+	                    this.props.session.userName
+	                ),
 	                _react2['default'].createElement(
 	                    'h4',
 	                    null,
-	                    'Select Project:'
+	                    'Select GitHub Project:'
 	                ),
 	                _react2['default'].createElement(
 	                    'div',
@@ -25711,7 +25731,7 @@
 	                    projects
 	                )
 	            ),
-	            _react2['default'].createElement('div', { className: 'col-md-10' })
+	            _react2['default'].createElement('div', { className: 'col-md-8' })
 	        );
 	    }
 	});
@@ -25915,7 +25935,8 @@
 	              _reactRouter.Link,
 	              { to: '/backlog' },
 	              this.props.backlog.name
-	            )
+	            ),
+	            ' / Calibrate'
 	          )
 	        )
 	      ),

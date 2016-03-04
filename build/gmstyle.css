@@ -8,8 +8,15 @@ span.gm-login-header { font-family: Kreon, serif;
 
 .top-pink { border-top:1px solid pink; }
 
-.gm-nav-bar-logo {  font-family: 'Kreon', serif;  color:#F20C4D;  font-size:1.6em;}
+
 .gm-align-right {text-align:right; }
 
 .gm-hidden { display:none; }
 .gm-visible { display:block; }
+
+.gm-topnav { background-color:#404040; color:#A0A0A0; line-height:50px; height:50px; font-size:1.2em;}
+.gm-topnav a { color:#F20C4D; }
+.gm-topnav a:hover { text-decoration: none; color:#FFFFFF; }
+.gm-topnav a i { color:#F20C4D; font-size:1.2em;}
+.gm-topnav a:hover i { color:#FFFFFF; }
+.gm-nav-bar-logo {  font-family: 'Kreon', serif; font-size:1.4em;}

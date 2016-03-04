@@ -17,13 +17,14 @@ var SelectProject = React.createClass({
         });
         return (
               <div className="row-fluid">
-                    <div className="col-md-2">
-                    <h4>Select Project:</h4>
+                    <div className="col-md-4">
+                    <h3>{this.props.session.userName}</h3>
+                    <h4>Select GitHub Project:</h4>
                         <div className="list-group">
                             {projects}
                         </div>
                     </div>
-                    <div className="col-md-10">
+                    <div className="col-md-8">
 
                     </div>
               </div>

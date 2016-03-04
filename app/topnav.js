@@ -15,13 +15,13 @@ var TopNav = React.createClass({
         return (
           <div className={wrapperClass}>
                <div className="row-fluid">
-                   <div className="col-md-6">
+                   <div className="col-md-6 gm-topnav">
                      <Link to="/home" className="gm-nav-bar-logo">[ GitMatrix ]</Link>
                    </div>
-                   <div className="col-md-6 gm-align-right">
-                     <Link to="/selectProject">{this.props.session.userName}</Link>
-                     &nbsp;&nbsp;|&nbsp;&nbsp;
-                     <a href="#" onClick={this.handleClickSignOut.bind(this)}>Sign Out</a>
+                   <div className="col-md-6 gm-align-right gm-topnav">
+                     <Link to="/selectProject"><i className="fa fa-github"></i>&nbsp; {this.props.session.userName}</Link>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <a href="#" onClick={this.handleClickSignOut.bind(this)}><i className="fa fa-power-off"></i>&nbsp; Sign Out</a>
                    </div>
                </div>
 
