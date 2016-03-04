@@ -6,6 +6,7 @@ import ProjectLoader from './projectLoader.js';
 import SelectProject from './selectProject.js';
 import BacklogLoader from './backlogLoader.js';
 import Backlog from './backlog.js';
+import Calibrate from './calibrate.js';
 import consoleLog from './consoleLog.js';
 import 'whatwg-fetch';
 
@@ -72,6 +73,7 @@ React.render((
       <Route path="selectProject" component={SelectProject} />
       <Route path="backlogLoader" component={BacklogLoader} />
       <Route path="backlog" component={Backlog} />
+      <Route path="calibrate" component={Calibrate} />
     </Route>
   </Router>
 ), document.getElementById('root'));

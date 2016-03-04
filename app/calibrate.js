@@ -1,16 +1,7 @@
 import React from 'react';
+import { Router, Route, Link, browserHistory } from 'react-router';
 
-var CalibrateComponent = React.createClass({
-
-    handleClickSelect: function(event) {
-      React.render(<SelectProjectComponent />, document.getElementById('app'));
-    },
-
-
-    handleClickBacklog: function(event) {
-      React.render(<BacklogComponent />, document.getElementById('app'));
-    },
-
+var Calibrate = React.createClass({
 
     render: function () {
 
@@ -20,14 +11,14 @@ var CalibrateComponent = React.createClass({
 
                 <div className="row-fluid">
                   <div className="col-md-12">
-                    <h3><a href="#" onClick={this.handleClickSelect}>pelling</a> / <a href="#" onClick={this.handleClickBacklog}>gitmatrix</a></h3>
+                    <h3><Link to="/selectProject">{this.props.session.userName}</Link> / <Link to="/backlog">{this.props.backlog.name}</Link></h3>
                   </div>
                 </div>
 
 
                 <div className="row-fluid">
                       <div className="col-md-12 top-pink">
-                          <button type="button" className="btn btn-default" onClick={this.handleClickBacklog}>Return to Backlog</button>
+                          <Link to="/backlog">Return to {this.props.backlog.name} backlog</Link>
                       </div>
                 </div>
 
@@ -35,3 +26,5 @@ var CalibrateComponent = React.createClass({
         );
     }
 });
+
+export default Calibrate;

@@ -13,11 +13,11 @@ var Backlog = React.createClass({
           <div>
                 <div className="row-fluid">
                       <div className="col-md-12">
-                        <h3><a href="#" onClick={this.handleClickSelect}>pelling</a> / gitmatrix</h3>
+                        <h3><Link to="/selectProject">{this.props.session.userName}</Link> / {this.props.backlog.name}</h3>
 
                         <ul className="nav nav-pills" role="tablist">
                             {contributorComponents}
-                            <li role="presentation"><a href="#" >Calibrate</a></li>
+                            <li role="presentation"><Link to="/calibrate">Calibrate</Link></li>
                         </ul>
 
                       </div>
