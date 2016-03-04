@@ -5,7 +5,10 @@
   "projects": [ {"name":"Bitshares2","id":"000"},
                 {"name":"BlockchainJS","id":"001"}],
 
-  "contributors": [ {"name":"bytemaster2","tokens":"13000"},
-                    {"name":"pelling","tokens":"20500"},
-                    {"name":"willhelm","tokens":"1250"}]
+  "backlog": {      "contributors" : [{"name":"bytemaster2","tokens":"13000"},
+                                      {"name":"pelling","tokens":"20500"},
+                                      {"name":"willhelm","tokens":"1250"}],
+                    "items" : [{"title" : "Fix this"},
+                               {"title" : "Do That"}]
+              }
 }

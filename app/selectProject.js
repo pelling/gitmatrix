@@ -1,19 +1,19 @@
 import React from 'react';
 import { Router, Route, Link, browserHistory } from 'react-router';
 
+
 var SelectProject = React.createClass({
 
 
   componentWillMount: function () {
-    if (!this.props.projectsLoaded) {
+    if (this.props.projects.length == 0) {
       browserHistory.push('/projectLoader');
     }
-
   },
 
     render: function () {
         var projects = this.props.projects.map((project) => {
-          return <Project id={project.id} name={project.name} onPageChange={this.props.onPageChange} />
+          return <Project id={project.id} name={project.name}/>
         });
         return (
               <div className="row-fluid">
@@ -38,7 +38,7 @@ var SelectProject = React.createClass({
 var Project = React.createClass({
 
     render: function () {
-        var backlogLink = "/backlog?id=" + this.props.id;
+        var backlogLink = "/backlogLoader?id=" + this.props.id;
         return (
                 <Link to={backlogLink} className="list-group-item" >{this.props.name}</Link>
         );

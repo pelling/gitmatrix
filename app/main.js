@@ -4,7 +4,9 @@ import TopNav from './topnav.js';
 import Home from './home.js';
 import ProjectLoader from './projectLoader.js';
 import SelectProject from './selectProject.js';
+import BacklogLoader from './backlogLoader.js';
 import Backlog from './backlog.js';
+import consoleLog from './consoleLog.js';
 import 'whatwg-fetch';
 
 var Main = React.createClass({
@@ -12,9 +14,8 @@ var Main = React.createClass({
   getInitialState : function() {
     return {
       session: false,
-      page: "home",
       projects: [],
-      projectsLoaded: false
+      backlog: { "contributors":[], "items":[]}
     };
   },
 
@@ -24,7 +25,7 @@ var Main = React.createClass({
       consoleLog('session started');
     }
     if (!newSession) {
-      this.setState({projectsLoaded : false});
+      this.setState({projects : []});
       consoleLog('session killed');
     }
   },
@@ -32,19 +33,22 @@ var Main = React.createClass({
 
   handleProjectsLoaded: function(newProjects){
     this.setState({projects : newProjects});
-    this.setState({projectsLoaded : true});
     consoleLog('projects loaded');
   },
 
-
+  handleBacklogLoaded: function(newBacklog){
+    this.setState({backlog : newBacklog});
+    consoleLog('backlog loaded');
+  },
 
     render: function () {
         let child = this.props.children && React.cloneElement(this.props.children, {
           session: this.state.session,
           projects: this.state.projects,
-          projectsLoaded: this.state.projectsLoaded,
+          backlog: this.state.backlog,
           onSessionChange: this.handleSessionChange.bind(this),
-          onProjectsLoaded: this.handleProjectsLoaded.bind(this)
+          onProjectsLoaded: this.handleProjectsLoaded.bind(this),
+          onBacklogLoaded: this.handleBacklogLoaded.bind(this)
         } );
 
         return (
@@ -66,17 +70,14 @@ React.render((
       <Route path="home" component={Home} />
       <Route path="projectLoader" component={ProjectLoader} />
       <Route path="selectProject" component={SelectProject} />
+      <Route path="backlogLoader" component={BacklogLoader} />
       <Route path="backlog" component={Backlog} />
     </Route>
   </Router>
 ), document.getElementById('root'));
 
 
-function consoleLog(message) {
-  var d = new Date();
-  var n = d.getTime();
-  fetch('consoleLog?message=' + n + ' ' + message);
-}
+
 
 
 

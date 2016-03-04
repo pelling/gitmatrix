@@ -4,17 +4,17 @@ import consoleLog from './consoleLog.js';
 import 'whatwg-fetch';
 
 
-var ProjectLoader = React.createClass({
+var BacklogLoader = React.createClass({
 
   componentDidMount: function() {
-      fetch('getprojects')
+      fetch('getbacklog')
       .then((response) => response.json())
       .then((responseData) => {
-        this.props.onProjectsLoaded(responseData);
-        browserHistory.push('/selectProject');
+        this.props.onBacklogLoaded(responseData);
+        browserHistory.push('/backlog');
       })
       .catch((error) => {
-        consoleLog('Error loading project list: ' + error);
+        consoleLog('Error loading backlog: ' + error);
       });
     },
 
@@ -27,4 +27,4 @@ var ProjectLoader = React.createClass({
 });
 
 
-export default ProjectLoader;
+export default BacklogLoader;

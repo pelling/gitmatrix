@@ -117,14 +117,17 @@ var SampleApp = function() {
 
         self.app.get('/getuser', function(req, res){
           res.json(config.user);
+          res.end();
         });
 
         self.app.get('/getprojects', function(req, res){
           res.json(config.projects);
+          res.end();
         });
 
-        self.app.get('/getcontributors', function(req, res){
-          res.json(config.contributors);
+        self.app.get('/getbacklog', function(req, res){
+          res.json(config.backlog);
+          res.end();
         });
 
         self.app.get('/ajaxtest', function(req, res){
@@ -134,6 +137,7 @@ var SampleApp = function() {
 
         self.app.get('/consoleLog', function(req, res){
           var message = req.query.message;
+          res.end();
           console.log(message);
         });
 

@@ -66,15 +66,23 @@
 
 	var _projectLoaderJs2 = _interopRequireDefault(_projectLoaderJs);
 
-	var _selectProjectJs = __webpack_require__(220);
+	var _selectProjectJs = __webpack_require__(221);
 
 	var _selectProjectJs2 = _interopRequireDefault(_selectProjectJs);
 
-	var _backlogJs = __webpack_require__(221);
+	var _backlogLoaderJs = __webpack_require__(222);
+
+	var _backlogLoaderJs2 = _interopRequireDefault(_backlogLoaderJs);
+
+	var _backlogJs = __webpack_require__(223);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	__webpack_require__(219);
+	var _consoleLogJs = __webpack_require__(219);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
 
 	var Main = _react2['default'].createClass({
 	  displayName: 'Main',
@@ -82,36 +90,40 @@
 	  getInitialState: function getInitialState() {
 	    return {
 	      session: false,
-	      page: "home",
 	      projects: [],
-	      projectsLoaded: false
+	      backlog: { "contributors": [], "items": [] }
 	    };
 	  },
 
 	  handleSessionChange: function handleSessionChange(newSession) {
 	    this.setState({ session: newSession });
 	    if (newSession) {
-	      consoleLog('session started');
+	      (0, _consoleLogJs2['default'])('session started');
 	    }
 	    if (!newSession) {
-	      this.setState({ projectsLoaded: false });
-	      consoleLog('session killed');
+	      this.setState({ projects: [] });
+	      (0, _consoleLogJs2['default'])('session killed');
 	    }
 	  },
 
 	  handleProjectsLoaded: function handleProjectsLoaded(newProjects) {
 	    this.setState({ projects: newProjects });
-	    this.setState({ projectsLoaded: true });
-	    consoleLog('projects loaded');
+	    (0, _consoleLogJs2['default'])('projects loaded');
+	  },
+
+	  handleBacklogLoaded: function handleBacklogLoaded(newBacklog) {
+	    this.setState({ backlog: newBacklog });
+	    (0, _consoleLogJs2['default'])('backlog loaded');
 	  },
 
 	  render: function render() {
 	    var child = this.props.children && _react2['default'].cloneElement(this.props.children, {
 	      session: this.state.session,
 	      projects: this.state.projects,
-	      projectsLoaded: this.state.projectsLoaded,
+	      backlog: this.state.backlog,
 	      onSessionChange: this.handleSessionChange.bind(this),
-	      onProjectsLoaded: this.handleProjectsLoaded.bind(this)
+	      onProjectsLoaded: this.handleProjectsLoaded.bind(this),
+	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
 	    });
 
 	    return _react2['default'].createElement(
@@ -141,15 +153,10 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'home', component: _homeJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'projectLoader', component: _projectLoaderJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProject', component: _selectProjectJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlogLoader', component: _backlogLoaderJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlog', component: _backlogJs2['default'] })
 	  )
 	), document.getElementById('root'));
-
-	function consoleLog(message) {
-	  var d = new Date();
-	  var n = d.getTime();
-	  fetch('consoleLog?message=' + n + ' ' + message);
-	}
 
 	/*
 	var page = <Home session={this.state.session} onSessionChange={this.handleSessionChange.bind(this)} onPageChange={this.handlePageChange.bind(this)} />;
@@ -25203,7 +25210,11 @@
 
 	var _reactRouter = __webpack_require__(158);
 
-	__webpack_require__(219);
+	var _consoleLogJs = __webpack_require__(219);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
 
 	var ProjectLoader = _react2['default'].createClass({
 	  displayName: 'ProjectLoader',
@@ -25217,7 +25228,7 @@
 	      _this.props.onProjectsLoaded(responseData);
 	      _reactRouter.browserHistory.push('/selectProject');
 	    })['catch'](function (error) {
-	      console.log('Error fetching and parsing data from getprojects', error);
+	      (0, _consoleLogJs2['default'])('Error loading project list: ' + error);
 	    });
 	  },
 
@@ -25236,6 +25247,25 @@
 
 /***/ },
 /* 219 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var consoleLog = function consoleLog(message) {
+	  var d = new Date();
+	  var n = d.getTime();
+	  fetch('consoleLog?message=' + n + ' ' + message);
+	};
+
+	exports['default'] = consoleLog;
+	module.exports = exports['default'];
+
+/***/ },
+/* 220 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25629,7 +25659,7 @@
 	})(typeof self !== 'undefined' ? self : undefined);
 
 /***/ },
-/* 220 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25650,16 +25680,14 @@
 	    displayName: 'SelectProject',
 
 	    componentWillMount: function componentWillMount() {
-	        if (!this.props.projectsLoaded) {
+	        if (this.props.projects.length == 0) {
 	            _reactRouter.browserHistory.push('/projectLoader');
 	        }
 	    },
 
 	    render: function render() {
-	        var _this = this;
-
 	        var projects = this.props.projects.map(function (project) {
-	            return _react2['default'].createElement(Project, { id: project.id, name: project.name, onPageChange: _this.props.onPageChange });
+	            return _react2['default'].createElement(Project, { id: project.id, name: project.name });
 	        });
 	        return _react2['default'].createElement(
 	            'div',
@@ -25687,7 +25715,7 @@
 	    displayName: 'Project',
 
 	    render: function render() {
-	        var backlogLink = "/backlog?id=" + this.props.id;
+	        var backlogLink = "/backlogLoader?id=" + this.props.id;
 	        return _react2['default'].createElement(
 	            _reactRouter.Link,
 	            { to: backlogLink, className: 'list-group-item' },
@@ -25700,7 +25728,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 221 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25715,91 +25743,122 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _backlogJs = __webpack_require__(221);
+	var _reactRouter = __webpack_require__(158);
 
-	var _backlogJs2 = _interopRequireDefault(_backlogJs);
+	var _consoleLogJs = __webpack_require__(219);
 
-	var Backlog = _react2['default'].createClass({
-	  displayName: 'Backlog',
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
 
-	  getInitialState: function getInitialState() {
-	    return {
-	      /*contributors : []*/
+	__webpack_require__(220);
 
-	      "contributors": [{ "name": "bytemaster2", "tokens": "13000" }, { "name": "pelling", "tokens": "20500" }, { "name": "willhelm", "tokens": "1250" }]
-	    };
-	  },
+	var BacklogLoader = _react2['default'].createClass({
+	  displayName: 'BacklogLoader',
 
 	  componentDidMount: function componentDidMount() {
+	    var _this = this;
 
-	    $.ajax({ url: "getcontributors", success: (function (result) {
-	        this.setState({ contributors: result });
-	      }).bind(this)
+	    fetch('getbacklog').then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.props.onBacklogLoaded(responseData);
+	      _reactRouter.browserHistory.push('/backlog');
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error loading backlog: ' + error);
 	    });
 	  },
 
-	  handleClickSelect: function handleClickSelect(event) {
-	    _react2['default'].render(_react2['default'].createElement(SelectProjectComponent, null), document.getElementById('app'));
-	  },
-
-	  handleClickCalibrate: function handleClickCalibrate(event) {
-	    _react2['default'].render(_react2['default'].createElement(_backlogJs2['default'], null), document.getElementById('app'));
-	  },
-
 	  render: function render() {
-	    var contributorComponents = this.state.contributors.map((function (contributor) {
-	      return _react2['default'].createElement(
-	        'li',
-	        { role: 'presentation' },
-	        _react2['default'].createElement(
-	          'a',
-	          { href: '#' },
-	          contributor.name,
-	          _react2['default'].createElement(
-	            'span',
-	            { className: 'badge' },
-	            contributor.tokens
-	          )
-	        )
-	      );
-	    }).bind(this));
 	    return _react2['default'].createElement(
 	      'div',
 	      null,
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'row-fluid' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-12' },
-	          _react2['default'].createElement(
-	            'h3',
-	            null,
-	            _react2['default'].createElement(
-	              'a',
-	              { href: '#', onClick: this.handleClickSelect },
-	              'pelling'
-	            ),
-	            ' / gitmatrix'
-	          ),
-	          _react2['default'].createElement(
-	            'ul',
-	            { className: 'nav nav-pills', role: 'tablist' },
-	            contributorComponents,
-	            _react2['default'].createElement(
-	              'li',
-	              { role: 'presentation' },
-	              _react2['default'].createElement(
-	                'a',
-	                { href: '#', onClick: this.handleClickCalibrate },
-	                'Calibrate'
-	              )
-	            )
-	          )
-	        )
-	      )
+	      'Loading...'
 	    );
 	  }
+
+	});
+
+	exports['default'] = BacklogLoader;
+	module.exports = exports['default'];
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _backlogJs = __webpack_require__(223);
+
+	var _backlogJs2 = _interopRequireDefault(_backlogJs);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var Backlog = _react2['default'].createClass({
+	    displayName: 'Backlog',
+
+	    render: function render() {
+	        var contributorComponents = this.props.backlog.contributors.map((function (contributor) {
+	            return _react2['default'].createElement(
+	                'li',
+	                { role: 'presentation' },
+	                _react2['default'].createElement(
+	                    'a',
+	                    { href: '#' },
+	                    contributor.name,
+	                    _react2['default'].createElement(
+	                        'span',
+	                        { className: 'badge' },
+	                        contributor.tokens
+	                    )
+	                )
+	            );
+	        }).bind(this));
+	        return _react2['default'].createElement(
+	            'div',
+	            null,
+	            _react2['default'].createElement(
+	                'div',
+	                { className: 'row-fluid' },
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'col-md-12' },
+	                    _react2['default'].createElement(
+	                        'h3',
+	                        null,
+	                        _react2['default'].createElement(
+	                            'a',
+	                            { href: '#', onClick: this.handleClickSelect },
+	                            'pelling'
+	                        ),
+	                        ' / gitmatrix'
+	                    ),
+	                    _react2['default'].createElement(
+	                        'ul',
+	                        { className: 'nav nav-pills', role: 'tablist' },
+	                        contributorComponents,
+	                        _react2['default'].createElement(
+	                            'li',
+	                            { role: 'presentation' },
+	                            _react2['default'].createElement(
+	                                'a',
+	                                { href: '#' },
+	                                'Calibrate'
+	                            )
+	                        )
+	                    )
+	                )
+	            )
+	        );
+	    }
 	});
 
 	exports['default'] = Backlog;
