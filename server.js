@@ -4,23 +4,6 @@ var fs      = require('fs');
 var config = require('./config.json');
 var MongoClient = require('mongodb').MongoClient
 
-var URL = 'mongodb://localhost:27017/mydatabase'
-
-
-MongoClient.connect(URL, function(err, db) {
-  if (err) {
-    console.log(err);
-    return null;
-  }
-
-  var collection = db.collection('foods')
-  collection.insert({name: 'taco', tasty: true}, function(err, result) {
-    collection.find({name: 'taco'}).toArray(function(err, docs) {
-      console.log(docs[0])
-      db.close()
-    })
-  })
-})
 
 
 /**
@@ -44,13 +27,39 @@ var SampleApp = function() {
         self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
         self.port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
+        // Set up the GitMatrix MongoDB variables using Openshifts pattern above
+        self.dbhost = process.env.OPENSHIFT_MONGODB_DB_HOST;
+        self.dbport = process.env.OPENSHIFT_MONGODB_DB_PORT;
+        self.dbusername = process.env.OPENSHIFT_MONGODB_DB_USERNAME;
+        self.dbpassword = process.env.OPENSHIFT_MONGODB_DB_PASSWORD;
+        self.dbsocket = process.env.OPENSHIFT_MONGODB_DB_SOCKET;
+        self.dburl = process.env.OPENSHIFT_MONGODB_DB_URL;
+        self.dbconnectionstring = 'mongodb://' + self.dbusername + ":" + self.dbpassword + "@" + self.dbhost + ':' + self.dbport + '/' + "gitmatrix";
+
+
         if (typeof self.ipaddress === "undefined") {
             //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
             //  allows us to run/test the app locally.
             console.warn('No OPENSHIFT_NODEJS_IP var, using 127.0.0.1');
             self.ipaddress = "127.0.0.1";
         };
+
+        if (typeof self.dburl === "undefined") {
+            //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
+            //  allows us to run/test the app locally.
+            console.warn('No OPENSHIFT_MONGODB_DB_URL, using local DB');
+            self.dbconnectionstring = 'mongodb://localhost:27017/mydatabase';
+        };
+
+
     };
+
+
+    self.setupDatabase = function() {
+
+
+
+    }
 
 
     /**
@@ -149,9 +158,29 @@ var SampleApp = function() {
           res.end();
         });
 
-        self.app.get('/ajaxtest', function(req, res){
-          res.type('text/plain');
-          res.send('ajax test worked');
+        self.app.get('/dbtest', function(req, res){
+
+
+
+          MongoClient.connect(self.dbconnectionstring, function(err, db) {
+            if (err) return
+
+            var collection = db.collection('foods')
+            collection.insert({name: 'taco', tasty: true}, function(err, result) {
+              collection.find({name: 'taco'}).toArray(function(err, docs) {
+                res.json(docs[0]);
+                res.end();
+                db.close()
+              })
+            })
+          })
+
+
+
+
+
+
+
         });
 
         self.app.get('/consoleLog', function(req, res){
@@ -176,6 +205,7 @@ var SampleApp = function() {
      */
     self.initialize = function() {
         self.setupVariables();
+        self.setupDatabase();
         self.populateCache();
         self.setupTerminationHandlers();
 

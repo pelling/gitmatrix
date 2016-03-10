@@ -16,6 +16,7 @@ var ProjectLoader = React.createClass({
       .catch((error) => {
         consoleLog('Error loading project list: ' + error);
       });
+
     },
 
     render : function() {
