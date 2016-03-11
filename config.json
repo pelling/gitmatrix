@@ -1,4 +1,5 @@
 {
+  "enableAdmin": true,
   "key1": "abcd",
   "user": {"name":"Chris Pelling","id":"000"},
 

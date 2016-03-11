@@ -161,25 +161,21 @@ var SampleApp = function() {
         self.app.get('/dbtest', function(req, res){
 
 
-
           MongoClient.connect(self.dbconnectionstring, function(err, db) {
             if (err) return
 
-            var collection = db.collection('foods')
+            var collection = db.collection('foods');
+
+
             collection.insert({name: 'taco', tasty: true}, function(err, result) {
-              collection.find({name: 'taco'}).toArray(function(err, docs) {
-                res.json(docs[0]);
-                res.end();
-                db.close()
-              })
+                  collection.find({name: 'taco'}).toArray(function(err, docs) {
+                    res.json(docs[0]);
+                    res.end();
+                    db.close();
+                  })
             })
-          })
 
-
-
-
-
-
+          });
 
         });
 
@@ -192,6 +188,11 @@ var SampleApp = function() {
 
 
         self.app.use(express.static(__dirname + '/build'));
+
+        if (config.enableAdmin) {
+          self.app.use(express.static(__dirname + '/admin'));
+        }
+
 
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {
