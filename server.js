@@ -1,8 +1,10 @@
 //  OpenShift sample Node application
 var express = require('express');
+var bodyParser = require('body-parser');
 var fs      = require('fs');
 var config = require('./config.json');
-var MongoClient = require('mongodb').MongoClient
+var MongoClient = require('mongodb').MongoClient;
+var mongojs = require('mongojs');
 
 
 
@@ -56,8 +58,7 @@ var SampleApp = function() {
 
 
     self.setupDatabase = function() {
-
-
+      self.db = mongojs(self.dbconnectionstring);
 
     }
 
@@ -143,9 +144,19 @@ var SampleApp = function() {
         self.createRoutes();
         self.app = express.createServer();
 
-        self.app.get('/getuser', function(req, res){
-          res.json(config.user);
-          res.end();
+        self.app.get('/authenticate', function(req, res){
+          var githubAuthCollection = self.db.collection('githubAuthCollection');
+          githubAuthCollection.findOne({
+            _id: '001'
+          }, function(err, doc) {
+              console.log('accessed githubkey1 = ' + doc.githubkey1);
+              console.log('accessed githubkey2 = ' + doc.githubkey2);
+
+              // logic here to connect with GitHub
+
+              res.json(config.session);
+              res.end();
+          });
         });
 
         self.app.get('/getprojects', function(req, res){
@@ -161,21 +172,7 @@ var SampleApp = function() {
         self.app.get('/dbtest', function(req, res){
 
 
-          MongoClient.connect(self.dbconnectionstring, function(err, db) {
-            if (err) return
 
-            var collection = db.collection('foods');
-
-
-            collection.insert({name: 'taco', tasty: true}, function(err, result) {
-                  collection.find({name: 'taco'}).toArray(function(err, docs) {
-                    res.json(docs[0]);
-                    res.end();
-                    db.close();
-                  })
-            })
-
-          });
 
         });
 
@@ -183,6 +180,20 @@ var SampleApp = function() {
           var message = req.query.message;
           res.end();
           console.log(message);
+        });
+
+
+        // create application/x-www-form-urlencoded parser
+        var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+        self.app.post('/setgithubauth', urlencodedParser, function(req, res) {
+          if (!req.body) return res.sendStatus(400)
+          console.log("saved githubkey1 = " + req.body.githubkey1);
+          console.log("saved githubkey2 = " + req.body.githubkey2);
+          var githubAuthCollection = self.db.collection('githubAuthCollection');
+          githubAuthCollection.save({_id:"001", githubkey1: req.body.githubkey1, githubkey2: req.body.githubkey2})
+          res.send("success: keys have been updated");
+          res.end();
         });
 
 

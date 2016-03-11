@@ -25124,25 +25124,6 @@
 	var Home = _react2['default'].createClass({
 	  displayName: 'Home',
 
-	  getInitialState: function getInitialState() {
-	    return {
-	      dbtest: "test not yet initialized"
-	    };
-	  },
-
-	  componentDidMount: function componentDidMount() {
-	    var _this = this;
-
-	    this.setState({ dbtest: "db connection did not work" });
-	    fetch('dbtest').then(function (response) {
-	      return response.json();
-	    }).then(function (responseData) {
-	      _this.setState({ dbtest: responseData.name });
-	    })['catch'](function (error) {
-	      consoleLog('Error loading db test');
-	    });
-	  },
-
 	  render: function render() {
 	    var loginControl = _react2['default'].createElement(_loginJs2['default'], { session: this.props.session, onSessionChange: this.props.onSessionChange });
 	    if (this.props.session) {
@@ -25176,10 +25157,7 @@
 	          null,
 	          'Backlog prioritization via the consensus of the team.'
 	        ),
-	        loginControl,
-	        _react2['default'].createElement('br', null),
-	        _react2['default'].createElement('br', null),
-	        this.state.dbtest
+	        loginControl
 	      )
 	    );
 	  }
@@ -25210,13 +25188,18 @@
 	  displayName: 'Login',
 
 	  handleClickLogin: function handleClickLogin(event) {
-	    var session = {
-	      userName: "Chris Pelling",
-	      userId: "444555"
-	    };
+	    var _this = this;
 
-	    this.props.onSessionChange(session);
-	    _reactRouter.browserHistory.push('/selectProject');
+	    fetch('authenticate').then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      var session = responseData;
+	      _this.props.onSessionChange(session);
+	      _reactRouter.browserHistory.push('/selectProject');
+	    })['catch'](function (error) {
+	      consoleLog('Error authenticating: ' + error);
+	    });
+
 	    // React.render(<SelectProjectContainer session={session} />, document.getElementById('app'));
 	    // Ajax details ommitted since we never get here via onClick
 	  },

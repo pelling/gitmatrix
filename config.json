@@ -1,7 +1,7 @@
 {
   "enableAdmin": true,
   "key1": "abcd",
-  "user": {"name":"Chris Pelling","id":"000"},
+  "session": {"userName":"Chris Pelling","userId":"000"},
 
   "projects": [ {"name":"Bitshares2","id":"000"},
                 {"name":"BlockchainJS","id":"001"}],

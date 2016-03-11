@@ -4,13 +4,19 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 var Login = React.createClass({
 
     handleClickLogin: function(event) {
-      var session = {
-        userName: "Chris Pelling",
-        userId:"444555"
-      };
 
-      this.props.onSessionChange(session);
-      browserHistory.push('/selectProject');
+      fetch('authenticate')
+      .then((response) => response.json())
+      .then((responseData) => {
+        var session = responseData;
+        this.props.onSessionChange(session);
+        browserHistory.push('/selectProject');
+      })
+      .catch((error) => {
+        consoleLog('Error authenticating: ' + error);
+      });
+
+
       // React.render(<SelectProjectContainer session={session} />, document.getElementById('app'));
       // Ajax details ommitted since we never get here via onClick
     },
