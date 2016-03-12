@@ -8,7 +8,7 @@ var Home = React.createClass({
 
 
     render: function () {
-      var loginControl = <Login session={this.props.session} onSessionChange={this.props.onSessionChange} />;
+      var loginControl = <Login session={this.props.session} onSessionChange={this.props.onSessionChange} client_id={this.props.client_id} />;
       if (this.props.session) {
         loginControl = <div>You are currently signed in as <Link to='/selectProject'>{this.props.session.userName}</Link>.</div>;
       }

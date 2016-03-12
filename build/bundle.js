@@ -93,10 +93,23 @@
 
 	  getInitialState: function getInitialState() {
 	    return {
+	      client_id: '',
 	      session: false,
 	      projects: [],
 	      backlog: { "contributors": [], "items": [] }
 	    };
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
+	    fetch('getclientid').then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.setState({ client_id: responseData });
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error loading client_id: ' + error);
+	    });
 	  },
 
 	  handleSessionChange: function handleSessionChange(newSession) {
@@ -122,6 +135,7 @@
 
 	  render: function render() {
 	    var child = this.props.children && _react2['default'].cloneElement(this.props.children, {
+	      client_id: this.state.client_id,
 	      session: this.state.session,
 	      projects: this.state.projects,
 	      backlog: this.state.backlog,
@@ -25125,7 +25139,7 @@
 	  displayName: 'Home',
 
 	  render: function render() {
-	    var loginControl = _react2['default'].createElement(_loginJs2['default'], { session: this.props.session, onSessionChange: this.props.onSessionChange });
+	    var loginControl = _react2['default'].createElement(_loginJs2['default'], { session: this.props.session, onSessionChange: this.props.onSessionChange, client_id: this.props.client_id });
 	    if (this.props.session) {
 	      loginControl = _react2['default'].createElement(
 	        'div',
@@ -25205,10 +25219,10 @@
 	  },
 
 	  render: function render() {
-
+	    var gitHubOauthLink = "https://github.com/login/oauth/authorize?client_id=" + this.props.client_id;
 	    return _react2['default'].createElement(
 	      'a',
-	      { href: '#', className: 'btn btn-lg btn-primary', role: 'button', onClick: this.handleClickLogin },
+	      { href: '#', className: 'btn btn-lg btn-primary', role: 'button', href: gitHubOauthLink },
 	      'Login with GitHub'
 	    );
 	  }

@@ -9,9 +9,15 @@
   </head>
   <body>
     <h1>Setup GitHub Authentication</h1>
+    <p>Go to github.com and register your application for Oauth.<br/>
+      GitHub will provide a Client Id and Client Secret.<br/>
+      Enter those here and they will be stored in your MongoDB to be used for user authentication.
+    </p>
     <form method="post" action="/setgithubauth">
-        <input type="text" name="githubkey1">
-        <input type="text" name="githubkey2">
+        Client Id:<br/>
+        <input type="text" name="client_id"><br/><br/>
+        Client Secret:<br/>
+        <input type="text" name="client_secret"><br/>
         <input type="submit">
     </form>
   </body>

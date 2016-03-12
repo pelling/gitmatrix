@@ -60,6 +60,14 @@ var SampleApp = function() {
     self.setupDatabase = function() {
       self.db = mongojs(self.dbconnectionstring);
 
+      var githubAuthCollection = self.db.collection('githubAuthCollection');
+      githubAuthCollection.findOne({
+        _id: '001'
+      }, function(err, doc) {
+          self.client_id = doc.client_id;
+          self.client_secret = doc.client_secret;
+      });
+
     }
 
 
@@ -144,20 +152,22 @@ var SampleApp = function() {
         self.createRoutes();
         self.app = express.createServer();
 
-        self.app.get('/authenticate', function(req, res){
-          var githubAuthCollection = self.db.collection('githubAuthCollection');
-          githubAuthCollection.findOne({
-            _id: '001'
-          }, function(err, doc) {
-              console.log('accessed githubkey1 = ' + doc.githubkey1);
-              console.log('accessed githubkey2 = ' + doc.githubkey2);
 
-              // logic here to connect with GitHub
-
-              res.json(config.session);
-              res.end();
-          });
+        self.app.get('/getclientid', function(req, res){
+          res.json(self.client_id);
+          res.end();
         });
+
+
+        self.app.get('/oauth', function(req, res){
+          var code = req.query.code;
+          res.end();
+          console.log("oauth code received from GitHub = " + code);
+          console.log('stored client_id = ' + self.client_id);
+          console.log('stored accessed client_secret = ' + self.client_secret);
+        });
+
+
 
         self.app.get('/getprojects', function(req, res){
           res.json(config.projects);
@@ -188,10 +198,10 @@ var SampleApp = function() {
 
         self.app.post('/setgithubauth', urlencodedParser, function(req, res) {
           if (!req.body) return res.sendStatus(400)
-          console.log("saved githubkey1 = " + req.body.githubkey1);
-          console.log("saved githubkey2 = " + req.body.githubkey2);
+          console.log("saved client_id = " + req.body.client_id);
+          console.log("saved client_secret = " + req.body.client_secret);
           var githubAuthCollection = self.db.collection('githubAuthCollection');
-          githubAuthCollection.save({_id:"001", githubkey1: req.body.githubkey1, githubkey2: req.body.githubkey2})
+          githubAuthCollection.save({_id:"001", client_id: req.body.client_id, client_secret: req.body.client_secret})
           res.send("success: keys have been updated");
           res.end();
         });

@@ -23,9 +23,9 @@ var Login = React.createClass({
 
 
     render: function () {
-
+        var gitHubOauthLink = "https://github.com/login/oauth/authorize?client_id=" + this.props.client_id;
         return (
-              <a href="#" className="btn btn-lg btn-primary" role="button" onClick={this.handleClickLogin}>Login with GitHub</a>
+              <a href="#" className="btn btn-lg btn-primary" role="button" href={gitHubOauthLink}>Login with GitHub</a>
         );
     }
 });

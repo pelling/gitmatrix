@@ -14,11 +14,24 @@ var Main = React.createClass({
 
   getInitialState : function() {
     return {
+      client_id: '',
       session: false,
       projects: [],
       backlog: { "contributors":[], "items":[]}
     };
   },
+
+  componentDidMount: function() {
+      fetch('getclientid')
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({client_id:responseData});
+      })
+      .catch((error) => {
+        consoleLog('Error loading client_id: ' + error);
+      });
+
+    },
 
   handleSessionChange : function(newSession){
     this.setState({session:newSession});
@@ -44,6 +57,7 @@ var Main = React.createClass({
 
     render: function () {
         let child = this.props.children && React.cloneElement(this.props.children, {
+          client_id: this.state.client_id,
           session: this.state.session,
           projects: this.state.projects,
           backlog: this.state.backlog,
