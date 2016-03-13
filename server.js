@@ -1,5 +1,6 @@
 //  OpenShift sample Node application
 var express = require('express');
+var request = require('request');
 var bodyParser = require('body-parser');
 var fs      = require('fs');
 var config = require('./config.json');
@@ -165,6 +166,20 @@ var SampleApp = function() {
           console.log("oauth code received from GitHub = " + code);
           console.log('stored client_id = ' + self.client_id);
           console.log('stored accessed client_secret = ' + self.client_secret);
+          var requestUrl = 'https://github.com/login/oauth/access_token?client_id=' + self.client_id + '&client_secret=' + self.client_secret + '&code=' + code;
+          request.post(requestUrl, function(err, httpResponse, body){
+                           console.log('httpResponse.body = ' + JSON.stringify(httpResponse.body));
+                           var body_with_access_token = JSON.stringify(httpResponse.body);
+                           var access_token_start = body_with_access_token.indexOf("access_token=") + 13;
+                           var access_token_end = body_with_access_token.indexOf("&", access_token_start); 
+                           var access_token = JSON.stringify(httpResponse.body).slice(access_token_start, access_token_end);
+                           console.log('access_token = ' + access_token);
+                       }
+          );
+
+
+
+
         });
 
 
