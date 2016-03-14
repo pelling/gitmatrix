@@ -62,27 +62,31 @@
 
 	var _homeJs2 = _interopRequireDefault(_homeJs);
 
-	var _projectLoaderJs = __webpack_require__(218);
+	var _loadAccessTokenJs = __webpack_require__(219);
+
+	var _loadAccessTokenJs2 = _interopRequireDefault(_loadAccessTokenJs);
+
+	var _projectLoaderJs = __webpack_require__(221);
 
 	var _projectLoaderJs2 = _interopRequireDefault(_projectLoaderJs);
 
-	var _selectProjectJs = __webpack_require__(221);
+	var _selectProjectJs = __webpack_require__(222);
 
 	var _selectProjectJs2 = _interopRequireDefault(_selectProjectJs);
 
-	var _backlogLoaderJs = __webpack_require__(222);
+	var _backlogLoaderJs = __webpack_require__(223);
 
 	var _backlogLoaderJs2 = _interopRequireDefault(_backlogLoaderJs);
 
-	var _backlogJs = __webpack_require__(223);
+	var _backlogJs = __webpack_require__(224);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	var _calibrateJs = __webpack_require__(224);
+	var _calibrateJs = __webpack_require__(225);
 
 	var _calibrateJs2 = _interopRequireDefault(_calibrateJs);
 
-	var _consoleLogJs = __webpack_require__(219);
+	var _consoleLogJs = __webpack_require__(218);
 
 	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
 
@@ -93,7 +97,9 @@
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      client_id: '',
+	      client_id: 'not found',
+	      oauth_code: 'not found',
+	      access_token: 'not found',
 	      session: false,
 	      projects: [],
 	      backlog: { "contributors": [], "items": [] }
@@ -123,6 +129,16 @@
 	    }
 	  },
 
+	  handleOauthCodeLoaded: function handleOauthCodeLoaded(newOauthCode) {
+	    this.setState({ oauth_code: newOauthCode });
+	    (0, _consoleLogJs2['default'])('oauth code loaded: ' + newOauthCode);
+	  },
+
+	  handleAccessTokenLoaded: function handleAccessTokenLoaded(newAccessToken) {
+	    this.setState({ access_token: newAccessToken });
+	    (0, _consoleLogJs2['default'])('access token loaded: ' + newAccessToken);
+	  },
+
 	  handleProjectsLoaded: function handleProjectsLoaded(newProjects) {
 	    this.setState({ projects: newProjects });
 	    (0, _consoleLogJs2['default'])('projects loaded');
@@ -136,9 +152,13 @@
 	  render: function render() {
 	    var child = this.props.children && _react2['default'].cloneElement(this.props.children, {
 	      client_id: this.state.client_id,
+	      oauth_code: this.state.oauth_code,
+	      access_token: this.state.access_token,
 	      session: this.state.session,
 	      projects: this.state.projects,
 	      backlog: this.state.backlog,
+	      onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
+	      onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
 	      onSessionChange: this.handleSessionChange.bind(this),
 	      onProjectsLoaded: this.handleProjectsLoaded.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -169,7 +189,7 @@
 	    { path: '/', component: Main },
 	    _react2['default'].createElement(_reactRouter.IndexRoute, { component: _homeJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'home', component: _homeJs2['default'] }),
-	    _react2['default'].createElement(_reactRouter.Route, { path: 'projectLoader', component: _projectLoaderJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadAccessToken', component: _loadAccessTokenJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProject', component: _selectProjectJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlogLoader', component: _backlogLoaderJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlog', component: _backlogJs2['default'] }),
@@ -25135,8 +25155,25 @@
 
 	var _reactRouter = __webpack_require__(158);
 
+	var _consoleLogJs = __webpack_require__(218);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
 	var Home = _react2['default'].createClass({
 	  displayName: 'Home',
+
+	  componentDidMount: function componentDidMount() {
+	    var oauth_code = this.props.location.query.code;
+	    if (oauth_code === undefined) {
+	      // home page accessed without GitHub oauth code
+
+	    } else {
+	        (0, _consoleLogJs2['default'])('GitHub has passed oauth code: ' + oauth_code);
+	        (0, _consoleLogJs2['default'])('Saving code to state and redirecting to LoadAccessToken');
+	        this.props.onOauthCodeLoaded(oauth_code);
+	        _reactRouter.browserHistory.push('/loadAccessToken');
+	      }
+	  },
 
 	  render: function render() {
 	    var loginControl = _react2['default'].createElement(_loginJs2['default'], { session: this.props.session, onSessionChange: this.props.onSessionChange, client_id: this.props.client_id });
@@ -25233,6 +25270,25 @@
 
 /***/ },
 /* 218 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var consoleLog = function consoleLog(message) {
+	  var d = new Date();
+	  var n = d.getTime();
+	  fetch('consoleLog?message=' + n + ' ' + message);
+	};
+
+	exports['default'] = consoleLog;
+	module.exports = exports['default'];
+
+/***/ },
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25249,25 +25305,25 @@
 
 	var _reactRouter = __webpack_require__(158);
 
-	var _consoleLogJs = __webpack_require__(219);
+	var _consoleLogJs = __webpack_require__(218);
 
 	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
 
 	__webpack_require__(220);
 
-	var ProjectLoader = _react2['default'].createClass({
-	  displayName: 'ProjectLoader',
+	var LoadAccessToken = _react2['default'].createClass({
+	  displayName: 'LoadAccessToken',
 
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
-	    fetch('getprojects').then(function (response) {
+	    fetch('getaccesstoken?code=' + this.props.oauth_code).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
-	      _this.props.onProjectsLoaded(responseData);
-	      _reactRouter.browserHistory.push('/selectProject');
+	      _this.props.onAccessTokenLoaded(responseData);
+	      //browserHistory.push('/selectProject');
 	    })['catch'](function (error) {
-	      (0, _consoleLogJs2['default'])('Error loading project list: ' + error);
+	      (0, _consoleLogJs2['default'])('Error loading access token: ' + error);
 	    });
 	  },
 
@@ -25275,32 +25331,17 @@
 	    return _react2['default'].createElement(
 	      'div',
 	      null,
-	      'Loading...'
+	      'Loading GitHub Access Token using Code = ',
+	      this.props.oauth_code,
+	      _react2['default'].createElement('br', null),
+	      'Access Token = ',
+	      this.props.access_token
 	    );
 	  }
 
 	});
 
-	exports['default'] = ProjectLoader;
-	module.exports = exports['default'];
-
-/***/ },
-/* 219 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var consoleLog = function consoleLog(message) {
-	  var d = new Date();
-	  var n = d.getTime();
-	  fetch('consoleLog?message=' + n + ' ' + message);
-	};
-
-	exports['default'] = consoleLog;
+	exports['default'] = LoadAccessToken;
 	module.exports = exports['default'];
 
 /***/ },
@@ -25704,6 +25745,59 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var _consoleLogJs = __webpack_require__(218);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
+
+	var ProjectLoader = _react2['default'].createClass({
+	  displayName: 'ProjectLoader',
+
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
+	    fetch('getprojects').then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.props.onProjectsLoaded(responseData);
+	      _reactRouter.browserHistory.push('/selectProject');
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error loading project list: ' + error);
+	    });
+	  },
+
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      'Loading...'
+	    );
+	  }
+
+	});
+
+	exports['default'] = ProjectLoader;
+	module.exports = exports['default'];
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
 
@@ -25772,7 +25866,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 222 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25789,7 +25883,7 @@
 
 	var _reactRouter = __webpack_require__(158);
 
-	var _consoleLogJs = __webpack_require__(219);
+	var _consoleLogJs = __webpack_require__(218);
 
 	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
 
@@ -25825,7 +25919,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 223 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25840,7 +25934,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _backlogJs = __webpack_require__(223);
+	var _backlogJs = __webpack_require__(224);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
@@ -25910,7 +26004,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 224 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
