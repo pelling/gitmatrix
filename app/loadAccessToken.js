@@ -11,7 +11,7 @@ var LoadAccessToken = React.createClass({
       .then((response) => response.json())
       .then((responseData) => {
         this.props.onAccessTokenLoaded(responseData);
-        //browserHistory.push('/selectProject');
+        browserHistory.push('/loadUser');
       })
       .catch((error) => {
         consoleLog('Error loading access token: ' + error);

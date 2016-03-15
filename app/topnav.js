@@ -11,7 +11,7 @@ var TopNav = React.createClass({
 
     render: function () {
         var wrapperClass = "gm-visible";
-        if (!this.props.session) { wrapperClass = "gm-hidden"; }
+        if (this.props.user === "not found") { wrapperClass = "gm-hidden"; }
         return (
           <div className={wrapperClass}>
                <div className="row-fluid">
@@ -19,7 +19,7 @@ var TopNav = React.createClass({
                      <Link to="/home" className="gm-nav-bar-logo">[ GitMatrix ]</Link>
                    </div>
                    <div className="col-md-6 gm-align-right gm-topnav">
-                     <Link to="/selectProject"><i className="fa fa-github"></i>&nbsp; {this.props.session.userName}</Link>
+                     <Link to="/selectProject"><i className="fa fa-github"></i>&nbsp; {this.props.user.name}</Link>
                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                      <a href="#" onClick={this.handleClickSignOut.bind(this)}><i className="fa fa-power-off"></i>&nbsp; Sign Out</a>
                    </div>

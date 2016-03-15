@@ -175,6 +175,25 @@ var SampleApp = function() {
         });
 
 
+        self.app.get('/getuser', function(req, res){
+          var access_token = req.query.access_token;
+          var requestUrl = 'https://api.github.com/user?access_token=' + access_token;
+
+          request({
+            uri: requestUrl,
+            headers: {'User-Agent': 'gitmatrix'},
+            method: "GET",
+            timeout: 10000,
+            followRedirect: true,
+            maxRedirects: 10
+            }, function(error, response, body) {
+              res.json(body);
+              res.end();
+            });
+
+        });
+
+
 /*
         self.app.get('/oauth', function(req, res){
           var code = req.query.code;

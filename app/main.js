@@ -3,6 +3,7 @@ import { Router, Route, Link, IndexRoute, browserHistory } from 'react-router';
 import TopNav from './topnav.js';
 import Home from './home.js';
 import LoadAccessToken from './loadAccessToken.js';
+import LoadUser from './loadUser.js';
 import ProjectLoader from './projectLoader.js';
 import SelectProject from './selectProject.js';
 import BacklogLoader from './backlogLoader.js';
@@ -19,6 +20,7 @@ var Main = React.createClass({
       client_id: 'not found',
       oauth_code: 'not found',
       access_token: 'not found',
+      user: 'not found',
       session: false,
       projects: [],
       backlog: { "contributors":[], "items":[]}
@@ -63,6 +65,12 @@ var Main = React.createClass({
     consoleLog('access token loaded: ' +  newAccessToken);
   },
 
+  handleUserLoaded: function(newUser){
+    var user = JSON.parse(newUser);
+    this.setState({user : user});
+    consoleLog('user loaded: ' +  user.name);
+  },
+
   handleProjectsLoaded: function(newProjects){
     this.setState({projects : newProjects});
     consoleLog('projects loaded');
@@ -78,11 +86,13 @@ var Main = React.createClass({
           client_id: this.state.client_id,
           oauth_code: this.state.oauth_code,
           access_token: this.state.access_token,
+          user: this.state.user,
           session: this.state.session,
           projects: this.state.projects,
           backlog: this.state.backlog,
           onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
           onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
+          onUserLoaded: this.handleUserLoaded.bind(this),
           onSessionChange: this.handleSessionChange.bind(this),
           onProjectsLoaded: this.handleProjectsLoaded.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -90,7 +100,7 @@ var Main = React.createClass({
 
         return (
           <div>
-            <div id="topnav"><TopNav session={this.state.session} onSessionChange={this.handleSessionChange.bind(this)} /></div>
+            <div id="topnav"><TopNav user={this.state.user} onSessionChange={this.handleSessionChange.bind(this)} /></div>
             <div id="app">
               {child}
             </div>
@@ -107,6 +117,7 @@ React.render((
       <IndexRoute component={Home} />
       <Route path="home" component={Home} />
       <Route path="loadAccessToken" component={LoadAccessToken} />
+      <Route path="loadUser" component={LoadUser} />
       <Route path="selectProject" component={SelectProject} />
       <Route path="backlogLoader" component={BacklogLoader} />
       <Route path="backlog" component={Backlog} />

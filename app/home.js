@@ -17,6 +17,22 @@ var Home = React.createClass({
         browserHistory.push('/loadAccessToken');
       }
 
+
+
+      var access_token = this.props.location.query.access_token;
+      if (access_token === undefined) {
+        // home page accessed without access_token
+
+      } else {
+        consoleLog('GitHub has passed access_token: ' + access_token);
+        consoleLog('Saving access_token to state and redirecting to LoadUser');
+        this.props.onAccessTokenLoaded(access_token);
+        browserHistory.push('/loadUser');
+      }
+
+
+
+
     },
 
     render: function () {
