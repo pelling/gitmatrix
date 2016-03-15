@@ -140,7 +140,6 @@
 	  },
 
 	  handleSignOut: function handleSignOut() {
-	    this.setState({ client_id: 'not found' });
 	    this.setState({ oauth_code: 'not found' });
 	    this.setState({ access_token: 'not found' });
 	    this.setState({ user: 'not found' });
@@ -25197,8 +25196,8 @@
 	  },
 
 	  render: function render() {
-	    var loginControl = _react2['default'].createElement(_loginJs2['default'], { session: this.props.session, onSessionChange: this.props.onSessionChange, client_id: this.props.client_id });
-	    if (this.props.session) {
+	    var loginControl = _react2['default'].createElement(_loginJs2['default'], { client_id: this.props.client_id });
+	    if (this.props.user !== 'not found') {
 	      loginControl = _react2['default'].createElement(
 	        'div',
 	        null,
@@ -25206,7 +25205,7 @@
 	        _react2['default'].createElement(
 	          _reactRouter.Link,
 	          { to: '/selectProject' },
-	          this.props.session.userName
+	          this.props.user.name
 	        ),
 	        '.'
 	      );
@@ -25245,7 +25244,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
-	  value: true
+	    value: true
 	});
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -25257,33 +25256,16 @@
 	var _reactRouter = __webpack_require__(158);
 
 	var Login = _react2['default'].createClass({
-	  displayName: 'Login',
+	    displayName: 'Login',
 
-	  handleClickLogin: function handleClickLogin(event) {
-	    var _this = this;
-
-	    fetch('authenticate').then(function (response) {
-	      return response.json();
-	    }).then(function (responseData) {
-	      var session = responseData;
-	      _this.props.onSessionChange(session);
-	      _reactRouter.browserHistory.push('/selectProject');
-	    })['catch'](function (error) {
-	      consoleLog('Error authenticating: ' + error);
-	    });
-
-	    // React.render(<SelectProjectContainer session={session} />, document.getElementById('app'));
-	    // Ajax details ommitted since we never get here via onClick
-	  },
-
-	  render: function render() {
-	    var gitHubOauthLink = "https://github.com/login/oauth/authorize?client_id=" + this.props.client_id;
-	    return _react2['default'].createElement(
-	      'a',
-	      { href: '#', className: 'btn btn-lg btn-primary', role: 'button', href: gitHubOauthLink },
-	      'Login with GitHub'
-	    );
-	  }
+	    render: function render() {
+	        var gitHubOauthLink = "https://github.com/login/oauth/authorize?client_id=" + this.props.client_id;
+	        return _react2['default'].createElement(
+	            'a',
+	            { href: '#', className: 'btn btn-lg btn-primary', role: 'button', href: gitHubOauthLink },
+	            'Login with GitHub'
+	        );
+	    }
 	});
 
 	exports['default'] = Login;
