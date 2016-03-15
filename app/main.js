@@ -60,7 +60,6 @@ var Main = React.createClass({
 
 
   handleSignOut : function(){
-    this.setState({client_id : 'not found'});
     this.setState({oauth_code : 'not found'});
     this.setState({access_token : 'not found'});
     this.setState({user : 'not found'});
