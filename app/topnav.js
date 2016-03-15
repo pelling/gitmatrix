@@ -3,8 +3,8 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 
 var TopNav = React.createClass({
 
-    handleClickSignOut: function(event) {
-      this.props.onSessionChange(false);
+    handleSignOut: function(event) {
+      this.props.onSignOut();
       browserHistory.push('/home');
     },
 
@@ -21,7 +21,7 @@ var TopNav = React.createClass({
                    <div className="col-md-6 gm-align-right gm-topnav">
                      <Link to="/selectProject"><i className="fa fa-github"></i>&nbsp; {this.props.user.name}</Link>
                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                     <a href="#" onClick={this.handleClickSignOut.bind(this)}><i className="fa fa-power-off"></i>&nbsp; Sign Out</a>
+                     <a href="#" onClick={this.handleSignOut.bind(this)}><i className="fa fa-power-off"></i>&nbsp; Sign Out</a>
                    </div>
                </div>
 

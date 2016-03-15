@@ -123,17 +123,6 @@
 	    });
 	  },
 
-	  handleSessionChange: function handleSessionChange(newSession) {
-	    this.setState({ session: newSession });
-	    if (newSession) {
-	      (0, _consoleLogJs2['default'])('session started');
-	    }
-	    if (!newSession) {
-	      this.setState({ projects: [] });
-	      (0, _consoleLogJs2['default'])('session killed');
-	    }
-	  },
-
 	  handleOauthCodeLoaded: function handleOauthCodeLoaded(newOauthCode) {
 	    this.setState({ oauth_code: newOauthCode });
 	    (0, _consoleLogJs2['default'])('oauth code loaded: ' + newOauthCode);
@@ -148,6 +137,13 @@
 	    var user = JSON.parse(newUser);
 	    this.setState({ user: user });
 	    (0, _consoleLogJs2['default'])('user loaded: ' + user.name);
+	  },
+
+	  handleSignOut: function handleSignOut() {
+	    this.setState({ client_id: 'not found' });
+	    this.setState({ oauth_code: 'not found' });
+	    this.setState({ access_token: 'not found' });
+	    this.setState({ user: 'not found' });
 	  },
 
 	  handleProjectsLoaded: function handleProjectsLoaded(newProjects) {
@@ -172,7 +168,7 @@
 	      onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
 	      onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
 	      onUserLoaded: this.handleUserLoaded.bind(this),
-	      onSessionChange: this.handleSessionChange.bind(this),
+	      onSignOut: this.handleSignOut.bind(this),
 	      onProjectsLoaded: this.handleProjectsLoaded.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
 	    });
@@ -183,7 +179,7 @@
 	      _react2['default'].createElement(
 	        'div',
 	        { id: 'topnav' },
-	        _react2['default'].createElement(_topnavJs2['default'], { user: this.state.user, onSessionChange: this.handleSessionChange.bind(this) })
+	        _react2['default'].createElement(_topnavJs2['default'], { user: this.state.user, onSignOut: this.handleSignOut.bind(this) })
 	      ),
 	      _react2['default'].createElement(
 	        'div',
@@ -25086,8 +25082,8 @@
 	var TopNav = _react2['default'].createClass({
 	  displayName: 'TopNav',
 
-	  handleClickSignOut: function handleClickSignOut(event) {
-	    this.props.onSessionChange(false);
+	  handleSignOut: function handleSignOut(event) {
+	    this.props.onSignOut();
 	    _reactRouter.browserHistory.push('/home');
 	  },
 
@@ -25124,7 +25120,7 @@
 	          '     |     ',
 	          _react2['default'].createElement(
 	            'a',
-	            { href: '#', onClick: this.handleClickSignOut.bind(this) },
+	            { href: '#', onClick: this.handleSignOut.bind(this) },
 	            _react2['default'].createElement('i', { className: 'fa fa-power-off' }),
 	            '  Sign Out'
 	          )

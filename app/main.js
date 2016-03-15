@@ -42,19 +42,6 @@ var Main = React.createClass({
     },
 
 
-
-  handleSessionChange : function(newSession){
-    this.setState({session:newSession});
-    if (newSession) {
-      consoleLog('session started');
-    }
-    if (!newSession) {
-      this.setState({projects : []});
-      consoleLog('session killed');
-    }
-  },
-
-
   handleOauthCodeLoaded: function(newOauthCode){
     this.setState({oauth_code : newOauthCode});
     consoleLog('oauth code loaded: ' +  newOauthCode);
@@ -69,6 +56,14 @@ var Main = React.createClass({
     var user = JSON.parse(newUser);
     this.setState({user : user});
     consoleLog('user loaded: ' +  user.name);
+  },
+
+
+  handleSignOut : function(){
+    this.setState({client_id : 'not found'});
+    this.setState({oauth_code : 'not found'});
+    this.setState({access_token : 'not found'});
+    this.setState({user : 'not found'});
   },
 
   handleProjectsLoaded: function(newProjects){
@@ -93,14 +88,14 @@ var Main = React.createClass({
           onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
           onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
           onUserLoaded: this.handleUserLoaded.bind(this),
-          onSessionChange: this.handleSessionChange.bind(this),
+          onSignOut: this.handleSignOut.bind(this),
           onProjectsLoaded: this.handleProjectsLoaded.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
         } );
 
         return (
           <div>
-            <div id="topnav"><TopNav user={this.state.user} onSessionChange={this.handleSessionChange.bind(this)} /></div>
+            <div id="topnav"><TopNav user={this.state.user} onSignOut={this.handleSignOut.bind(this)} /></div>
             <div id="app">
               {child}
             </div>
