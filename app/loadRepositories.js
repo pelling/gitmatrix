@@ -11,7 +11,7 @@ var LoadRepositories = React.createClass({
       .then((response) => response.json())
       .then((responseData) => {
         this.props.onRepositoriesLoaded(responseData);
-        //browserHistory.push('/selectProduct');
+        browserHistory.push('/selectProduct');
       })
       .catch((error) => {
         consoleLog('Error loading repositories: ' + error);
@@ -26,7 +26,6 @@ var LoadRepositories = React.createClass({
           Access Token = {this.props.access_token}<br/>
           User = {this.props.user.name}<br/>
           Loading Repositories...<br/>
-          {JSON.stringify(this.props.repositories)}
         </div>
       );
     }

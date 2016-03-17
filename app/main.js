@@ -5,8 +5,7 @@ import Home from './home.js';
 import LoadAccessToken from './loadAccessToken.js';
 import LoadUser from './loadUser.js';
 import LoadRepositories from './loadRepositories.js';
-import ProjectLoader from './projectLoader.js';
-import SelectProject from './selectProject.js';
+import SelectProduct from './selectProduct.js';
 import BacklogLoader from './backlogLoader.js';
 import Backlog from './backlog.js';
 import Calibrate from './calibrate.js';
@@ -72,10 +71,6 @@ var Main = React.createClass({
     this.setState({user : 'not found'});
   },
 
-  handleProjectsLoaded: function(newProjects){
-    this.setState({projects : newProjects});
-    consoleLog('projects loaded');
-  },
 
   handleBacklogLoaded: function(newBacklog){
     this.setState({backlog : newBacklog});
@@ -90,14 +85,12 @@ var Main = React.createClass({
           user: this.state.user,
           repositories: this.state.repositories,
           session: this.state.session,
-          projects: this.state.projects,
           backlog: this.state.backlog,
           onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
           onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
           onUserLoaded: this.handleUserLoaded.bind(this),
           onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
           onSignOut: this.handleSignOut.bind(this),
-          onProjectsLoaded: this.handleProjectsLoaded.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
         } );
 
@@ -122,7 +115,7 @@ React.render((
       <Route path="loadAccessToken" component={LoadAccessToken} />
       <Route path="loadUser" component={LoadUser} />
       <Route path="loadRepositories" component={LoadRepositories} />
-      <Route path="selectProject" component={SelectProject} />
+      <Route path="selectProduct" component={SelectProduct} />
       <Route path="backlogLoader" component={BacklogLoader} />
       <Route path="backlog" component={Backlog} />
       <Route path="calibrate" component={Calibrate} />

@@ -74,23 +74,19 @@
 
 	var _loadRepositoriesJs2 = _interopRequireDefault(_loadRepositoriesJs);
 
-	var _projectLoaderJs = __webpack_require__(223);
+	var _selectProductJs = __webpack_require__(223);
 
-	var _projectLoaderJs2 = _interopRequireDefault(_projectLoaderJs);
+	var _selectProductJs2 = _interopRequireDefault(_selectProductJs);
 
-	var _selectProjectJs = __webpack_require__(224);
-
-	var _selectProjectJs2 = _interopRequireDefault(_selectProjectJs);
-
-	var _backlogLoaderJs = __webpack_require__(225);
+	var _backlogLoaderJs = __webpack_require__(224);
 
 	var _backlogLoaderJs2 = _interopRequireDefault(_backlogLoaderJs);
 
-	var _backlogJs = __webpack_require__(226);
+	var _backlogJs = __webpack_require__(225);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	var _calibrateJs = __webpack_require__(227);
+	var _calibrateJs = __webpack_require__(226);
 
 	var _calibrateJs2 = _interopRequireDefault(_calibrateJs);
 
@@ -156,11 +152,6 @@
 	    this.setState({ user: 'not found' });
 	  },
 
-	  handleProjectsLoaded: function handleProjectsLoaded(newProjects) {
-	    this.setState({ projects: newProjects });
-	    (0, _consoleLogJs2['default'])('projects loaded');
-	  },
-
 	  handleBacklogLoaded: function handleBacklogLoaded(newBacklog) {
 	    this.setState({ backlog: newBacklog });
 	    (0, _consoleLogJs2['default'])('backlog loaded');
@@ -174,14 +165,12 @@
 	      user: this.state.user,
 	      repositories: this.state.repositories,
 	      session: this.state.session,
-	      projects: this.state.projects,
 	      backlog: this.state.backlog,
 	      onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
 	      onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
 	      onUserLoaded: this.handleUserLoaded.bind(this),
 	      onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
 	      onSignOut: this.handleSignOut.bind(this),
-	      onProjectsLoaded: this.handleProjectsLoaded.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
 	    });
 
@@ -213,7 +202,7 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadAccessToken', component: _loadAccessTokenJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadUser', component: _loadUserJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepositories', component: _loadRepositoriesJs2['default'] }),
-	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProject', component: _selectProjectJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProduct', component: _selectProductJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlogLoader', component: _backlogLoaderJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlog', component: _backlogJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'calibrate', component: _calibrateJs2['default'] })
@@ -25847,7 +25836,7 @@
 	      return response.json();
 	    }).then(function (responseData) {
 	      _this.props.onRepositoriesLoaded(responseData);
-	      //browserHistory.push('/selectProduct');
+	      _reactRouter.browserHistory.push('/selectProduct');
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading repositories: ' + error);
 	    });
@@ -25867,8 +25856,7 @@
 	      this.props.user.name,
 	      _react2['default'].createElement('br', null),
 	      'Loading Repositories...',
-	      _react2['default'].createElement('br', null),
-	      JSON.stringify(this.props.repositories)
+	      _react2['default'].createElement('br', null)
 	    );
 	  }
 
@@ -25879,59 +25867,6 @@
 
 /***/ },
 /* 223 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(158);
-
-	var _consoleLogJs = __webpack_require__(218);
-
-	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
-
-	__webpack_require__(220);
-
-	var ProjectLoader = _react2['default'].createClass({
-	  displayName: 'ProjectLoader',
-
-	  componentDidMount: function componentDidMount() {
-	    var _this = this;
-
-	    fetch('getprojects').then(function (response) {
-	      return response.json();
-	    }).then(function (responseData) {
-	      _this.props.onProjectsLoaded(responseData);
-	      _reactRouter.browserHistory.push('/selectProject');
-	    })['catch'](function (error) {
-	      (0, _consoleLogJs2['default'])('Error loading project list: ' + error);
-	    });
-	  },
-
-	  render: function render() {
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      'Loading...'
-	    );
-	  }
-
-	});
-
-	exports['default'] = ProjectLoader;
-	module.exports = exports['default'];
-
-/***/ },
-/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25948,18 +25883,18 @@
 
 	var _reactRouter = __webpack_require__(158);
 
-	var SelectProject = _react2['default'].createClass({
-	    displayName: 'SelectProject',
+	var SelectProduct = _react2['default'].createClass({
+	    displayName: 'SelectProduct',
 
 	    componentWillMount: function componentWillMount() {
-	        if (this.props.projects.length == 0) {
-	            _reactRouter.browserHistory.push('/projectLoader');
+	        if (this.props.repositories == 'not found') {
+	            //problem -- repositories were not loaded!
 	        }
 	    },
 
 	    render: function render() {
-	        var projects = this.props.projects.map(function (project) {
-	            return _react2['default'].createElement(Project, { id: project.id, name: project.name });
+	        var products = this.props.repositories.map(function (repository) {
+	            return _react2['default'].createElement(Product, { id: repository.id, name: repository.name });
 	        });
 	        return _react2['default'].createElement(
 	            'div',
@@ -25968,19 +25903,14 @@
 	                'div',
 	                { className: 'col-md-4' },
 	                _react2['default'].createElement(
-	                    'h3',
-	                    null,
-	                    this.props.session.userName
-	                ),
-	                _react2['default'].createElement(
 	                    'h4',
 	                    null,
-	                    'Select GitHub Project:'
+	                    'Select GitHub Product:'
 	                ),
 	                _react2['default'].createElement(
 	                    'div',
 	                    { className: 'list-group' },
-	                    projects
+	                    products
 	                )
 	            ),
 	            _react2['default'].createElement('div', { className: 'col-md-8' })
@@ -25988,8 +25918,8 @@
 	    }
 	});
 
-	var Project = _react2['default'].createClass({
-	    displayName: 'Project',
+	var Product = _react2['default'].createClass({
+	    displayName: 'Product',
 
 	    render: function render() {
 	        var backlogLink = "/backlogLoader?id=" + this.props.id;
@@ -26001,11 +25931,11 @@
 	    }
 	});
 
-	exports['default'] = SelectProject;
+	exports['default'] = SelectProduct;
 	module.exports = exports['default'];
 
 /***/ },
-/* 225 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26058,7 +25988,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 226 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26073,7 +26003,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _backlogJs = __webpack_require__(226);
+	var _backlogJs = __webpack_require__(225);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
@@ -26143,7 +26073,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 227 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

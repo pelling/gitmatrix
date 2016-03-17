@@ -2,26 +2,25 @@ import React from 'react';
 import { Router, Route, Link, browserHistory } from 'react-router';
 
 
-var SelectProject = React.createClass({
+var SelectProduct = React.createClass({
 
 
   componentWillMount: function () {
-    if (this.props.projects.length == 0) {
-      browserHistory.push('/projectLoader');
+    if (this.props.repositories == 'not found') {
+      //problem -- repositories were not loaded!
     }
   },
 
     render: function () {
-        var projects = this.props.projects.map((project) => {
-          return <Project id={project.id} name={project.name}/>
+        var products = this.props.repositories.map((repository) => {
+          return <Product id={repository.id} name={repository.name}/>
         });
         return (
               <div className="row-fluid">
                     <div className="col-md-4">
-                    <h3>{this.props.session.userName}</h3>
-                    <h4>Select GitHub Project:</h4>
+                    <h4>Select GitHub Product:</h4>
                         <div className="list-group">
-                            {projects}
+                            {products}
                         </div>
                     </div>
                     <div className="col-md-8">
@@ -36,7 +35,7 @@ var SelectProject = React.createClass({
 
 
 
-var Project = React.createClass({
+var Product = React.createClass({
 
     render: function () {
         var backlogLink = "/backlogLoader?id=" + this.props.id;
@@ -47,6 +46,4 @@ var Project = React.createClass({
 });
 
 
-
-
-export default SelectProject;
+export default SelectProduct;
