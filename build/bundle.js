@@ -70,23 +70,27 @@
 
 	var _loadUserJs2 = _interopRequireDefault(_loadUserJs);
 
-	var _projectLoaderJs = __webpack_require__(222);
+	var _loadRepositoriesJs = __webpack_require__(222);
+
+	var _loadRepositoriesJs2 = _interopRequireDefault(_loadRepositoriesJs);
+
+	var _projectLoaderJs = __webpack_require__(223);
 
 	var _projectLoaderJs2 = _interopRequireDefault(_projectLoaderJs);
 
-	var _selectProjectJs = __webpack_require__(223);
+	var _selectProjectJs = __webpack_require__(224);
 
 	var _selectProjectJs2 = _interopRequireDefault(_selectProjectJs);
 
-	var _backlogLoaderJs = __webpack_require__(224);
+	var _backlogLoaderJs = __webpack_require__(225);
 
 	var _backlogLoaderJs2 = _interopRequireDefault(_backlogLoaderJs);
 
-	var _backlogJs = __webpack_require__(225);
+	var _backlogJs = __webpack_require__(226);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	var _calibrateJs = __webpack_require__(226);
+	var _calibrateJs = __webpack_require__(227);
 
 	var _calibrateJs2 = _interopRequireDefault(_calibrateJs);
 
@@ -105,6 +109,7 @@
 	      oauth_code: 'not found',
 	      access_token: 'not found',
 	      user: 'not found',
+	      repositories: 'not found',
 	      session: false,
 	      projects: [],
 	      backlog: { "contributors": [], "items": [] }
@@ -123,20 +128,26 @@
 	    });
 	  },
 
-	  handleOauthCodeLoaded: function handleOauthCodeLoaded(newOauthCode) {
-	    this.setState({ oauth_code: newOauthCode });
-	    (0, _consoleLogJs2['default'])('oauth code loaded: ' + newOauthCode);
+	  handleOauthCodeLoaded: function handleOauthCodeLoaded(oauthCode) {
+	    this.setState({ oauth_code: oauthCode });
+	    (0, _consoleLogJs2['default'])('oauth code loaded: ' + oauthCode);
 	  },
 
-	  handleAccessTokenLoaded: function handleAccessTokenLoaded(newAccessToken) {
-	    this.setState({ access_token: newAccessToken });
-	    (0, _consoleLogJs2['default'])('access token loaded: ' + newAccessToken);
+	  handleAccessTokenLoaded: function handleAccessTokenLoaded(accessToken) {
+	    this.setState({ access_token: accessToken });
+	    (0, _consoleLogJs2['default'])('access token loaded: ' + accessToken);
 	  },
 
-	  handleUserLoaded: function handleUserLoaded(newUser) {
-	    var user = JSON.parse(newUser);
-	    this.setState({ user: user });
-	    (0, _consoleLogJs2['default'])('user loaded: ' + user.name);
+	  handleUserLoaded: function handleUserLoaded(user) {
+	    var userJson = JSON.parse(user);
+	    this.setState({ user: userJson });
+	    (0, _consoleLogJs2['default'])('user loaded: ' + userJson.name);
+	  },
+
+	  handleRepositoriesLoaded: function handleRepositoriesLoaded(repositories) {
+	    var repositoriesJson = JSON.parse(repositories);
+	    this.setState({ repositories: repositoriesJson });
+	    (0, _consoleLogJs2['default'])('repositories loaded - number found: ' + repositoriesJson.length);
 	  },
 
 	  handleSignOut: function handleSignOut() {
@@ -161,12 +172,14 @@
 	      oauth_code: this.state.oauth_code,
 	      access_token: this.state.access_token,
 	      user: this.state.user,
+	      repositories: this.state.repositories,
 	      session: this.state.session,
 	      projects: this.state.projects,
 	      backlog: this.state.backlog,
 	      onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
 	      onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
 	      onUserLoaded: this.handleUserLoaded.bind(this),
+	      onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
 	      onSignOut: this.handleSignOut.bind(this),
 	      onProjectsLoaded: this.handleProjectsLoaded.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -199,6 +212,7 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'home', component: _homeJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadAccessToken', component: _loadAccessTokenJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadUser', component: _loadUserJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepositories', component: _loadRepositoriesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProject', component: _selectProjectJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlogLoader', component: _backlogLoaderJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlog', component: _backlogJs2['default'] }),
@@ -25334,11 +25348,10 @@
 	    return _react2['default'].createElement(
 	      'div',
 	      null,
-	      'Loading GitHub Access Token using Code = ',
+	      'Oauth Code = ',
 	      this.props.oauth_code,
 	      _react2['default'].createElement('br', null),
-	      'Access Token = ',
-	      this.props.access_token
+	      'Loading Access Token...'
 	    );
 	  }
 
@@ -25775,7 +25788,7 @@
 	      return response.json();
 	    }).then(function (responseData) {
 	      _this.props.onUserLoaded(responseData);
-	      //browserHistory.push('/loadUser');
+	      _reactRouter.browserHistory.push('/loadRepositories');
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading user: ' + error);
 	    });
@@ -25785,11 +25798,13 @@
 	    return _react2['default'].createElement(
 	      'div',
 	      null,
-	      'Loading GitHub User using Access Token = ',
+	      'Oauth Code = ',
+	      this.props.oauth_code,
+	      _react2['default'].createElement('br', null),
+	      'Access Token = ',
 	      this.props.access_token,
 	      _react2['default'].createElement('br', null),
-	      'User = ',
-	      this.props.user.name
+	      'Loading User...'
 	    );
 	  }
 
@@ -25800,6 +25815,70 @@
 
 /***/ },
 /* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var _consoleLogJs = __webpack_require__(218);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
+
+	var LoadRepositories = _react2['default'].createClass({
+	  displayName: 'LoadRepositories',
+
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
+	    fetch('getrepositories?access_token=' + this.props.access_token).then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.props.onRepositoriesLoaded(responseData);
+	      //browserHistory.push('/selectProduct');
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error loading repositories: ' + error);
+	    });
+	  },
+
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      'Oauth Code = ',
+	      this.props.oauth_code,
+	      _react2['default'].createElement('br', null),
+	      'Access Token = ',
+	      this.props.access_token,
+	      _react2['default'].createElement('br', null),
+	      'User = ',
+	      this.props.user.name,
+	      _react2['default'].createElement('br', null),
+	      'Loading Repositories...',
+	      _react2['default'].createElement('br', null),
+	      JSON.stringify(this.props.repositories)
+	    );
+	  }
+
+	});
+
+	exports['default'] = LoadRepositories;
+	module.exports = exports['default'];
+
+/***/ },
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25852,7 +25931,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 223 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25926,7 +26005,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 224 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25979,7 +26058,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 225 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25994,7 +26073,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _backlogJs = __webpack_require__(225);
+	var _backlogJs = __webpack_require__(226);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
@@ -26064,7 +26143,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 226 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

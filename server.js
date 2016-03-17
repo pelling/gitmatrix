@@ -193,26 +193,23 @@ var SampleApp = function() {
 
         });
 
+        self.app.get('/getrepositories', function(req, res){
+          var access_token = req.query.access_token;
+          var requestUrl = 'https://api.github.com/user/repos?access_token=' + access_token;
 
-/*
-        self.app.get('/oauth', function(req, res){
-          var code = req.query.code;
-          res.end();
-          console.log("oauth code received from GitHub = " + code);
-          console.log('stored client_id = ' + self.client_id);
-          console.log('stored accessed client_secret = ' + self.client_secret);
-          var requestUrl = 'https://github.com/login/oauth/access_token?client_id=' + self.client_id + '&client_secret=' + self.client_secret + '&code=' + code;
-          request.post(requestUrl, function(err, httpResponse, body){
-                           console.log('httpResponse.body = ' + JSON.stringify(httpResponse.body));
-                           var body_with_access_token = JSON.stringify(httpResponse.body);
-                           var access_token_start = body_with_access_token.indexOf("access_token=") + 13;
-                           var access_token_end = body_with_access_token.indexOf("&", access_token_start);
-                           var access_token = JSON.stringify(httpResponse.body).slice(access_token_start, access_token_end);
-                           console.log('access_token = ' + access_token);
-                       }
-          );
+          request({
+            uri: requestUrl,
+            headers: {'User-Agent': 'gitmatrix'},
+            method: "GET",
+            timeout: 10000,
+            followRedirect: true,
+            maxRedirects: 10
+            }, function(error, response, body) {
+              res.json(body);
+              res.end();
+            });
+
         });
-*/
 
 
         self.app.get('/getprojects', function(req, res){

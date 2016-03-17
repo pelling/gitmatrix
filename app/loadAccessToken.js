@@ -21,8 +21,9 @@ var LoadAccessToken = React.createClass({
 
     render : function() {
       return (
-        <div>Loading GitHub Access Token using Code = {this.props.oauth_code}<br/>
-        Access Token = {this.props.access_token}
+        <div>
+          Oauth Code = {this.props.oauth_code}<br/>
+          Loading Access Token...
         </div>
       );
     }

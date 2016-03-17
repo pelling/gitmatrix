@@ -4,6 +4,7 @@ import TopNav from './topnav.js';
 import Home from './home.js';
 import LoadAccessToken from './loadAccessToken.js';
 import LoadUser from './loadUser.js';
+import LoadRepositories from './loadRepositories.js';
 import ProjectLoader from './projectLoader.js';
 import SelectProject from './selectProject.js';
 import BacklogLoader from './backlogLoader.js';
@@ -21,6 +22,7 @@ var Main = React.createClass({
       oauth_code: 'not found',
       access_token: 'not found',
       user: 'not found',
+      repositories: 'not found',
       session: false,
       projects: [],
       backlog: { "contributors":[], "items":[]}
@@ -42,22 +44,27 @@ var Main = React.createClass({
     },
 
 
-  handleOauthCodeLoaded: function(newOauthCode){
-    this.setState({oauth_code : newOauthCode});
-    consoleLog('oauth code loaded: ' +  newOauthCode);
+  handleOauthCodeLoaded: function(oauthCode){
+    this.setState({oauth_code : oauthCode});
+    consoleLog('oauth code loaded: ' +  oauthCode);
   },
 
-  handleAccessTokenLoaded: function(newAccessToken){
-    this.setState({access_token : newAccessToken});
-    consoleLog('access token loaded: ' +  newAccessToken);
+  handleAccessTokenLoaded: function(accessToken){
+    this.setState({access_token : accessToken});
+    consoleLog('access token loaded: ' +  accessToken);
   },
 
-  handleUserLoaded: function(newUser){
-    var user = JSON.parse(newUser);
-    this.setState({user : user});
-    consoleLog('user loaded: ' +  user.name);
+  handleUserLoaded: function(user){
+    var userJson = JSON.parse(user);
+    this.setState({user : userJson});
+    consoleLog('user loaded: ' +  userJson.name);
   },
 
+  handleRepositoriesLoaded: function(repositories){
+    var repositoriesJson = JSON.parse(repositories);
+    this.setState({repositories : repositoriesJson});
+    consoleLog('repositories loaded - number found: ' +  repositoriesJson.length);
+  },
 
   handleSignOut : function(){
     this.setState({oauth_code : 'not found'});
@@ -81,12 +88,14 @@ var Main = React.createClass({
           oauth_code: this.state.oauth_code,
           access_token: this.state.access_token,
           user: this.state.user,
+          repositories: this.state.repositories,
           session: this.state.session,
           projects: this.state.projects,
           backlog: this.state.backlog,
           onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
           onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
           onUserLoaded: this.handleUserLoaded.bind(this),
+          onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
           onSignOut: this.handleSignOut.bind(this),
           onProjectsLoaded: this.handleProjectsLoaded.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -112,6 +121,7 @@ React.render((
       <Route path="home" component={Home} />
       <Route path="loadAccessToken" component={LoadAccessToken} />
       <Route path="loadUser" component={LoadUser} />
+      <Route path="loadRepositories" component={LoadRepositories} />
       <Route path="selectProject" component={SelectProject} />
       <Route path="backlogLoader" component={BacklogLoader} />
       <Route path="backlog" component={Backlog} />

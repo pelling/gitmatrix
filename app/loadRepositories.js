@@ -4,17 +4,17 @@ import consoleLog from './consoleLog.js';
 import 'whatwg-fetch';
 
 
-var LoadUser = React.createClass({
+var LoadRepositories = React.createClass({
 
   componentDidMount: function() {
-      fetch('getuser?access_token=' + this.props.access_token)
+      fetch('getrepositories?access_token=' + this.props.access_token)
       .then((response) => response.json())
       .then((responseData) => {
-        this.props.onUserLoaded(responseData);
-        browserHistory.push('/loadRepositories');
+        this.props.onRepositoriesLoaded(responseData);
+        //browserHistory.push('/selectProduct');
       })
       .catch((error) => {
-        consoleLog('Error loading user: ' + error);
+        consoleLog('Error loading repositories: ' + error);
       });
 
     },
@@ -24,7 +24,9 @@ var LoadUser = React.createClass({
         <div>
           Oauth Code = {this.props.oauth_code}<br/>
           Access Token = {this.props.access_token}<br/>
-          Loading User...
+          User = {this.props.user.name}<br/>
+          Loading Repositories...<br/>
+          {JSON.stringify(this.props.repositories)}
         </div>
       );
     }
@@ -32,4 +34,4 @@ var LoadUser = React.createClass({
 });
 
 
-export default LoadUser;
+export default LoadRepositories;
