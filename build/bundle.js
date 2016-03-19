@@ -25245,15 +25245,26 @@
 	    return _react2['default'].createElement(
 	      'div',
 	      { className: 'row-fluid' },
+	      _react2['default'].createElement('div', { className: 'col-md-4' }),
 	      _react2['default'].createElement(
 	        'div',
-	        { className: 'col-md-12' },
+	        { className: 'col-md-4 gm-height100' },
 	        _react2['default'].createElement(
-	          'h3',
-	          null,
-	          'Backlog prioritization via the consensus of the team.'
+	          'div',
+	          { className: 'gm-shaded gm-center-box' },
+	          _react2['default'].createElement(
+	            'span',
+	            { className: 'gm-logo' },
+	            '[ GitMatrix ]'
+	          ),
+	          _react2['default'].createElement(
+	            'p',
+	            null,
+	            'Backlog prioritization via the consensus of the team.'
+	          )
 	        )
-	      )
+	      ),
+	      _react2['default'].createElement('div', { className: 'col-md-4' })
 	    );
 	  }
 	});
