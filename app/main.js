@@ -78,6 +78,7 @@ var Main = React.createClass({
   },
 
     render: function () {
+        var localDevLink = "127.0.0.1:8080?access_token=" + this.state.access_token;
         let child = this.props.children && React.cloneElement(this.props.children, {
           client_id: this.state.client_id,
           oauth_code: this.state.oauth_code,
@@ -95,12 +96,20 @@ var Main = React.createClass({
         } );
 
         return (
-          <div>
-            <div id="topnav"><TopNav user={this.state.user} onSignOut={this.handleSignOut.bind(this)} /></div>
-            <div id="app">
-              {child}
+
+            <div>
+                   <div id="topnav"><TopNav oauth_code={this.state.oauth_code} client_id={this.state.client_id} user={this.state.user} onSignOut={this.handleSignOut.bind(this)} /></div>
+                   <div id="app">
+                     {child}
+                   </div>
+                   <hr/>
+                   <div id="gm-footer">
+                      <a href={localDevLink}>{localDevLink}</a>
+                   </div>
+
             </div>
-          </div>
+
+
         );
     }
 });

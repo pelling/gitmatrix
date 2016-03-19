@@ -24,7 +24,7 @@ var SelectProduct = React.createClass({
                         </div>
                     </div>
                     <div className="col-md-8">
-
+                      <br/>
                     </div>
               </div>
         );
