@@ -3,9 +3,6 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 
 var TopNav = React.createClass({
 
-
-
-
     render: function () {
         var rightSide = this.props.oauth_code;
         var client_id = this.props.client_id;

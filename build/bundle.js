@@ -158,7 +158,7 @@
 	  },
 
 	  render: function render() {
-	    var localDevLink = "127.0.0.1:8080?access_token=" + this.state.access_token;
+	    var localDevLink = "http://127.0.0.1:8080?access_token=" + this.state.access_token;
 	    var child = this.props.children && _react2['default'].cloneElement(this.props.children, {
 	      client_id: this.state.client_id,
 	      oauth_code: this.state.oauth_code,
@@ -188,7 +188,6 @@
 	        { id: 'app' },
 	        child
 	      ),
-	      _react2['default'].createElement('hr', null),
 	      _react2['default'].createElement(
 	        'div',
 	        { id: 'gm-footer' },
