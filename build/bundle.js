@@ -127,6 +127,7 @@
 	      access_token: 'not found',
 	      user: 'not found',
 	      repositories: 'not found',
+	      repository: 'not found',
 	      issues: 'not found',
 	      session: false,
 	      projects: [],
@@ -176,6 +177,12 @@
 	    (0, _consoleLogJs2['default'])('repositories loaded - number found: ' + repositoriesJson.length);
 	  },
 
+	  handleRepositorySelected: function handleRepositorySelected(index) {
+	    var repository = this.state.repositories[index];
+	    this.setState({ repository: repository });
+	    (0, _consoleLogJs2['default'])('repository selected: ' + repository.name);
+	  },
+
 	  handleIssuesLoaded: function handleIssuesLoaded(issues) {
 	    var issuesJson = JSON.parse(issues);
 	    this.setState({ issues: issuesJson });
@@ -202,6 +209,7 @@
 	      access_token: this.state.access_token,
 	      user: this.state.user,
 	      repositories: this.state.repositories,
+	      repository: this.state.repository,
 	      issues: this.state.issues,
 	      session: this.state.session,
 	      backlog: this.state.backlog,
@@ -211,6 +219,7 @@
 	      onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
 	      onUserLoaded: this.handleUserLoaded.bind(this),
 	      onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
+	      onSelectRepository: this.handleRepositorySelected.bind(this),
 	      onIssuesLoaded: this.handleIssuesLoaded.bind(this),
 	      onSignOut: this.handleSignOut.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -26000,7 +26009,8 @@
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
-	    fetch('getissues?access_token=' + this.props.access_token).then(function (response) {
+	    alert(this.props.repository.full_name);
+	    fetch('getissues?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
 	      _this.props.onIssuesLoaded(responseData);
@@ -26148,7 +26158,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
-	    value: true
+	  value: true
 	});
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -26160,56 +26170,62 @@
 	var _reactRouter = __webpack_require__(158);
 
 	var SelectProduct = _react2['default'].createClass({
-	    displayName: 'SelectProduct',
+	  displayName: 'SelectProduct',
 
-	    componentWillMount: function componentWillMount() {
-	        this.props.onClearGitHubConsole();
-	        if (this.props.repositories == 'not found') {
-	            //problem -- repositories were not loaded!
-	        }
-	    },
-
-	    render: function render() {
-	        var products = this.props.repositories.map(function (repository) {
-	            return _react2['default'].createElement(Product, { id: repository.id, name: repository.name });
-	        });
-	        return _react2['default'].createElement(
-	            'div',
-	            { className: 'row-fluid' },
-	            _react2['default'].createElement(
-	                'div',
-	                { className: 'col-md-4' },
-	                _react2['default'].createElement(
-	                    'h4',
-	                    null,
-	                    'Select GitHub Product:'
-	                ),
-	                _react2['default'].createElement(
-	                    'div',
-	                    { className: 'list-group' },
-	                    products
-	                )
-	            ),
-	            _react2['default'].createElement(
-	                'div',
-	                { className: 'col-md-8' },
-	                _react2['default'].createElement('br', null)
-	            )
-	        );
+	  componentWillMount: function componentWillMount() {
+	    this.props.onClearGitHubConsole();
+	    if (this.props.repositories == 'not found') {
+	      //problem -- repositories were not loaded!
 	    }
+	  },
+
+	  render: function render() {
+	    var _this = this;
+
+	    var products = this.props.repositories.map(function (repository, i) {
+	      return _react2['default'].createElement(Product, { id: repository.id, name: repository.name, index: i, onSelectRepository: _this.props.onSelectRepository });
+	    });
+	    return _react2['default'].createElement(
+	      'div',
+	      { className: 'row-fluid' },
+	      _react2['default'].createElement(
+	        'div',
+	        { className: 'col-md-4' },
+	        _react2['default'].createElement(
+	          'h4',
+	          null,
+	          'Select GitHub Product:'
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'list-group' },
+	          products
+	        )
+	      ),
+	      _react2['default'].createElement(
+	        'div',
+	        { className: 'col-md-8' },
+	        _react2['default'].createElement('br', null)
+	      )
+	    );
+	  }
 	});
 
 	var Product = _react2['default'].createClass({
-	    displayName: 'Product',
+	  displayName: 'Product',
 
-	    render: function render() {
-	        var backlogLink = "/loadIssues?id=" + this.props.id;
-	        return _react2['default'].createElement(
-	            _reactRouter.Link,
-	            { to: backlogLink, className: 'list-group-item' },
-	            this.props.name
-	        );
-	    }
+	  handleSelectProduct: function handleSelectProduct(index) {
+	    this.props.onSelectRepository(index);
+	    _reactRouter.browserHistory.push('/loadIssues');
+	  },
+
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'a',
+	      { href: '#', className: 'list-group-item', onClick: this.handleSelectProduct.bind(this, this.props.index) },
+	      this.props.name
+	    );
+	  }
 	});
 
 	exports['default'] = SelectProduct;

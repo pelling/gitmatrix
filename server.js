@@ -214,7 +214,8 @@ var SampleApp = function() {
 
         self.app.get('/getissues', function(req, res){
           var access_token = req.query.access_token;
-          var requestUrl = 'https://api.github.com/repos/pelling/gitmatrix/issues?access_token=' + access_token;
+          var full_name = req.query.full_name;
+          var requestUrl = 'https://api.github.com/repos/' + full_name + '/issues?access_token=' + access_token;
 
           request({
             uri: requestUrl,

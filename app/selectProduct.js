@@ -13,8 +13,8 @@ var SelectProduct = React.createClass({
   },
 
     render: function () {
-        var products = this.props.repositories.map((repository) => {
-          return <Product id={repository.id} name={repository.name}/>
+        var products = this.props.repositories.map((repository, i) => {
+          return <Product id={repository.id} name={repository.name} index={i} onSelectRepository={this.props.onSelectRepository}/>
         });
         return (
               <div className="row-fluid">
@@ -38,10 +38,15 @@ var SelectProduct = React.createClass({
 
 var Product = React.createClass({
 
+  handleSelectProduct: function(index) {
+    this.props.onSelectRepository(index);
+    browserHistory.push('/loadIssues');
+  },
+
+
     render: function () {
-        var backlogLink = "/loadIssues?id=" + this.props.id;
         return (
-                <Link to={backlogLink} className="list-group-item" >{this.props.name}</Link>
+                <a href="#" className="list-group-item" onClick={this.handleSelectProduct.bind(this, this.props.index)}>{this.props.name}</a>
         );
     }
 });

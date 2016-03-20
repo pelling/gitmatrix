@@ -28,6 +28,7 @@ var Main = React.createClass({
       access_token: 'not found',
       user: 'not found',
       repositories: 'not found',
+      repository: 'not found',
       issues: 'not found',
       session: false,
       projects: [],
@@ -80,6 +81,12 @@ var Main = React.createClass({
     consoleLog('repositories loaded - number found: ' +  repositoriesJson.length);
   },
 
+  handleRepositorySelected: function(index){
+    var repository = this.state.repositories[index];
+    this.setState({repository : repository});
+    consoleLog('repository selected: ' +  repository.name);
+  },
+
   handleIssuesLoaded: function(issues){
     var issuesJson = JSON.parse(issues);
     this.setState({issues : issuesJson});
@@ -107,6 +114,7 @@ var Main = React.createClass({
           access_token: this.state.access_token,
           user: this.state.user,
           repositories: this.state.repositories,
+          repository: this.state.repository,
           issues: this.state.issues,
           session: this.state.session,
           backlog: this.state.backlog,
@@ -116,6 +124,7 @@ var Main = React.createClass({
           onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
           onUserLoaded: this.handleUserLoaded.bind(this),
           onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
+          onSelectRepository: this.handleRepositorySelected.bind(this),
           onIssuesLoaded: this.handleIssuesLoaded.bind(this),
           onSignOut: this.handleSignOut.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
