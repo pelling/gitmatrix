@@ -7,6 +7,7 @@ import 'whatwg-fetch';
 var LoadUser = React.createClass({
 
   componentDidMount: function() {
+
       this.props.onAddToGitHubConsole('requesting user');
       fetch('getuser?access_token=' + this.props.access_token)
       .then((response) => response.json())

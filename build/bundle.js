@@ -26009,7 +26009,7 @@
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
-	    alert(this.props.repository.full_name);
+	    alert('test');
 	    fetch('getissues?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
