@@ -82,19 +82,31 @@
 
 	var _loadIssuesJs2 = _interopRequireDefault(_loadIssuesJs);
 
-	var _selectProductJs = __webpack_require__(224);
+	var _viewUserDataJs = __webpack_require__(224);
+
+	var _viewUserDataJs2 = _interopRequireDefault(_viewUserDataJs);
+
+	var _viewRepositoriesDataJs = __webpack_require__(225);
+
+	var _viewRepositoriesDataJs2 = _interopRequireDefault(_viewRepositoriesDataJs);
+
+	var _viewIssuesDataJs = __webpack_require__(226);
+
+	var _viewIssuesDataJs2 = _interopRequireDefault(_viewIssuesDataJs);
+
+	var _selectProductJs = __webpack_require__(227);
 
 	var _selectProductJs2 = _interopRequireDefault(_selectProductJs);
 
-	var _backlogLoaderJs = __webpack_require__(225);
+	var _backlogLoaderJs = __webpack_require__(228);
 
 	var _backlogLoaderJs2 = _interopRequireDefault(_backlogLoaderJs);
 
-	var _backlogJs = __webpack_require__(226);
+	var _backlogJs = __webpack_require__(229);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	var _calibrateJs = __webpack_require__(227);
+	var _calibrateJs = __webpack_require__(230);
 
 	var _calibrateJs2 = _interopRequireDefault(_calibrateJs);
 
@@ -226,7 +238,24 @@
 	          { href: localDevLink },
 	          _react2['default'].createElement('i', { className: 'fa fa-copyright' })
 	        ),
-	        ' 2016'
+	        ' 2016      |     ',
+	        _react2['default'].createElement(
+	          _reactRouter.Link,
+	          { to: '/viewUserData' },
+	          'user data'
+	        ),
+	        '     |     ',
+	        _react2['default'].createElement(
+	          _reactRouter.Link,
+	          { to: '/viewRepositoriesData' },
+	          'repositories data'
+	        ),
+	        '     |     ',
+	        _react2['default'].createElement(
+	          _reactRouter.Link,
+	          { to: '/viewIssuesData' },
+	          'issues data'
+	        )
 	      )
 	    );
 	  }
@@ -244,6 +273,10 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadUser', component: _loadUserJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepositories', component: _loadRepositoriesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadIssues', component: _loadIssuesJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewUserData', component: _viewUserDataJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepositoriesData', component: _viewRepositoriesDataJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewIssuesData', component: _viewIssuesDataJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewIssuesData', component: _viewIssuesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProduct', component: _selectProductJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlogLoader', component: _backlogLoaderJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlog', component: _backlogJs2['default'] }),
@@ -25998,6 +26031,123 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var ViewUserData = _react2['default'].createClass({
+	  displayName: 'ViewUserData',
+
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      _react2['default'].createElement(
+	        'h1',
+	        null,
+	        'User'
+	      ),
+	      JSON.stringify(this.props.user)
+	    );
+	  }
+
+	});
+
+	exports['default'] = ViewUserData;
+	module.exports = exports['default'];
+
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var ViewRepositoriesData = _react2['default'].createClass({
+	  displayName: 'ViewRepositoriesData',
+
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      _react2['default'].createElement(
+	        'h1',
+	        null,
+	        'Repostiories'
+	      ),
+	      JSON.stringify(this.props.repositories)
+	    );
+	  }
+
+	});
+
+	exports['default'] = ViewRepositoriesData;
+	module.exports = exports['default'];
+
+/***/ },
+/* 226 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var ViewIssuesData = _react2['default'].createClass({
+	  displayName: 'ViewIssuesData',
+
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      _react2['default'].createElement(
+	        'h1',
+	        null,
+	        'Issues'
+	      ),
+	      JSON.stringify(this.props.issues)
+	    );
+	  }
+
+	});
+
+	exports['default'] = ViewIssuesData;
+	module.exports = exports['default'];
+
+/***/ },
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
 
@@ -26066,7 +26216,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 225 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26119,7 +26269,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 226 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26134,7 +26284,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _backlogJs = __webpack_require__(226);
+	var _backlogJs = __webpack_require__(229);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
@@ -26204,7 +26354,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 227 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

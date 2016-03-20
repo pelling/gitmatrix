@@ -7,6 +7,9 @@ import LoadAccessToken from './loadAccessToken.js';
 import LoadUser from './loadUser.js';
 import LoadRepositories from './loadRepositories.js';
 import LoadIssues from './loadIssues.js';
+import ViewUserData from './viewUserData.js';
+import ViewRepositoriesData from './viewRepositoriesData.js';
+import ViewIssuesData from './viewIssuesData.js';
 import SelectProduct from './selectProduct.js';
 import BacklogLoader from './backlogLoader.js';
 import Backlog from './backlog.js';
@@ -127,6 +130,12 @@ var Main = React.createClass({
                    </div>
                    <div id="gm-footer">
                       <a href={localDevLink}><i className="fa fa-copyright"></i></a> 2016
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <Link to="/viewUserData">user data</Link>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <Link to="/viewRepositoriesData">repositories data</Link>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <Link to="/viewIssuesData">issues data</Link>
                    </div>
 
             </div>
@@ -145,6 +154,10 @@ React.render((
       <Route path="loadUser" component={LoadUser} />
       <Route path="loadRepositories" component={LoadRepositories} />
       <Route path="loadIssues" component={LoadIssues} />
+      <Route path="viewUserData" component={ViewUserData} />
+      <Route path="viewRepositoriesData" component={ViewRepositoriesData} />
+      <Route path="viewIssuesData" component={ViewIssuesData} />
+      <Route path="viewIssuesData" component={ViewIssuesData} />
       <Route path="selectProduct" component={SelectProduct} />
       <Route path="backlogLoader" component={BacklogLoader} />
       <Route path="backlog" component={Backlog} />
