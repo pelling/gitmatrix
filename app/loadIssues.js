@@ -8,6 +8,8 @@ var LoadIssues = React.createClass({
 
   componentDidMount: function() {
 
+
+
       fetch('getissues?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name)
       .then((response) => response.json())
       .then((responseData) => {
