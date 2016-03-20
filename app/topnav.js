@@ -52,7 +52,7 @@ var SignOutControl = React.createClass({
     render: function () {
         return (
                 <div>
-                  <Link to="/selectProject">{this.props.userName}</Link>
+                  <Link to="/selectProduct">{this.props.userName}</Link>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <a href="#" onClick={this.handleSignOut.bind(this)}><i className="fa fa-power-off"></i>&nbsp; Sign Out</a>
                 </div>
