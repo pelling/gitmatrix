@@ -26009,7 +26009,8 @@
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
-	    alert('test');
+	    // for some reason alert is still showing on this page.  adding comment to test this.
+	    // and another line
 	    fetch('getissues?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
