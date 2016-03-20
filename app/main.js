@@ -50,7 +50,7 @@ var Main = React.createClass({
     },
 
   handleClearGitHubConsole: function(){
-      this.setState({github_console : []});
+    this.setState({github_console : []});
     },
 
   handleOauthCodeLoaded: function(oauthCode){

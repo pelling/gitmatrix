@@ -25112,10 +25112,11 @@
 	  displayName: 'TopNav',
 
 	  render: function render() {
-	    var rightSide = this.props.oauth_code;
+
 	    var client_id = this.props.client_id;
 	    var onSignOut = this.props.onSignOut;
 	    var userName = this.props.user.name;
+	    var rightSide = 'connecting to GitHub...';
 	    if (this.props.oauth_code === "not found") {
 	      rightSide = (function () {
 	        return _react2['default'].createElement(LogInControl, { client_id: client_id });
