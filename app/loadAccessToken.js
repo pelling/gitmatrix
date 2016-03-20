@@ -7,10 +7,12 @@ import 'whatwg-fetch';
 var LoadAccessToken = React.createClass({
 
   componentDidMount: function() {
+      this.props.onAddToGitHubConsole('requesting access token');
       fetch('getaccesstoken?code=' + this.props.oauth_code)
       .then((response) => response.json())
       .then((responseData) => {
         this.props.onAccessTokenLoaded(responseData);
+        this.props.onAddToGitHubConsole('access token received: ' + responseData);
         browserHistory.push('/loadUser');
       })
       .catch((error) => {
@@ -22,8 +24,6 @@ var LoadAccessToken = React.createClass({
     render : function() {
       return (
         <div>
-          Oauth Code = {this.props.oauth_code}<br/>
-          Loading Access Token...
         </div>
       );
     }

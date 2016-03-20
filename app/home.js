@@ -10,6 +10,7 @@ var Home = React.createClass({
         // home page accessed without GitHub oauth code
 
       } else {
+        this.props.onAddToGitHubConsole('oauth code received');
         consoleLog('GitHub has passed oauth code: ' + oauth_code);
         consoleLog('Saving code to state and redirecting to LoadAccessToken');
         this.props.onOauthCodeLoaded(oauth_code);
@@ -23,6 +24,7 @@ var Home = React.createClass({
         // home page accessed without access_token
 
       } else {
+        this.props.onAddToGitHubConsole('access token received');
         consoleLog('GitHub has passed access_token: ' + access_token);
         consoleLog('Saving access_token to state and redirecting to LoadUser');
         this.props.onAccessTokenLoaded(access_token);

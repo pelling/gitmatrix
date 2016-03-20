@@ -22,10 +22,6 @@ var LoadRepositories = React.createClass({
     render : function() {
       return (
         <div>
-          Oauth Code = {this.props.oauth_code}<br/>
-          Access Token = {this.props.access_token}<br/>
-          User = {this.props.user.name}<br/>
-          Loading Repositories...<br/>
         </div>
       );
     }

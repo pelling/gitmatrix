@@ -58,49 +58,54 @@
 
 	var _topnavJs2 = _interopRequireDefault(_topnavJs);
 
-	var _homeJs = __webpack_require__(216);
+	var _githubconsoleJs = __webpack_require__(216);
+
+	var _githubconsoleJs2 = _interopRequireDefault(_githubconsoleJs);
+
+	var _homeJs = __webpack_require__(217);
 
 	var _homeJs2 = _interopRequireDefault(_homeJs);
 
-	var _loadAccessTokenJs = __webpack_require__(218);
+	var _loadAccessTokenJs = __webpack_require__(219);
 
 	var _loadAccessTokenJs2 = _interopRequireDefault(_loadAccessTokenJs);
 
-	var _loadUserJs = __webpack_require__(220);
+	var _loadUserJs = __webpack_require__(221);
 
 	var _loadUserJs2 = _interopRequireDefault(_loadUserJs);
 
-	var _loadRepositoriesJs = __webpack_require__(221);
+	var _loadRepositoriesJs = __webpack_require__(222);
 
 	var _loadRepositoriesJs2 = _interopRequireDefault(_loadRepositoriesJs);
 
-	var _selectProductJs = __webpack_require__(222);
+	var _selectProductJs = __webpack_require__(223);
 
 	var _selectProductJs2 = _interopRequireDefault(_selectProductJs);
 
-	var _backlogLoaderJs = __webpack_require__(223);
+	var _backlogLoaderJs = __webpack_require__(224);
 
 	var _backlogLoaderJs2 = _interopRequireDefault(_backlogLoaderJs);
 
-	var _backlogJs = __webpack_require__(224);
+	var _backlogJs = __webpack_require__(225);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	var _calibrateJs = __webpack_require__(225);
+	var _calibrateJs = __webpack_require__(226);
 
 	var _calibrateJs2 = _interopRequireDefault(_calibrateJs);
 
-	var _consoleLogJs = __webpack_require__(217);
+	var _consoleLogJs = __webpack_require__(218);
 
 	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
 
-	__webpack_require__(219);
+	__webpack_require__(220);
 
 	var Main = _react2['default'].createClass({
 	  displayName: 'Main',
 
 	  getInitialState: function getInitialState() {
 	    return {
+	      github_console: [],
 	      client_id: 'not found',
 	      oauth_code: 'not found',
 	      access_token: 'not found',
@@ -122,6 +127,14 @@
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading client_id: ' + error);
 	    });
+	  },
+
+	  handleAddToGitHubConsole: function handleAddToGitHubConsole(message) {
+	    this.setState({ github_console: this.state.github_console.concat([message]) });
+	  },
+
+	  handleClearGitHubConsole: function handleClearGitHubConsole() {
+	    this.setState({ github_console: [] });
 	  },
 
 	  handleOauthCodeLoaded: function handleOauthCodeLoaded(oauthCode) {
@@ -160,6 +173,7 @@
 	  render: function render() {
 	    var localDevLink = "http://127.0.0.1:8080?access_token=" + this.state.access_token;
 	    var child = this.props.children && _react2['default'].cloneElement(this.props.children, {
+	      github_console: this.state.github_console,
 	      client_id: this.state.client_id,
 	      oauth_code: this.state.oauth_code,
 	      access_token: this.state.access_token,
@@ -167,6 +181,8 @@
 	      repositories: this.state.repositories,
 	      session: this.state.session,
 	      backlog: this.state.backlog,
+	      onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
+	      onClearGitHubConsole: this.handleClearGitHubConsole.bind(this),
 	      onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
 	      onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
 	      onUserLoaded: this.handleUserLoaded.bind(this),
@@ -183,6 +199,7 @@
 	        { id: 'topnav' },
 	        _react2['default'].createElement(_topnavJs2['default'], { oauth_code: this.state.oauth_code, client_id: this.state.client_id, user: this.state.user, onSignOut: this.handleSignOut.bind(this) })
 	      ),
+	      _react2['default'].createElement(_githubconsoleJs2['default'], { github_console: this.state.github_console }),
 	      _react2['default'].createElement(
 	        'div',
 	        { id: 'app' },
@@ -25198,6 +25215,69 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var GitHubConsole = _react2['default'].createClass({
+	    displayName: 'GitHubConsole',
+
+	    render: function render() {
+	        var messages = this.props.github_console.map(function (message) {
+	            return _react2['default'].createElement(Message, { text: message });
+	        });
+	        return _react2['default'].createElement(
+	            'div',
+	            { className: 'gm_gitHubConsole' },
+	            messages
+	        );
+	    }
+
+	});
+
+	exports['default'] = GitHubConsole;
+
+	var Message = _react2['default'].createClass({
+	    displayName: 'Message',
+
+	    render: function render() {
+	        return _react2['default'].createElement(
+	            'span',
+	            null,
+	            '> ',
+	            this.props.text,
+	            _react2['default'].createElement('br', null)
+	        );
+	    }
+	});
+
+	/*
+	var userLink = "";
+	var gitHubOauthLink = "https://github.com/login/oauth/authorize?client_id=" + this.props.client_id;
+	var logInOrSignOut = <a href='#'  href={gitHubOauthLink}>Login with GitHub</a>;
+
+	if (!this.props.user === "not found") {
+	  userLink = <Link to="/selectProject"><i className="fa fa-github"></i>&nbsp; {this.props.user.name}</Link>;
+	  logInOrSignOut = <a href="#" onClick={this.handleSignOut.bind(this)}><i className="fa fa-power-off"></i>&nbsp; Sign Out</a>
+	}
+
+	*/
+	module.exports = exports['default'];
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 
@@ -25209,7 +25289,7 @@
 
 	var _reactRouter = __webpack_require__(158);
 
-	var _consoleLogJs = __webpack_require__(217);
+	var _consoleLogJs = __webpack_require__(218);
 
 	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
 
@@ -25222,6 +25302,7 @@
 	      // home page accessed without GitHub oauth code
 
 	    } else {
+	        this.props.onAddToGitHubConsole('oauth code received');
 	        (0, _consoleLogJs2['default'])('GitHub has passed oauth code: ' + oauth_code);
 	        (0, _consoleLogJs2['default'])('Saving code to state and redirecting to LoadAccessToken');
 	        this.props.onOauthCodeLoaded(oauth_code);
@@ -25233,6 +25314,7 @@
 	      // home page accessed without access_token
 
 	    } else {
+	        this.props.onAddToGitHubConsole('access token received');
 	        (0, _consoleLogJs2['default'])('GitHub has passed access_token: ' + access_token);
 	        (0, _consoleLogJs2['default'])('Saving access_token to state and redirecting to LoadUser');
 	        this.props.onAccessTokenLoaded(access_token);
@@ -25273,7 +25355,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 217 */
+/* 218 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25292,7 +25374,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 218 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25309,11 +25391,11 @@
 
 	var _reactRouter = __webpack_require__(158);
 
-	var _consoleLogJs = __webpack_require__(217);
+	var _consoleLogJs = __webpack_require__(218);
 
 	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
 
-	__webpack_require__(219);
+	__webpack_require__(220);
 
 	var LoadAccessToken = _react2['default'].createClass({
 	  displayName: 'LoadAccessToken',
@@ -25321,10 +25403,12 @@
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
+	    this.props.onAddToGitHubConsole('requesting access token');
 	    fetch('getaccesstoken?code=' + this.props.oauth_code).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
 	      _this.props.onAccessTokenLoaded(responseData);
+	      _this.props.onAddToGitHubConsole('access token received: ' + responseData);
 	      _reactRouter.browserHistory.push('/loadUser');
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading access token: ' + error);
@@ -25332,14 +25416,7 @@
 	  },
 
 	  render: function render() {
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      'Oauth Code = ',
-	      this.props.oauth_code,
-	      _react2['default'].createElement('br', null),
-	      'Loading Access Token...'
-	    );
+	    return _react2['default'].createElement('div', null);
 	  }
 
 	});
@@ -25348,7 +25425,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 219 */
+/* 220 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25742,65 +25819,6 @@
 	})(typeof self !== 'undefined' ? self : undefined);
 
 /***/ },
-/* 220 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(158);
-
-	var _consoleLogJs = __webpack_require__(217);
-
-	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
-
-	__webpack_require__(219);
-
-	var LoadUser = _react2['default'].createClass({
-	  displayName: 'LoadUser',
-
-	  componentDidMount: function componentDidMount() {
-	    var _this = this;
-
-	    fetch('getuser?access_token=' + this.props.access_token).then(function (response) {
-	      return response.json();
-	    }).then(function (responseData) {
-	      _this.props.onUserLoaded(responseData);
-	      _reactRouter.browserHistory.push('/loadRepositories');
-	    })['catch'](function (error) {
-	      (0, _consoleLogJs2['default'])('Error loading user: ' + error);
-	    });
-	  },
-
-	  render: function render() {
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      'Oauth Code = ',
-	      this.props.oauth_code,
-	      _react2['default'].createElement('br', null),
-	      'Access Token = ',
-	      this.props.access_token,
-	      _react2['default'].createElement('br', null),
-	      'Loading User...'
-	    );
-	  }
-
-	});
-
-	exports['default'] = LoadUser;
-	module.exports = exports['default'];
-
-/***/ },
 /* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -25818,11 +25836,62 @@
 
 	var _reactRouter = __webpack_require__(158);
 
-	var _consoleLogJs = __webpack_require__(217);
+	var _consoleLogJs = __webpack_require__(218);
 
 	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
 
-	__webpack_require__(219);
+	__webpack_require__(220);
+
+	var LoadUser = _react2['default'].createClass({
+	  displayName: 'LoadUser',
+
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
+	    this.props.onAddToGitHubConsole('requesting user');
+	    fetch('getuser?access_token=' + this.props.access_token).then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.props.onUserLoaded(responseData);
+	      _this.props.onAddToGitHubConsole('user received');
+	      _reactRouter.browserHistory.push('/loadRepositories');
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error loading user: ' + error);
+	    });
+	  },
+
+	  render: function render() {
+	    return _react2['default'].createElement('div', null);
+	  }
+
+	});
+
+	exports['default'] = LoadUser;
+	module.exports = exports['default'];
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var _consoleLogJs = __webpack_require__(218);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
 
 	var LoadRepositories = _react2['default'].createClass({
 	  displayName: 'LoadRepositories',
@@ -25841,21 +25910,7 @@
 	  },
 
 	  render: function render() {
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      'Oauth Code = ',
-	      this.props.oauth_code,
-	      _react2['default'].createElement('br', null),
-	      'Access Token = ',
-	      this.props.access_token,
-	      _react2['default'].createElement('br', null),
-	      'User = ',
-	      this.props.user.name,
-	      _react2['default'].createElement('br', null),
-	      'Loading Repositories...',
-	      _react2['default'].createElement('br', null)
-	    );
+	    return _react2['default'].createElement('div', null);
 	  }
 
 	});
@@ -25864,7 +25919,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 222 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25885,6 +25940,7 @@
 	    displayName: 'SelectProduct',
 
 	    componentWillMount: function componentWillMount() {
+	        this.props.onClearGitHubConsole();
 	        if (this.props.repositories == 'not found') {
 	            //problem -- repositories were not loaded!
 	        }
@@ -25937,7 +25993,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 223 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25954,11 +26010,11 @@
 
 	var _reactRouter = __webpack_require__(158);
 
-	var _consoleLogJs = __webpack_require__(217);
+	var _consoleLogJs = __webpack_require__(218);
 
 	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
 
-	__webpack_require__(219);
+	__webpack_require__(220);
 
 	var BacklogLoader = _react2['default'].createClass({
 	  displayName: 'BacklogLoader',
@@ -25990,7 +26046,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 224 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26005,7 +26061,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _backlogJs = __webpack_require__(224);
+	var _backlogJs = __webpack_require__(225);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
@@ -26075,7 +26131,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 225 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

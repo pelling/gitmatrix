@@ -1,6 +1,7 @@
 import React from 'react';
 import { Router, Route, Link, IndexRoute, browserHistory } from 'react-router';
 import TopNav from './topnav.js';
+import GitHubConsole from './githubconsole.js';
 import Home from './home.js';
 import LoadAccessToken from './loadAccessToken.js';
 import LoadUser from './loadUser.js';
@@ -17,6 +18,7 @@ var Main = React.createClass({
 
   getInitialState : function() {
     return {
+      github_console: [],
       client_id: 'not found',
       oauth_code: 'not found',
       access_token: 'not found',
@@ -42,6 +44,14 @@ var Main = React.createClass({
 
     },
 
+
+  handleAddToGitHubConsole: function(message){
+      this.setState({github_console : this.state.github_console.concat([message])});
+    },
+
+  handleClearGitHubConsole: function(){
+      this.setState({github_console : []});
+    },
 
   handleOauthCodeLoaded: function(oauthCode){
     this.setState({oauth_code : oauthCode});
@@ -80,6 +90,7 @@ var Main = React.createClass({
     render: function () {
         var localDevLink = "http://127.0.0.1:8080?access_token=" + this.state.access_token;
         let child = this.props.children && React.cloneElement(this.props.children, {
+          github_console: this.state.github_console,
           client_id: this.state.client_id,
           oauth_code: this.state.oauth_code,
           access_token: this.state.access_token,
@@ -87,6 +98,8 @@ var Main = React.createClass({
           repositories: this.state.repositories,
           session: this.state.session,
           backlog: this.state.backlog,
+          onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
+          onClearGitHubConsole: this.handleClearGitHubConsole.bind(this),
           onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
           onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
           onUserLoaded: this.handleUserLoaded.bind(this),
@@ -98,6 +111,7 @@ var Main = React.createClass({
         return (
             <div>
                    <div id="topnav"><TopNav oauth_code={this.state.oauth_code} client_id={this.state.client_id} user={this.state.user} onSignOut={this.handleSignOut.bind(this)} /></div>
+                   <GitHubConsole github_console={this.state.github_console} />
                    <div id="app">
                      {child}
                    </div>

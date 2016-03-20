@@ -6,6 +6,7 @@ var SelectProduct = React.createClass({
 
 
   componentWillMount: function () {
+    this.props.onClearGitHubConsole();
     if (this.props.repositories == 'not found') {
       //problem -- repositories were not loaded!
     }
