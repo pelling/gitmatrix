@@ -1,5 +1,7 @@
 body, html { width:100%; height:100%;}
 
+.gm-landing { padding:20px; background-image: url("bg.jpg"); background-size:cover; height:100vh;}
+.gm-tagline {font-family: Kreon, serif; font-size:6.0em; color:#404040; line-height: 0.94; position: absolute; bottom: 70px; height:200px;}
 .gm-logo { font-family: Kreon, serif; color: #00f00e;}
 
 .gm-align-right {text-align:right; }

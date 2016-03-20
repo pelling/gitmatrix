@@ -116,7 +116,7 @@ var Main = React.createClass({
                      {child}
                    </div>
                    <div id="gm-footer">
-                      <a href={localDevLink}>{localDevLink}</a>
+                      <a href={localDevLink}><i className="fa fa-copyright"></i></a> 2016
                    </div>
 
             </div>

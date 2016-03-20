@@ -211,8 +211,9 @@
 	        _react2['default'].createElement(
 	          'a',
 	          { href: localDevLink },
-	          localDevLink
-	        )
+	          _react2['default'].createElement('i', { className: 'fa fa-copyright' })
+	        ),
+	        ' 2016'
 	      )
 	    );
 	  }
@@ -25327,32 +25328,35 @@
 
 	    return _react2['default'].createElement(
 	      'div',
-	      { className: 'row-fluid' },
-	      _react2['default'].createElement('div', { className: 'col-md-4' }),
+	      { className: 'gm-landing' },
 	      _react2['default'].createElement(
 	        'div',
-	        { className: 'col-md-4 gm-height100' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'gm-shaded gm-center-box' },
-	          _react2['default'].createElement(
-	            'span',
-	            { className: 'gm-logo' },
-	            '[ GitMatrix ]'
-	          ),
-	          _react2['default'].createElement(
-	            'p',
-	            null,
-	            'Backlog prioritization via the consensus of the team.'
-	          )
-	        )
-	      ),
-	      _react2['default'].createElement('div', { className: 'col-md-4' })
+	        { className: 'gm-tagline' },
+	        'Welcome to the future',
+	        _react2['default'].createElement('br', null),
+	        ' of product backlog management.'
+	      )
 	    );
 	  }
 	});
 
 	exports['default'] = Home;
+
+	/*   CENTERING STUFF
+	<div className="row-fluid">
+	      <div className="col-md-4"></div>
+	      <div className="col-md-4 gm-height100">
+	            <div className="gm-shaded gm-center-box">
+	                <span className="gm-logo">[ GitMatrix ]</span>
+	                <p>Backlog prioritization via the consensus of the team.</p>
+	            </div>
+	      </div>
+	      <div className="col-md-4"></div>
+	</div>
+
+
+
+	*/
 	module.exports = exports['default'];
 
 /***/ },
