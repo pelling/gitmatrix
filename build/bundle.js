@@ -78,19 +78,23 @@
 
 	var _loadRepositoriesJs2 = _interopRequireDefault(_loadRepositoriesJs);
 
-	var _selectProductJs = __webpack_require__(223);
+	var _loadIssuesJs = __webpack_require__(223);
+
+	var _loadIssuesJs2 = _interopRequireDefault(_loadIssuesJs);
+
+	var _selectProductJs = __webpack_require__(224);
 
 	var _selectProductJs2 = _interopRequireDefault(_selectProductJs);
 
-	var _backlogLoaderJs = __webpack_require__(224);
+	var _backlogLoaderJs = __webpack_require__(225);
 
 	var _backlogLoaderJs2 = _interopRequireDefault(_backlogLoaderJs);
 
-	var _backlogJs = __webpack_require__(225);
+	var _backlogJs = __webpack_require__(226);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	var _calibrateJs = __webpack_require__(226);
+	var _calibrateJs = __webpack_require__(227);
 
 	var _calibrateJs2 = _interopRequireDefault(_calibrateJs);
 
@@ -111,6 +115,7 @@
 	      access_token: 'not found',
 	      user: 'not found',
 	      repositories: 'not found',
+	      issues: 'not found',
 	      session: false,
 	      projects: [],
 	      backlog: { "contributors": [], "items": [] }
@@ -159,6 +164,12 @@
 	    (0, _consoleLogJs2['default'])('repositories loaded - number found: ' + repositoriesJson.length);
 	  },
 
+	  handleIssuesLoaded: function handleIssuesLoaded(issues) {
+	    var issuesJson = JSON.parse(issues);
+	    this.setState({ issues: issuesJson });
+	    (0, _consoleLogJs2['default'])('issues loaded - number found: ' + issuesJson.length);
+	  },
+
 	  handleSignOut: function handleSignOut() {
 	    this.setState({ oauth_code: 'not found' });
 	    this.setState({ access_token: 'not found' });
@@ -179,6 +190,7 @@
 	      access_token: this.state.access_token,
 	      user: this.state.user,
 	      repositories: this.state.repositories,
+	      issues: this.state.issues,
 	      session: this.state.session,
 	      backlog: this.state.backlog,
 	      onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
@@ -187,6 +199,7 @@
 	      onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
 	      onUserLoaded: this.handleUserLoaded.bind(this),
 	      onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
+	      onIssuesLoaded: this.handleIssuesLoaded.bind(this),
 	      onSignOut: this.handleSignOut.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
 	    });
@@ -230,6 +243,7 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadAccessToken', component: _loadAccessTokenJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadUser', component: _loadUserJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepositories', component: _loadRepositoriesJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadIssues', component: _loadIssuesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProduct', component: _selectProductJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlogLoader', component: _backlogLoaderJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlog', component: _backlogJs2['default'] }),
@@ -25930,6 +25944,60 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var _consoleLogJs = __webpack_require__(218);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
+
+	var LoadIssues = _react2['default'].createClass({
+	  displayName: 'LoadIssues',
+
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
+	    fetch('getissues?access_token=' + this.props.access_token).then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.props.onIssuesLoaded(responseData);
+	      //browserHistory.push('/backlog');
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error loading issues: ' + error);
+	    });
+	  },
+
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      'Issues = ',
+	      JSON.stringify(this.props.issues)
+	    );
+	  }
+
+	});
+
+	exports['default'] = LoadIssues;
+	module.exports = exports['default'];
+
+/***/ },
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
 
@@ -25985,7 +26053,7 @@
 	    displayName: 'Product',
 
 	    render: function render() {
-	        var backlogLink = "/backlogLoader?id=" + this.props.id;
+	        var backlogLink = "/loadIssues?id=" + this.props.id;
 	        return _react2['default'].createElement(
 	            _reactRouter.Link,
 	            { to: backlogLink, className: 'list-group-item' },
@@ -25998,7 +26066,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 224 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26051,7 +26119,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 225 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26066,7 +26134,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _backlogJs = __webpack_require__(225);
+	var _backlogJs = __webpack_require__(226);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
@@ -26136,7 +26204,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 226 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

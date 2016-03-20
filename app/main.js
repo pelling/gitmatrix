@@ -6,6 +6,7 @@ import Home from './home.js';
 import LoadAccessToken from './loadAccessToken.js';
 import LoadUser from './loadUser.js';
 import LoadRepositories from './loadRepositories.js';
+import LoadIssues from './loadIssues.js';
 import SelectProduct from './selectProduct.js';
 import BacklogLoader from './backlogLoader.js';
 import Backlog from './backlog.js';
@@ -24,6 +25,7 @@ var Main = React.createClass({
       access_token: 'not found',
       user: 'not found',
       repositories: 'not found',
+      issues: 'not found',
       session: false,
       projects: [],
       backlog: { "contributors":[], "items":[]}
@@ -75,6 +77,12 @@ var Main = React.createClass({
     consoleLog('repositories loaded - number found: ' +  repositoriesJson.length);
   },
 
+  handleIssuesLoaded: function(issues){
+    var issuesJson = JSON.parse(issues);
+    this.setState({issues : issuesJson});
+    consoleLog('issues loaded - number found: ' +  issuesJson.length);
+  },
+
   handleSignOut : function(){
     this.setState({oauth_code : 'not found'});
     this.setState({access_token : 'not found'});
@@ -96,6 +104,7 @@ var Main = React.createClass({
           access_token: this.state.access_token,
           user: this.state.user,
           repositories: this.state.repositories,
+          issues: this.state.issues,
           session: this.state.session,
           backlog: this.state.backlog,
           onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
@@ -104,6 +113,7 @@ var Main = React.createClass({
           onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
           onUserLoaded: this.handleUserLoaded.bind(this),
           onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
+          onIssuesLoaded: this.handleIssuesLoaded.bind(this),
           onSignOut: this.handleSignOut.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
         } );
@@ -134,6 +144,7 @@ React.render((
       <Route path="loadAccessToken" component={LoadAccessToken} />
       <Route path="loadUser" component={LoadUser} />
       <Route path="loadRepositories" component={LoadRepositories} />
+      <Route path="loadIssues" component={LoadIssues} />
       <Route path="selectProduct" component={SelectProduct} />
       <Route path="backlogLoader" component={BacklogLoader} />
       <Route path="backlog" component={Backlog} />

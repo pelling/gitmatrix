@@ -212,6 +212,25 @@ var SampleApp = function() {
         });
 
 
+        self.app.get('/getissues', function(req, res){
+          var access_token = req.query.access_token;
+          var requestUrl = 'https://api.github.com/repos/pelling/gitmatrix/issues?access_token=' + access_token;
+
+          request({
+            uri: requestUrl,
+            headers: {'User-Agent': 'gitmatrix'},
+            method: "GET",
+            timeout: 10000,
+            followRedirect: true,
+            maxRedirects: 10
+            }, function(error, response, body) {
+              res.json(body);
+              res.end();
+            });
+
+        });
+
+
         self.app.get('/getprojects', function(req, res){
           res.json(config.projects);
           res.end();

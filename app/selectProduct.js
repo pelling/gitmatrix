@@ -39,7 +39,7 @@ var SelectProduct = React.createClass({
 var Product = React.createClass({
 
     render: function () {
-        var backlogLink = "/backlogLoader?id=" + this.props.id;
+        var backlogLink = "/loadIssues?id=" + this.props.id;
         return (
                 <Link to={backlogLink} className="list-group-item" >{this.props.name}</Link>
         );
