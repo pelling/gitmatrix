@@ -177,69 +177,24 @@ var SampleApp = function() {
 
         self.app.get('/getuser', function(req, res){
           var access_token = req.query.access_token;
-          var requestUrl = 'https://api.github.com/user?access_token=' + access_token;
-
-          request({
-            uri: requestUrl,
-            headers: {'User-Agent': 'gitmatrix'},
-            method: "GET",
-            timeout: 10000,
-            followRedirect: true,
-            maxRedirects: 10
-            }, function(error, response, body) {
-              res.json(body);
-              res.end();
-            });
+          var relativeUrl = 'user?access_token=' + access_token;
+          self.requestFromGitHubAndSendResponse(relativeUrl, res);
 
         });
 
         self.app.get('/getrepositories', function(req, res){
           var access_token = req.query.access_token;
-          var requestUrl = 'https://api.github.com/user/repos?access_token=' + access_token;
-
-          request({
-            uri: requestUrl,
-            headers: {'User-Agent': 'gitmatrix'},
-            method: "GET",
-            timeout: 10000,
-            followRedirect: true,
-            maxRedirects: 10
-            }, function(error, response, body) {
-              res.json(body);
-              res.end();
-            });
-
+          var relativeUrl = 'user/repos?access_token=' + access_token;
+          self.requestFromGitHubAndSendResponse(relativeUrl, res);
         });
 
 
         self.app.get('/getissues', function(req, res){
           var access_token = req.query.access_token;
           var full_name = req.query.full_name;
-          var requestUrl = 'https://api.github.com/repos/' + full_name + '/issues?access_token=' + access_token;
+          var relativeUrl = 'repos/' + full_name + '/issues?access_token=' + access_token;
+          self.requestFromGitHubAndSendResponse(relativeUrl, res);
 
-          request({
-            uri: requestUrl,
-            headers: {'User-Agent': 'gitmatrix'},
-            method: "GET",
-            timeout: 10000,
-            followRedirect: true,
-            maxRedirects: 10
-            }, function(error, response, body) {
-              res.json(body);
-              res.end();
-            });
-
-        });
-
-
-        self.app.get('/getprojects', function(req, res){
-          res.json(config.projects);
-          res.end();
-        });
-
-        self.app.get('/getbacklog', function(req, res){
-          res.json(config.backlog);
-          res.end();
         });
 
 
@@ -280,6 +235,22 @@ var SampleApp = function() {
     };
 
 
+    self.requestFromGitHubAndSendResponse = function(relativeUrl, res) {
+      var requestUrl = 'https://api.github.com/' + relativeUrl;
+      request({
+        uri: requestUrl,
+        headers: {'User-Agent': 'gitmatrix'},
+        method: "GET",
+        timeout: 10000,
+        followRedirect: true,
+        maxRedirects: 10
+        }, function(error, response, body) {
+          res.json(body);
+          res.end();
+        });
+
+    }
+
     /**
      *  Initializes the sample application.
      */
@@ -300,7 +271,6 @@ var SampleApp = function() {
     self.start = function() {
         //  Start the app on the specific interface (and port).
         self.app.listen(self.port, self.ipaddress, function() {
-            console.log('config key1 = ' + config.key1);
             console.log('%s: Node server started on %s:%d ...',
                         Date(Date.now() ), self.ipaddress, self.port);
         });

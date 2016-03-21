@@ -1,16 +1,4 @@
 {
   "enableAdmin": true,
-  "key1": "abcd",
-  "session": {"userName":"Chris Pelling","userId":"000"},
-
-  "projects": [ {"name":"Bitshares2","id":"000"},
-                {"name":"BlockchainJS","id":"001"}],
-
-  "backlog": {      "name": "Bitshares",
-                    "contributors" : [{"name":"bytemaster2","tokens":"13000"},
-                                      {"name":"pelling","tokens":"20500"},
-                                      {"name":"willhelm","tokens":"1250"}],
-                    "items" : [{"title" : "Fix this"},
-                               {"title" : "Do That"}]
-              }
+  "anotherConfig": "whatever"
 }
