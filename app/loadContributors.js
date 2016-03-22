@@ -4,17 +4,17 @@ import consoleLog from './consoleLog.js';
 import 'whatwg-fetch';
 
 
-var LoadIssues = React.createClass({
+var LoadContributors = React.createClass({
 
   componentDidMount: function() {
 
     // for some reason alert is still showing on this page.  adding comment to test this.
     // and another line
-      fetch('getissues?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name)
+      fetch('getcontributors?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name)
       .then((response) => response.json())
       .then((responseData) => {
-        this.props.onIssuesLoaded(responseData);
-        //browserHistory.push('/backlog');
+        this.props.onContributorsLoaded(responseData);
+        browserHistory.push('/loadIssues');
       })
       .catch((error) => {
         consoleLog('Error loading issues: ' + error);
@@ -32,4 +32,4 @@ var LoadIssues = React.createClass({
 });
 
 
-export default LoadIssues;
+export default LoadContributors;

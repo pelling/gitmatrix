@@ -6,9 +6,11 @@ import Home from './home.js';
 import LoadAccessToken from './loadAccessToken.js';
 import LoadUser from './loadUser.js';
 import LoadRepositories from './loadRepositories.js';
+import LoadContributors from './loadContributors.js';
 import LoadIssues from './loadIssues.js';
 import ViewUserData from './viewUserData.js';
 import ViewRepositoriesData from './viewRepositoriesData.js';
+import ViewContributorsData from './viewContributorsData.js';
 import ViewIssuesData from './viewIssuesData.js';
 import SelectProduct from './selectProduct.js';
 import BacklogLoader from './backlogLoader.js';
@@ -29,6 +31,7 @@ var Main = React.createClass({
       user: 'not found',
       repositories: 'not found',
       repository: 'not found',
+      contributors: 'not found',
       issues: 'not found',
       session: false,
       projects: [],
@@ -87,6 +90,12 @@ var Main = React.createClass({
     consoleLog('repository selected: ' +  repository.name);
   },
 
+  handleContributorsLoaded: function(contributors){
+    var contributorsJson = JSON.parse(contributors);
+    this.setState({contributors : contributorsJson});
+    consoleLog('contributors loaded - number found: ' +  contributorsJson.length);
+  },
+
   handleIssuesLoaded: function(issues){
     var issuesJson = JSON.parse(issues);
     this.setState({issues : issuesJson});
@@ -115,6 +124,7 @@ var Main = React.createClass({
           user: this.state.user,
           repositories: this.state.repositories,
           repository: this.state.repository,
+          contributors: this.state.contributors,
           issues: this.state.issues,
           session: this.state.session,
           backlog: this.state.backlog,
@@ -125,6 +135,7 @@ var Main = React.createClass({
           onUserLoaded: this.handleUserLoaded.bind(this),
           onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
           onSelectRepository: this.handleRepositorySelected.bind(this),
+          onContributorsLoaded: this.handleContributorsLoaded.bind(this),
           onIssuesLoaded: this.handleIssuesLoaded.bind(this),
           onSignOut: this.handleSignOut.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -144,6 +155,8 @@ var Main = React.createClass({
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <Link to="/viewRepositoriesData">repositories data</Link>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <Link to="/viewContributorsData">contributors data</Link>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <Link to="/viewIssuesData">issues data</Link>
                    </div>
 
@@ -162,10 +175,11 @@ React.render((
       <Route path="loadAccessToken" component={LoadAccessToken} />
       <Route path="loadUser" component={LoadUser} />
       <Route path="loadRepositories" component={LoadRepositories} />
+      <Route path="loadContributors" component={LoadContributors} />
       <Route path="loadIssues" component={LoadIssues} />
       <Route path="viewUserData" component={ViewUserData} />
       <Route path="viewRepositoriesData" component={ViewRepositoriesData} />
-      <Route path="viewIssuesData" component={ViewIssuesData} />
+      <Route path="viewContributorsData" component={ViewContributorsData} />
       <Route path="viewIssuesData" component={ViewIssuesData} />
       <Route path="selectProduct" component={SelectProduct} />
       <Route path="backlogLoader" component={BacklogLoader} />

@@ -189,6 +189,16 @@ var SampleApp = function() {
         });
 
 
+
+        self.app.get('/getcontributors', function(req, res){
+          var access_token = req.query.access_token;
+          var full_name = req.query.full_name;
+          var relativeUrl = 'repos/' + full_name + '/contributors?access_token=' + access_token;
+          self.requestFromGitHubAndSendResponse(relativeUrl, res);
+
+        });
+
+
         self.app.get('/getissues', function(req, res){
           var access_token = req.query.access_token;
           var full_name = req.query.full_name;

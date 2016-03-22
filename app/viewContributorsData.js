@@ -3,14 +3,14 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 
 
 
-var ViewRepositoriesData = React.createClass({
+var ViewUserData = React.createClass({
 
 
     render : function() {
       return (
         <div className="container-fluid">
-          <h3>Repostiories</h3>
-          {JSON.stringify(this.props.repositories)}
+          <h3>Contributors</h3>
+          {JSON.stringify(this.props.contributors)}
         </div>
       );
     }
@@ -18,4 +18,4 @@ var ViewRepositoriesData = React.createClass({
 });
 
 
-export default ViewRepositoriesData;
+export default ViewUserData;

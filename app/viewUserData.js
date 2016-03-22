@@ -8,8 +8,8 @@ var ViewUserData = React.createClass({
 
     render : function() {
       return (
-        <div>
-          <h1>User</h1>
+        <div className="container-fluid">
+          <h3>User</h3>
           {JSON.stringify(this.props.user)}
         </div>
       );

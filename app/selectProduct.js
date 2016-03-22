@@ -40,7 +40,7 @@ var Product = React.createClass({
 
   handleSelectProduct: function(index) {
     this.props.onSelectRepository(index);
-    browserHistory.push('/loadIssues');
+    browserHistory.push('/loadContributors');
   },
 
 

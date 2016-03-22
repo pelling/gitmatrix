@@ -78,35 +78,43 @@
 
 	var _loadRepositoriesJs2 = _interopRequireDefault(_loadRepositoriesJs);
 
-	var _loadIssuesJs = __webpack_require__(223);
+	var _loadContributorsJs = __webpack_require__(223);
+
+	var _loadContributorsJs2 = _interopRequireDefault(_loadContributorsJs);
+
+	var _loadIssuesJs = __webpack_require__(224);
 
 	var _loadIssuesJs2 = _interopRequireDefault(_loadIssuesJs);
 
-	var _viewUserDataJs = __webpack_require__(224);
+	var _viewUserDataJs = __webpack_require__(225);
 
 	var _viewUserDataJs2 = _interopRequireDefault(_viewUserDataJs);
 
-	var _viewRepositoriesDataJs = __webpack_require__(225);
+	var _viewRepositoriesDataJs = __webpack_require__(226);
 
 	var _viewRepositoriesDataJs2 = _interopRequireDefault(_viewRepositoriesDataJs);
 
-	var _viewIssuesDataJs = __webpack_require__(226);
+	var _viewContributorsDataJs = __webpack_require__(227);
+
+	var _viewContributorsDataJs2 = _interopRequireDefault(_viewContributorsDataJs);
+
+	var _viewIssuesDataJs = __webpack_require__(228);
 
 	var _viewIssuesDataJs2 = _interopRequireDefault(_viewIssuesDataJs);
 
-	var _selectProductJs = __webpack_require__(227);
+	var _selectProductJs = __webpack_require__(229);
 
 	var _selectProductJs2 = _interopRequireDefault(_selectProductJs);
 
-	var _backlogLoaderJs = __webpack_require__(228);
+	var _backlogLoaderJs = __webpack_require__(230);
 
 	var _backlogLoaderJs2 = _interopRequireDefault(_backlogLoaderJs);
 
-	var _backlogJs = __webpack_require__(229);
+	var _backlogJs = __webpack_require__(231);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	var _calibrateJs = __webpack_require__(230);
+	var _calibrateJs = __webpack_require__(232);
 
 	var _calibrateJs2 = _interopRequireDefault(_calibrateJs);
 
@@ -128,6 +136,7 @@
 	      user: 'not found',
 	      repositories: 'not found',
 	      repository: 'not found',
+	      contributors: 'not found',
 	      issues: 'not found',
 	      session: false,
 	      projects: [],
@@ -183,6 +192,12 @@
 	    (0, _consoleLogJs2['default'])('repository selected: ' + repository.name);
 	  },
 
+	  handleContributorsLoaded: function handleContributorsLoaded(contributors) {
+	    var contributorsJson = JSON.parse(contributors);
+	    this.setState({ contributors: contributorsJson });
+	    (0, _consoleLogJs2['default'])('contributors loaded - number found: ' + contributorsJson.length);
+	  },
+
 	  handleIssuesLoaded: function handleIssuesLoaded(issues) {
 	    var issuesJson = JSON.parse(issues);
 	    this.setState({ issues: issuesJson });
@@ -210,6 +225,7 @@
 	      user: this.state.user,
 	      repositories: this.state.repositories,
 	      repository: this.state.repository,
+	      contributors: this.state.contributors,
 	      issues: this.state.issues,
 	      session: this.state.session,
 	      backlog: this.state.backlog,
@@ -220,6 +236,7 @@
 	      onUserLoaded: this.handleUserLoaded.bind(this),
 	      onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
 	      onSelectRepository: this.handleRepositorySelected.bind(this),
+	      onContributorsLoaded: this.handleContributorsLoaded.bind(this),
 	      onIssuesLoaded: this.handleIssuesLoaded.bind(this),
 	      onSignOut: this.handleSignOut.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -262,6 +279,12 @@
 	        '     |     ',
 	        _react2['default'].createElement(
 	          _reactRouter.Link,
+	          { to: '/viewContributorsData' },
+	          'contributors data'
+	        ),
+	        '     |     ',
+	        _react2['default'].createElement(
+	          _reactRouter.Link,
 	          { to: '/viewIssuesData' },
 	          'issues data'
 	        )
@@ -281,10 +304,11 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadAccessToken', component: _loadAccessTokenJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadUser', component: _loadUserJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepositories', component: _loadRepositoriesJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadContributors', component: _loadContributorsJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadIssues', component: _loadIssuesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewUserData', component: _viewUserDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepositoriesData', component: _viewRepositoriesDataJs2['default'] }),
-	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewIssuesData', component: _viewIssuesDataJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewContributorsData', component: _viewContributorsDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewIssuesData', component: _viewIssuesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProduct', component: _selectProductJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlogLoader', component: _backlogLoaderJs2['default'] }),
@@ -26003,6 +26027,57 @@
 
 	__webpack_require__(220);
 
+	var LoadContributors = _react2['default'].createClass({
+	  displayName: 'LoadContributors',
+
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
+	    // for some reason alert is still showing on this page.  adding comment to test this.
+	    // and another line
+	    fetch('getcontributors?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name).then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.props.onContributorsLoaded(responseData);
+	      _reactRouter.browserHistory.push('/loadIssues');
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error loading issues: ' + error);
+	    });
+	  },
+
+	  render: function render() {
+	    return _react2['default'].createElement('div', null);
+	  }
+
+	});
+
+	exports['default'] = LoadContributors;
+	module.exports = exports['default'];
+
+/***/ },
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var _consoleLogJs = __webpack_require__(218);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
+
 	var LoadIssues = _react2['default'].createClass({
 	  displayName: 'LoadIssues',
 
@@ -26022,12 +26097,7 @@
 	  },
 
 	  render: function render() {
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      'Issues = ',
-	      JSON.stringify(this.props.issues)
-	    );
+	    return _react2['default'].createElement('div', null);
 	  }
 
 	});
@@ -26036,7 +26106,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 224 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26059,9 +26129,9 @@
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      'div',
-	      null,
+	      { className: 'container-fluid' },
 	      _react2['default'].createElement(
-	        'h1',
+	        'h3',
 	        null,
 	        'User'
 	      ),
@@ -26075,7 +26145,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 225 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26098,9 +26168,9 @@
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      'div',
-	      null,
+	      { className: 'container-fluid' },
 	      _react2['default'].createElement(
-	        'h1',
+	        'h3',
 	        null,
 	        'Repostiories'
 	      ),
@@ -26114,7 +26184,46 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 226 */
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var ViewUserData = _react2['default'].createClass({
+	  displayName: 'ViewUserData',
+
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      { className: 'container-fluid' },
+	      _react2['default'].createElement(
+	        'h3',
+	        null,
+	        'Contributors'
+	      ),
+	      JSON.stringify(this.props.contributors)
+	    );
+	  }
+
+	});
+
+	exports['default'] = ViewUserData;
+	module.exports = exports['default'];
+
+/***/ },
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26137,9 +26246,9 @@
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      'div',
-	      null,
+	      { className: 'container-fluid' },
 	      _react2['default'].createElement(
-	        'h1',
+	        'h3',
 	        null,
 	        'Issues'
 	      ),
@@ -26153,7 +26262,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 227 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26217,7 +26326,7 @@
 
 	  handleSelectProduct: function handleSelectProduct(index) {
 	    this.props.onSelectRepository(index);
-	    _reactRouter.browserHistory.push('/loadIssues');
+	    _reactRouter.browserHistory.push('/loadContributors');
 	  },
 
 	  render: function render() {
@@ -26233,7 +26342,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 228 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26286,7 +26395,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 229 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26301,7 +26410,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _backlogJs = __webpack_require__(229);
+	var _backlogJs = __webpack_require__(231);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
@@ -26371,7 +26480,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 230 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
