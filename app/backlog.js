@@ -10,7 +10,7 @@ var Backlog = React.createClass({
                 <div className="row-fluid">
                       <div className="col-md-12">
                         <h3><Link to="/selectProduct">{this.props.user.login}</Link> / {this.props.repository.name}</h3>
-                        <ContributorPills contributors={this.props.contributors} />
+                        MY TOKENS:&nbsp; <i className="fa fa-certificate"></i>1355
                       </div>
                       <div className="col-md-12">
                         <IssueTable issues={this.props.issues} contributors={this.props.contributors}/>
@@ -26,31 +26,6 @@ var Backlog = React.createClass({
 export default Backlog;
 
 
-var ContributorPills = React.createClass({
-    render: function () {
-      var contributorPills = this.props.contributors.map(function(contributor) {
-          return <ContributorPill name={contributor.login}/>
-      }.bind(this));
-        return (
-            <ul className="nav nav-pills" role="tablist">
-                {contributorPills}
-                <li role="presentation"><Link to="/calibrate">Calibrate</Link></li>
-            </ul>
-        );
-    }
-});
-
-
-
-
-var ContributorPill = React.createClass({
-    render: function () {
-        return (
-                <li role="presentation"><a href="#">{this.props.name}<span className="badge">100</span></a></li>
-        );
-    }
-});
-
 
 var IssueTable = React.createClass({
     render: function () {
@@ -64,7 +39,7 @@ var IssueTable = React.createClass({
 
 
         return (
-          <table className="table table-hover">
+          <table className="table table-hover table-striped">
             <thead>
               <tr>
                 <th>Title</th>

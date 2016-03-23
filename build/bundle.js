@@ -26401,7 +26401,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
-	    value: true
+	  value: true
 	});
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -26413,170 +26413,127 @@
 	var _reactRouter = __webpack_require__(158);
 
 	var Backlog = _react2['default'].createClass({
-	    displayName: 'Backlog',
+	  displayName: 'Backlog',
 
-	    render: function render() {
-	        return _react2['default'].createElement(
-	            'div',
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      _react2['default'].createElement(
+	        'div',
+	        { className: 'row-fluid' },
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'col-md-12' },
+	          _react2['default'].createElement(
+	            'h3',
 	            null,
 	            _react2['default'].createElement(
-	                'div',
-	                { className: 'row-fluid' },
-	                _react2['default'].createElement(
-	                    'div',
-	                    { className: 'col-md-12' },
-	                    _react2['default'].createElement(
-	                        'h3',
-	                        null,
-	                        _react2['default'].createElement(
-	                            _reactRouter.Link,
-	                            { to: '/selectProduct' },
-	                            this.props.user.login
-	                        ),
-	                        ' / ',
-	                        this.props.repository.name
-	                    ),
-	                    _react2['default'].createElement(ContributorPills, { contributors: this.props.contributors })
-	                ),
-	                _react2['default'].createElement(
-	                    'div',
-	                    { className: 'col-md-12' },
-	                    _react2['default'].createElement(IssueTable, { issues: this.props.issues, contributors: this.props.contributors })
-	                )
-	            )
-	        );
-	    }
+	              _reactRouter.Link,
+	              { to: '/selectProduct' },
+	              this.props.user.login
+	            ),
+	            ' / ',
+	            this.props.repository.name
+	          ),
+	          'MY TOKENS:  ',
+	          _react2['default'].createElement('i', { className: 'fa fa-certificate' }),
+	          '1355'
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'col-md-12' },
+	          _react2['default'].createElement(IssueTable, { issues: this.props.issues, contributors: this.props.contributors })
+	        )
+	      )
+	    );
+	  }
 	});
 
 	exports['default'] = Backlog;
 
-	var ContributorPills = _react2['default'].createClass({
-	    displayName: 'ContributorPills',
-
-	    render: function render() {
-	        var contributorPills = this.props.contributors.map((function (contributor) {
-	            return _react2['default'].createElement(ContributorPill, { name: contributor.login });
-	        }).bind(this));
-	        return _react2['default'].createElement(
-	            'ul',
-	            { className: 'nav nav-pills', role: 'tablist' },
-	            contributorPills,
-	            _react2['default'].createElement(
-	                'li',
-	                { role: 'presentation' },
-	                _react2['default'].createElement(
-	                    _reactRouter.Link,
-	                    { to: '/calibrate' },
-	                    'Calibrate'
-	                )
-	            )
-	        );
-	    }
-	});
-
-	var ContributorPill = _react2['default'].createClass({
-	    displayName: 'ContributorPill',
-
-	    render: function render() {
-	        return _react2['default'].createElement(
-	            'li',
-	            { role: 'presentation' },
-	            _react2['default'].createElement(
-	                'a',
-	                { href: '#' },
-	                this.props.name,
-	                _react2['default'].createElement(
-	                    'span',
-	                    { className: 'badge' },
-	                    '100'
-	                )
-	            )
-	        );
-	    }
-	});
-
 	var IssueTable = _react2['default'].createClass({
-	    displayName: 'IssueTable',
+	  displayName: 'IssueTable',
 
-	    render: function render() {
-	        var issueRows = this.props.issues.map((function (issue) {
-	            return _react2['default'].createElement(IssueRow, { title: issue.title, contributors: this.props.contributors });
-	        }).bind(this));
+	  render: function render() {
+	    var issueRows = this.props.issues.map((function (issue) {
+	      return _react2['default'].createElement(IssueRow, { title: issue.title, contributors: this.props.contributors });
+	    }).bind(this));
 
-	        var contributorHeaders = this.props.contributors.map((function (contributor) {
-	            return _react2['default'].createElement(ContributorHeader, { name: contributor.login });
-	        }).bind(this));
+	    var contributorHeaders = this.props.contributors.map((function (contributor) {
+	      return _react2['default'].createElement(ContributorHeader, { name: contributor.login });
+	    }).bind(this));
 
-	        return _react2['default'].createElement(
-	            'table',
-	            { className: 'table table-hover' },
-	            _react2['default'].createElement(
-	                'thead',
-	                null,
-	                _react2['default'].createElement(
-	                    'tr',
-	                    null,
-	                    _react2['default'].createElement(
-	                        'th',
-	                        null,
-	                        'Title'
-	                    ),
-	                    contributorHeaders
-	                )
-	            ),
-	            _react2['default'].createElement(
-	                'tbody',
-	                null,
-	                issueRows
-	            )
-	        );
-	    }
+	    return _react2['default'].createElement(
+	      'table',
+	      { className: 'table table-hover table-striped' },
+	      _react2['default'].createElement(
+	        'thead',
+	        null,
+	        _react2['default'].createElement(
+	          'tr',
+	          null,
+	          _react2['default'].createElement(
+	            'th',
+	            null,
+	            'Title'
+	          ),
+	          contributorHeaders
+	        )
+	      ),
+	      _react2['default'].createElement(
+	        'tbody',
+	        null,
+	        issueRows
+	      )
+	    );
+	  }
 	});
 
 	var ContributorHeader = _react2['default'].createClass({
-	    displayName: 'ContributorHeader',
+	  displayName: 'ContributorHeader',
 
-	    render: function render() {
-	        return _react2['default'].createElement(
-	            'th',
-	            null,
-	            this.props.name
-	        );
-	    }
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'th',
+	      null,
+	      this.props.name
+	    );
+	  }
 	});
 
 	var IssueRow = _react2['default'].createClass({
-	    displayName: 'IssueRow',
+	  displayName: 'IssueRow',
 
-	    render: function render() {
+	  render: function render() {
 
-	        var contributorCols = this.props.contributors.map((function (contributor) {
-	            return _react2['default'].createElement(ContributorCol, { count: 200 });
-	        }).bind(this));
+	    var contributorCols = this.props.contributors.map((function (contributor) {
+	      return _react2['default'].createElement(ContributorCol, { count: 200 });
+	    }).bind(this));
 
-	        return _react2['default'].createElement(
-	            'tr',
-	            null,
-	            _react2['default'].createElement(
-	                'td',
-	                null,
-	                this.props.title
-	            ),
-	            contributorCols
-	        );
-	    }
+	    return _react2['default'].createElement(
+	      'tr',
+	      null,
+	      _react2['default'].createElement(
+	        'td',
+	        null,
+	        this.props.title
+	      ),
+	      contributorCols
+	    );
+	  }
 	});
 
 	var ContributorCol = _react2['default'].createClass({
-	    displayName: 'ContributorCol',
+	  displayName: 'ContributorCol',
 
-	    render: function render() {
-	        return _react2['default'].createElement(
-	            'td',
-	            null,
-	            this.props.count
-	        );
-	    }
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'td',
+	      null,
+	      this.props.count
+	    );
+	  }
 	});
 	module.exports = exports['default'];
 
