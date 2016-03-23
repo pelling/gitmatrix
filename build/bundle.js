@@ -26090,7 +26090,7 @@
 	      return response.json();
 	    }).then(function (responseData) {
 	      _this.props.onIssuesLoaded(responseData);
-	      //browserHistory.push('/backlog');
+	      _reactRouter.browserHistory.push('/backlog');
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading issues: ' + error);
 	    });
@@ -26410,32 +26410,12 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _backlogJs = __webpack_require__(231);
-
-	var _backlogJs2 = _interopRequireDefault(_backlogJs);
-
 	var _reactRouter = __webpack_require__(158);
 
 	var Backlog = _react2['default'].createClass({
 	    displayName: 'Backlog',
 
 	    render: function render() {
-	        var contributorComponents = this.props.backlog.contributors.map((function (contributor) {
-	            return _react2['default'].createElement(
-	                'li',
-	                { role: 'presentation' },
-	                _react2['default'].createElement(
-	                    'a',
-	                    { href: '#' },
-	                    contributor.name,
-	                    _react2['default'].createElement(
-	                        'span',
-	                        { className: 'badge' },
-	                        contributor.tokens
-	                    )
-	                )
-	            );
-	        }).bind(this));
 	        return _react2['default'].createElement(
 	            'div',
 	            null,
@@ -26450,26 +26430,18 @@
 	                        null,
 	                        _react2['default'].createElement(
 	                            _reactRouter.Link,
-	                            { to: '/selectProject' },
-	                            this.props.session.userName
+	                            { to: '/selectProduct' },
+	                            this.props.user.name
 	                        ),
 	                        ' / ',
-	                        this.props.backlog.name
+	                        this.props.repository.name
 	                    ),
-	                    _react2['default'].createElement(
-	                        'ul',
-	                        { className: 'nav nav-pills', role: 'tablist' },
-	                        contributorComponents,
-	                        _react2['default'].createElement(
-	                            'li',
-	                            { role: 'presentation' },
-	                            _react2['default'].createElement(
-	                                _reactRouter.Link,
-	                                { to: '/calibrate' },
-	                                'Calibrate'
-	                            )
-	                        )
-	                    )
+	                    _react2['default'].createElement(ContributorPills, { contributors: this.props.contributors })
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'col-md-12' },
+	                    _react2['default'].createElement(IssueTable, { issues: this.props.issues })
 	                )
 	            )
 	        );
@@ -26477,6 +26449,119 @@
 	});
 
 	exports['default'] = Backlog;
+
+	var ContributorPills = _react2['default'].createClass({
+	    displayName: 'ContributorPills',
+
+	    render: function render() {
+	        var contributorPills = this.props.contributors.map((function (contributor) {
+	            return _react2['default'].createElement(ContributorPill, { name: contributor.login });
+	        }).bind(this));
+	        return _react2['default'].createElement(
+	            'ul',
+	            { className: 'nav nav-pills', role: 'tablist' },
+	            contributorPills,
+	            _react2['default'].createElement(
+	                'li',
+	                { role: 'presentation' },
+	                _react2['default'].createElement(
+	                    _reactRouter.Link,
+	                    { to: '/calibrate' },
+	                    'Calibrate'
+	                )
+	            )
+	        );
+	    }
+	});
+
+	var ContributorPill = _react2['default'].createClass({
+	    displayName: 'ContributorPill',
+
+	    render: function render() {
+	        return _react2['default'].createElement(
+	            'li',
+	            { role: 'presentation' },
+	            _react2['default'].createElement(
+	                'a',
+	                { href: '#' },
+	                this.props.name,
+	                _react2['default'].createElement(
+	                    'span',
+	                    { className: 'badge' },
+	                    '100'
+	                )
+	            )
+	        );
+	    }
+	});
+
+	var IssueTable = _react2['default'].createClass({
+	    displayName: 'IssueTable',
+
+	    render: function render() {
+	        var issueRows = this.props.issues.map((function (issue) {
+	            return _react2['default'].createElement(IssueRow, { title: issue.title });
+	        }).bind(this));
+	        return _react2['default'].createElement(
+	            'table',
+	            { className: 'table table-hover' },
+	            _react2['default'].createElement(
+	                'thead',
+	                null,
+	                _react2['default'].createElement(
+	                    'tr',
+	                    null,
+	                    _react2['default'].createElement(
+	                        'th',
+	                        null,
+	                        'Title'
+	                    ),
+	                    _react2['default'].createElement(
+	                        'th',
+	                        null,
+	                        'xxx'
+	                    ),
+	                    _react2['default'].createElement(
+	                        'th',
+	                        null,
+	                        'yyy'
+	                    )
+	                )
+	            ),
+	            _react2['default'].createElement(
+	                'tbody',
+	                null,
+	                issueRows
+	            )
+	        );
+	    }
+	});
+
+	var IssueRow = _react2['default'].createClass({
+	    displayName: 'IssueRow',
+
+	    render: function render() {
+	        return _react2['default'].createElement(
+	            'tr',
+	            null,
+	            _react2['default'].createElement(
+	                'td',
+	                null,
+	                this.props.title
+	            ),
+	            _react2['default'].createElement(
+	                'td',
+	                null,
+	                'Moe'
+	            ),
+	            _react2['default'].createElement(
+	                'td',
+	                null,
+	                'mary@example.com'
+	            )
+	        );
+	    }
+	});
 	module.exports = exports['default'];
 
 /***/ },

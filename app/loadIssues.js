@@ -14,7 +14,7 @@ var LoadIssues = React.createClass({
       .then((response) => response.json())
       .then((responseData) => {
         this.props.onIssuesLoaded(responseData);
-        //browserHistory.push('/backlog');
+        browserHistory.push('/backlog');
       })
       .catch((error) => {
         consoleLog('Error loading issues: ' + error);
