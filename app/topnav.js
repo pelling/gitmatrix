@@ -7,7 +7,7 @@ var TopNav = React.createClass({
 
         var client_id = this.props.client_id;
         var onSignOut = this.props.onSignOut;
-        var userName = this.props.user.name;
+        var userName = this.props.user.login;
         var rightSide = 'connecting to GitHub...';
         if (this.props.oauth_code === "not found") { rightSide = function() {return <LogInControl client_id={client_id} /> }(); }
         if (this.props.user !== "not found") { rightSide = function() {return <SignOutControl onSignOut={onSignOut} userName={userName}/> }(); }

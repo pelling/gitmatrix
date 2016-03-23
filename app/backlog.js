@@ -9,7 +9,7 @@ var Backlog = React.createClass({
           <div>
                 <div className="row-fluid">
                       <div className="col-md-12">
-                        <h3><Link to="/selectProduct">{this.props.user.name}</Link> / {this.props.repository.name}</h3>
+                        <h3><Link to="/selectProduct">{this.props.user.login}</Link> / {this.props.repository.name}</h3>
                         <ContributorPills contributors={this.props.contributors} />
                       </div>
                       <div className="col-md-12">

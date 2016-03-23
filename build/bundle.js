@@ -25196,7 +25196,7 @@
 
 	    var client_id = this.props.client_id;
 	    var onSignOut = this.props.onSignOut;
-	    var userName = this.props.user.name;
+	    var userName = this.props.user.login;
 	    var rightSide = 'connecting to GitHub...';
 	    if (this.props.oauth_code === "not found") {
 	      rightSide = (function () {
@@ -26431,7 +26431,7 @@
 	                        _react2['default'].createElement(
 	                            _reactRouter.Link,
 	                            { to: '/selectProduct' },
-	                            this.props.user.name
+	                            this.props.user.login
 	                        ),
 	                        ' / ',
 	                        this.props.repository.name
