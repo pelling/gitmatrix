@@ -13,7 +13,7 @@ var Backlog = React.createClass({
                         <ContributorPills contributors={this.props.contributors} />
                       </div>
                       <div className="col-md-12">
-                        <IssueTable issues={this.props.issues} />
+                        <IssueTable issues={this.props.issues} contributors={this.props.contributors}/>
                       </div>
                 </div>
 
@@ -55,15 +55,20 @@ var ContributorPill = React.createClass({
 var IssueTable = React.createClass({
     render: function () {
       var issueRows = this.props.issues.map(function(issue) {
-          return <IssueRow title={issue.title}/>
+          return <IssueRow title={issue.title} contributors={this.props.contributors}/>
       }.bind(this));
+
+      var contributorHeaders = this.props.contributors.map(function(contributor) {
+          return <ContributorHeader name={contributor.login}/>
+      }.bind(this));
+
+
         return (
           <table className="table table-hover">
             <thead>
               <tr>
                 <th>Title</th>
-                <th>xxx</th>
-                <th>yyy</th>
+                {contributorHeaders}
               </tr>
             </thead>
             <tbody>
@@ -74,17 +79,38 @@ var IssueTable = React.createClass({
     }
 });
 
-
+var ContributorHeader = React.createClass({
+    render: function () {
+        return (
+                <th>{this.props.name}</th>
+        );
+    }
+});
 
 
 var IssueRow = React.createClass({
+
+
     render: function () {
+
+      var contributorCols = this.props.contributors.map(function(contributor) {
+          return <ContributorCol count={200}/>
+      }.bind(this));
+
         return (
           <tr>
             <td>{this.props.title}</td>
-            <td>Moe</td>
-            <td>mary@example.com</td>
+            {contributorCols}
           </tr>
+        );
+    }
+});
+
+
+var ContributorCol = React.createClass({
+    render: function () {
+        return (
+                <td>{this.props.count}</td>
         );
     }
 });

@@ -26441,7 +26441,7 @@
 	                _react2['default'].createElement(
 	                    'div',
 	                    { className: 'col-md-12' },
-	                    _react2['default'].createElement(IssueTable, { issues: this.props.issues })
+	                    _react2['default'].createElement(IssueTable, { issues: this.props.issues, contributors: this.props.contributors })
 	                )
 	            )
 	        );
@@ -26500,8 +26500,13 @@
 
 	    render: function render() {
 	        var issueRows = this.props.issues.map((function (issue) {
-	            return _react2['default'].createElement(IssueRow, { title: issue.title });
+	            return _react2['default'].createElement(IssueRow, { title: issue.title, contributors: this.props.contributors });
 	        }).bind(this));
+
+	        var contributorHeaders = this.props.contributors.map((function (contributor) {
+	            return _react2['default'].createElement(ContributorHeader, { name: contributor.login });
+	        }).bind(this));
+
 	        return _react2['default'].createElement(
 	            'table',
 	            { className: 'table table-hover' },
@@ -26516,16 +26521,7 @@
 	                        null,
 	                        'Title'
 	                    ),
-	                    _react2['default'].createElement(
-	                        'th',
-	                        null,
-	                        'xxx'
-	                    ),
-	                    _react2['default'].createElement(
-	                        'th',
-	                        null,
-	                        'yyy'
-	                    )
+	                    contributorHeaders
 	                )
 	            ),
 	            _react2['default'].createElement(
@@ -26537,10 +26533,27 @@
 	    }
 	});
 
+	var ContributorHeader = _react2['default'].createClass({
+	    displayName: 'ContributorHeader',
+
+	    render: function render() {
+	        return _react2['default'].createElement(
+	            'th',
+	            null,
+	            this.props.name
+	        );
+	    }
+	});
+
 	var IssueRow = _react2['default'].createClass({
 	    displayName: 'IssueRow',
 
 	    render: function render() {
+
+	        var contributorCols = this.props.contributors.map((function (contributor) {
+	            return _react2['default'].createElement(ContributorCol, { count: 200 });
+	        }).bind(this));
+
 	        return _react2['default'].createElement(
 	            'tr',
 	            null,
@@ -26549,16 +26562,19 @@
 	                null,
 	                this.props.title
 	            ),
-	            _react2['default'].createElement(
-	                'td',
-	                null,
-	                'Moe'
-	            ),
-	            _react2['default'].createElement(
-	                'td',
-	                null,
-	                'mary@example.com'
-	            )
+	            contributorCols
+	        );
+	    }
+	});
+
+	var ContributorCol = _react2['default'].createClass({
+	    displayName: 'ContributorCol',
+
+	    render: function render() {
+	        return _react2['default'].createElement(
+	            'td',
+	            null,
+	            this.props.count
 	        );
 	    }
 	});
