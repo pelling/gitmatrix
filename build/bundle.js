@@ -154,6 +154,12 @@
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading client_id: ' + error);
 	    });
+
+	    var access_token = readCookie("access_token");
+	    if (access_token.length !== null) {
+	      this.setState({ access_token: access_token });
+	      _reactRouter.browserHistory.push('/loadUser');
+	    }
 	  },
 
 	  handleAddToGitHubConsole: function handleAddToGitHubConsole(message) {
@@ -171,6 +177,7 @@
 
 	  handleAccessTokenLoaded: function handleAccessTokenLoaded(accessToken) {
 	    this.setState({ access_token: accessToken });
+	    document.cookie = "access_token=" + accessToken;
 	    (0, _consoleLogJs2['default'])('access token loaded: ' + accessToken);
 	  },
 
@@ -205,9 +212,14 @@
 	  },
 
 	  handleSignOut: function handleSignOut() {
+	    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 	    this.setState({ oauth_code: 'not found' });
 	    this.setState({ access_token: 'not found' });
 	    this.setState({ user: 'not found' });
+	    this.setState({ repositories: 'not found' });
+	    this.setState({ repository: 'not found' });
+	    this.setState({ contributors: 'not found' });
+	    this.setState({ issues: 'not found' });
 	  },
 
 	  handleBacklogLoaded: function handleBacklogLoaded(newBacklog) {
@@ -316,6 +328,17 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'calibrate', component: _calibrateJs2['default'] })
 	  )
 	), document.getElementById('root'));
+
+	function readCookie(name) {
+	  var nameEQ = name + "=";
+	  var ca = document.cookie.split(';');
+	  for (var i = 0; i < ca.length; i++) {
+	    var c = ca[i];
+	    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+	    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+	  }
+	  return null;
+	}
 
 	/*
 	var page = <Home session={this.state.session} onSessionChange={this.handleSessionChange.bind(this)} onPageChange={this.handlePageChange.bind(this)} />;

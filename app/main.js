@@ -51,6 +51,11 @@ var Main = React.createClass({
         consoleLog('Error loading client_id: ' + error);
       });
 
+      var access_token = readCookie("access_token");
+      if (access_token.length !== null) {
+        this.setState({access_token : access_token});
+        browserHistory.push('/loadUser');
+      }
     },
 
 
@@ -69,6 +74,7 @@ var Main = React.createClass({
 
   handleAccessTokenLoaded: function(accessToken){
     this.setState({access_token : accessToken});
+    document.cookie="access_token=" + accessToken;
     consoleLog('access token loaded: ' +  accessToken);
   },
 
@@ -103,9 +109,14 @@ var Main = React.createClass({
   },
 
   handleSignOut : function(){
+    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     this.setState({oauth_code : 'not found'});
     this.setState({access_token : 'not found'});
     this.setState({user : 'not found'});
+    this.setState({repositories : 'not found'});
+    this.setState({repository : 'not found'});
+    this.setState({contributors : 'not found'});
+    this.setState({issues : 'not found'});
   },
 
 
@@ -190,7 +201,16 @@ React.render((
 ), document.getElementById('root'));
 
 
-
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
 
 /*
 var page = <Home session={this.state.session} onSessionChange={this.handleSessionChange.bind(this)} onPageChange={this.handlePageChange.bind(this)} />;
