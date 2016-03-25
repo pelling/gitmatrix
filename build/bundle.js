@@ -26007,10 +26007,12 @@
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
+	    this.props.onAddToGitHubConsole('requesting repositories');
 	    fetch('getrepositories?access_token=' + this.props.access_token).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
 	      _this.props.onRepositoriesLoaded(responseData);
+	      _this.props.onAddToGitHubConsole('repositories received');
 	      _reactRouter.browserHistory.push('/selectProduct');
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading repositories: ' + error);
@@ -26056,12 +26058,12 @@
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
-	    // for some reason alert is still showing on this page.  adding comment to test this.
-	    // and another line
+	    this.props.onAddToGitHubConsole('requesting contributors');
 	    fetch('getcontributors?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
 	      _this.props.onContributorsLoaded(responseData);
+	      _this.props.onAddToGitHubConsole('contributors received');
 	      _reactRouter.browserHistory.push('/loadIssues');
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading issues: ' + error);
@@ -26107,12 +26109,12 @@
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
-	    // for some reason alert is still showing on this page.  adding comment to test this.
-	    // and another line
+	    this.props.onAddToGitHubConsole('requesting issues');
 	    fetch('getissues?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
 	      _this.props.onIssuesLoaded(responseData);
+	      _this.props.onAddToGitHubConsole('issues received');
 	      _reactRouter.browserHistory.push('/backlog');
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading issues: ' + error);
@@ -26438,6 +26440,13 @@
 	var Backlog = _react2['default'].createClass({
 	  displayName: 'Backlog',
 
+	  componentWillMount: function componentWillMount() {
+	    this.props.onClearGitHubConsole();
+	    if (this.props.issues == 'not found') {
+	      //problem -- repositories were not loaded!
+	    }
+	  },
+
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      'div',
@@ -26459,9 +26468,9 @@
 	            ' / ',
 	            this.props.repository.name
 	          ),
-	          'MY TOKENS:  ',
-	          _react2['default'].createElement('i', { className: 'fa fa-certificate' }),
-	          '1355'
+	          'My Upvote Tokens:  ',
+	          _react2['default'].createElement('i', { className: 'fa fa-arrow-up' }),
+	          ' 1355'
 	        ),
 	        _react2['default'].createElement(
 	          'div',
@@ -26554,6 +26563,8 @@
 	    return _react2['default'].createElement(
 	      'td',
 	      null,
+	      _react2['default'].createElement('i', { className: 'fa fa-arrow-up' }),
+	      ' ',
 	      this.props.count
 	    );
 	  }

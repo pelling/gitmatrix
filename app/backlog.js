@@ -3,6 +3,12 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 
 var Backlog = React.createClass({
 
+  componentWillMount: function () {
+    this.props.onClearGitHubConsole();
+    if (this.props.issues == 'not found') {
+      //problem -- repositories were not loaded!
+    }
+  },
 
     render: function () {
         return (
@@ -10,7 +16,7 @@ var Backlog = React.createClass({
                 <div className="row-fluid">
                       <div className="col-md-12">
                         <h3><Link to="/selectProduct">{this.props.user.login}</Link> / {this.props.repository.name}</h3>
-                        MY TOKENS:&nbsp; <i className="fa fa-certificate"></i>1355
+                         My Upvote Tokens:&nbsp; <i className="fa fa-arrow-up"></i> 1355
                       </div>
                       <div className="col-md-12">
                         <IssueTable issues={this.props.issues} contributors={this.props.contributors}/>
@@ -85,7 +91,7 @@ var IssueRow = React.createClass({
 var ContributorCol = React.createClass({
     render: function () {
         return (
-                <td>{this.props.count}</td>
+                <td><i className="fa fa-arrow-up"></i> {this.props.count}</td>
         );
     }
 });

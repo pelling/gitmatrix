@@ -7,20 +7,19 @@ import 'whatwg-fetch';
 var LoadContributors = React.createClass({
 
   componentDidMount: function() {
+    this.props.onAddToGitHubConsole('requesting contributors');
+    fetch('getcontributors?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name)
+    .then((response) => response.json())
+    .then((responseData) => {
+      this.props.onContributorsLoaded(responseData);
+      this.props.onAddToGitHubConsole('contributors received');
+      browserHistory.push('/loadIssues');
+    })
+    .catch((error) => {
+      consoleLog('Error loading issues: ' + error);
+    });
 
-    // for some reason alert is still showing on this page.  adding comment to test this.
-    // and another line
-      fetch('getcontributors?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name)
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.props.onContributorsLoaded(responseData);
-        browserHistory.push('/loadIssues');
-      })
-      .catch((error) => {
-        consoleLog('Error loading issues: ' + error);
-      });
-
-    },
+  },
 
     render : function() {
       return (

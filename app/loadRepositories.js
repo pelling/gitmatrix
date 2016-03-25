@@ -7,10 +7,12 @@ import 'whatwg-fetch';
 var LoadRepositories = React.createClass({
 
   componentDidMount: function() {
+      this.props.onAddToGitHubConsole('requesting repositories');
       fetch('getrepositories?access_token=' + this.props.access_token)
       .then((response) => response.json())
       .then((responseData) => {
         this.props.onRepositoriesLoaded(responseData);
+        this.props.onAddToGitHubConsole('repositories received');
         browserHistory.push('/selectProduct');
       })
       .catch((error) => {
