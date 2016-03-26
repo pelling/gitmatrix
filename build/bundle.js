@@ -138,6 +138,7 @@
 	      repository: 'not found',
 	      contributors: 'not found',
 	      issues: 'not found',
+	      issue_votes: [{ issue: "142180356", votes: [{ login: "pelling", time: "555", tokens: "100" }, { login: "pelling", time: "666", tokens: "200" }] }, { issue: "142180328", votes: [{ login: "pelling", time: "555", tokens: "100" }, { login: "wilma", time: "999", tokens: "900" }] }],
 	      session: false,
 	      projects: [],
 	      backlog: { "contributors": [], "items": [] }
@@ -239,6 +240,7 @@
 	      repository: this.state.repository,
 	      contributors: this.state.contributors,
 	      issues: this.state.issues,
+	      issue_votes: this.state.issue_votes,
 	      session: this.state.session,
 	      backlog: this.state.backlog,
 	      onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
@@ -26475,7 +26477,7 @@
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'col-md-12' },
-	          _react2['default'].createElement(IssueTable, { issues: this.props.issues, contributors: this.props.contributors })
+	          _react2['default'].createElement(IssueTable, { issue_votes: this.props.issue_votes, issues: this.props.issues, contributors: this.props.contributors })
 	        )
 	      )
 	    );
@@ -26488,8 +26490,16 @@
 	  displayName: 'IssueTable',
 
 	  render: function render() {
+	    var issue_votes = this.props.issue_votes;
 	    var issueRows = this.props.issues.map((function (issue) {
-	      return _react2['default'].createElement(IssueRow, { title: issue.title, contributors: this.props.contributors });
+	      var results = issue_votes.filter(function (item) {
+	        return item.issue == issue.id;
+	      });
+	      var votes = [];
+	      if (results.length > 0) {
+	        votes = results[0].votes;
+	      }
+	      return _react2['default'].createElement(IssueRow, { title: issue.title, contributors: this.props.contributors, votes: votes });
 	    }).bind(this));
 
 	    var contributorHeaders = this.props.contributors.map((function (contributor) {
@@ -26538,9 +26548,16 @@
 	  displayName: 'IssueRow',
 
 	  render: function render() {
-
+	    var votes = this.props.votes;
 	    var contributorCols = this.props.contributors.map((function (contributor) {
-	      return _react2['default'].createElement(ContributorCol, { count: 200 });
+	      var results = votes.filter(function (item) {
+	        return item.login == contributor.login;
+	      });
+	      var tokens = 0;
+	      results.map(function (item) {
+	        tokens = tokens + Number(item.tokens);
+	      });
+	      return _react2['default'].createElement(ContributorCol, { tokens: tokens });
 	    }).bind(this));
 
 	    return _react2['default'].createElement(
@@ -26565,7 +26582,7 @@
 	      null,
 	      _react2['default'].createElement('i', { className: 'fa fa-arrow-up' }),
 	      ' ',
-	      this.props.count
+	      this.props.tokens
 	    );
 	  }
 	});

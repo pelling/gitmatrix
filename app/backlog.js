@@ -19,7 +19,7 @@ var Backlog = React.createClass({
                          My Upvote Tokens:&nbsp; <i className="fa fa-arrow-up"></i> 1355
                       </div>
                       <div className="col-md-12">
-                        <IssueTable issues={this.props.issues} contributors={this.props.contributors}/>
+                        <IssueTable issue_votes={this.props.issue_votes} issues={this.props.issues} contributors={this.props.contributors}/>
                       </div>
                 </div>
 
@@ -35,8 +35,12 @@ export default Backlog;
 
 var IssueTable = React.createClass({
     render: function () {
+      var issue_votes = this.props.issue_votes;
       var issueRows = this.props.issues.map(function(issue) {
-          return <IssueRow title={issue.title} contributors={this.props.contributors}/>
+          var results = issue_votes.filter(function(item) {return item.issue == issue.id});
+          var votes = [];
+          if (results.length > 0) { votes = results[0].votes; }
+          return <IssueRow title={issue.title} contributors={this.props.contributors} votes={votes}/>
       }.bind(this));
 
       var contributorHeaders = this.props.contributors.map(function(contributor) {
@@ -71,11 +75,13 @@ var ContributorHeader = React.createClass({
 
 var IssueRow = React.createClass({
 
-
     render: function () {
-
+      var votes = this.props.votes;
       var contributorCols = this.props.contributors.map(function(contributor) {
-          return <ContributorCol count={200}/>
+          var results = votes.filter(function(item) {return item.login == contributor.login});
+          var tokens=0;
+          results.map(function(item){ tokens = tokens + Number(item.tokens); });
+          return <ContributorCol tokens={tokens}/>
       }.bind(this));
 
         return (
@@ -91,7 +97,7 @@ var IssueRow = React.createClass({
 var ContributorCol = React.createClass({
     render: function () {
         return (
-                <td><i className="fa fa-arrow-up"></i> {this.props.count}</td>
+                <td><i className="fa fa-arrow-up"></i> {this.props.tokens}</td>
         );
     }
 });

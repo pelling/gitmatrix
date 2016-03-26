@@ -33,6 +33,10 @@ var Main = React.createClass({
       repository: 'not found',
       contributors: 'not found',
       issues: 'not found',
+      issue_votes: [
+        {issue:"142180356", votes:[{login:"pelling", time:"555", tokens:"100"},{login:"pelling", time:"666", tokens:"200"}]},
+        {issue:"142180328", votes:[{login:"pelling", time:"555", tokens:"100"},{login:"wilma", time:"999", tokens:"900"}]}
+      ],
       session: false,
       projects: [],
       backlog: { "contributors":[], "items":[]}
@@ -137,6 +141,7 @@ var Main = React.createClass({
           repository: this.state.repository,
           contributors: this.state.contributors,
           issues: this.state.issues,
+          issue_votes: this.state.issue_votes,
           session: this.state.session,
           backlog: this.state.backlog,
           onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
