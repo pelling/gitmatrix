@@ -23,8 +23,8 @@ body, html { width:100%; height:100%;}
 .gm_gitHubConsole span {padding:2px 4px 2px 4px;}
 
 
-
-
+/* vertically align content of table cells */
+.table tbody>tr>td.vert-align{ vertical-align: middle;}
 
 
 #gm-footer {

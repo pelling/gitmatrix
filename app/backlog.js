@@ -16,7 +16,7 @@ var Backlog = React.createClass({
                 <div className="row-fluid">
                       <div className="col-md-12">
                         <h3><Link to="/selectProduct">{this.props.user.login}</Link> / {this.props.repository.name}</h3>
-                         My Upvote Tokens:&nbsp; <i className="fa fa-arrow-up"></i> 1355
+                         my upvote tokens:&nbsp; <i className="fa fa-arrow-up"></i> 1355
                       </div>
                       <div className="col-md-12">
                         <IssueTable issue_votes={this.props.issue_votes} issues={this.props.issues} contributors={this.props.contributors}/>
@@ -40,7 +40,7 @@ var IssueTable = React.createClass({
           var results = issue_votes.filter(function(item) {return item.issue == issue.id});
           var votes = [];
           if (results.length > 0) { votes = results[0].votes; }
-          return <IssueRow title={issue.title} contributors={this.props.contributors} votes={votes}/>
+          return <IssueRow id={issue.id} title={issue.title} contributors={this.props.contributors} votes={votes}/>
       }.bind(this));
 
       var contributorHeaders = this.props.contributors.map(function(contributor) {
@@ -49,11 +49,12 @@ var IssueTable = React.createClass({
 
 
         return (
-          <table className="table table-hover table-striped">
+          <table className="table table-hover table-striped table-condensed">
             <thead>
               <tr>
-                <th>Title</th>
+                <th>title</th>
                 {contributorHeaders}
+                <th>upvote</th>
               </tr>
             </thead>
             <tbody>
@@ -75,6 +76,11 @@ var ContributorHeader = React.createClass({
 
 var IssueRow = React.createClass({
 
+
+  handleUpvote: function(id) {
+    alert("Upvote for issue: " + id);
+  },
+
     render: function () {
       var votes = this.props.votes;
       var contributorCols = this.props.contributors.map(function(contributor) {
@@ -86,8 +92,9 @@ var IssueRow = React.createClass({
 
         return (
           <tr>
-            <td>{this.props.title}</td>
+            <td className="vert-align">{this.props.title}</td>
             {contributorCols}
+            <td className="vert-align"><a href="#" className="btn btn-success btn-sm" role="button" onClick={this.handleUpvote.bind(this, this.props.id)}><i className="fa fa-plus-circle"></i> <b>add tokens</b></a></td>
           </tr>
         );
     }
@@ -97,7 +104,7 @@ var IssueRow = React.createClass({
 var ContributorCol = React.createClass({
     render: function () {
         return (
-                <td><i className="fa fa-arrow-up"></i> {this.props.tokens}</td>
+                <td className="vert-align"><i className="fa fa-arrow-up"></i> {this.props.tokens}</td>
         );
     }
 });

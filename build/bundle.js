@@ -26470,7 +26470,7 @@
 	            ' / ',
 	            this.props.repository.name
 	          ),
-	          'My Upvote Tokens:  ',
+	          'my upvote tokens:  ',
 	          _react2['default'].createElement('i', { className: 'fa fa-arrow-up' }),
 	          ' 1355'
 	        ),
@@ -26499,7 +26499,7 @@
 	      if (results.length > 0) {
 	        votes = results[0].votes;
 	      }
-	      return _react2['default'].createElement(IssueRow, { title: issue.title, contributors: this.props.contributors, votes: votes });
+	      return _react2['default'].createElement(IssueRow, { id: issue.id, title: issue.title, contributors: this.props.contributors, votes: votes });
 	    }).bind(this));
 
 	    var contributorHeaders = this.props.contributors.map((function (contributor) {
@@ -26508,7 +26508,7 @@
 
 	    return _react2['default'].createElement(
 	      'table',
-	      { className: 'table table-hover table-striped' },
+	      { className: 'table table-hover table-striped table-condensed' },
 	      _react2['default'].createElement(
 	        'thead',
 	        null,
@@ -26518,9 +26518,14 @@
 	          _react2['default'].createElement(
 	            'th',
 	            null,
-	            'Title'
+	            'title'
 	          ),
-	          contributorHeaders
+	          contributorHeaders,
+	          _react2['default'].createElement(
+	            'th',
+	            null,
+	            'upvote'
+	          )
 	        )
 	      ),
 	      _react2['default'].createElement(
@@ -26547,6 +26552,10 @@
 	var IssueRow = _react2['default'].createClass({
 	  displayName: 'IssueRow',
 
+	  handleUpvote: function handleUpvote(id) {
+	    alert("Upvote for issue: " + id);
+	  },
+
 	  render: function render() {
 	    var votes = this.props.votes;
 	    var contributorCols = this.props.contributors.map((function (contributor) {
@@ -26565,10 +26574,25 @@
 	      null,
 	      _react2['default'].createElement(
 	        'td',
-	        null,
+	        { className: 'vert-align' },
 	        this.props.title
 	      ),
-	      contributorCols
+	      contributorCols,
+	      _react2['default'].createElement(
+	        'td',
+	        { className: 'vert-align' },
+	        _react2['default'].createElement(
+	          'a',
+	          { href: '#', className: 'btn btn-success btn-sm', role: 'button', onClick: this.handleUpvote.bind(this, this.props.id) },
+	          _react2['default'].createElement('i', { className: 'fa fa-plus-circle' }),
+	          ' ',
+	          _react2['default'].createElement(
+	            'b',
+	            null,
+	            'add tokens'
+	          )
+	        )
+	      )
 	    );
 	  }
 	});
@@ -26579,7 +26603,7 @@
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      'td',
-	      null,
+	      { className: 'vert-align' },
 	      _react2['default'].createElement('i', { className: 'fa fa-arrow-up' }),
 	      ' ',
 	      this.props.tokens
