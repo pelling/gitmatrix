@@ -19,7 +19,7 @@ var Backlog = React.createClass({
                          my upvote tokens:&nbsp; <i className="fa fa-arrow-up"></i> 1355
                       </div>
                       <div className="col-md-12">
-                        <IssueTable issue_votes={this.props.issue_votes} issues={this.props.issues} contributors={this.props.contributors}/>
+                        <IssueTable issue_votes={this.props.issue_votes} issues={this.props.issues} contributors={this.props.contributors} onAddTokens={this.props.onAddTokens}/>
                       </div>
                 </div>
 
@@ -40,7 +40,7 @@ var IssueTable = React.createClass({
           var results = issue_votes.filter(function(item) {return item.issue == issue.id});
           var votes = [];
           if (results.length > 0) { votes = results[0].votes; }
-          return <IssueRow id={issue.id} title={issue.title} contributors={this.props.contributors} votes={votes}/>
+          return <IssueRow id={issue.id} title={issue.title} contributors={this.props.contributors} votes={votes} onAddTokens={this.props.onAddTokens}/>
       }.bind(this));
 
       var contributorHeaders = this.props.contributors.map(function(contributor) {
@@ -77,8 +77,8 @@ var ContributorHeader = React.createClass({
 var IssueRow = React.createClass({
 
 
-  handleUpvote: function(id) {
-    alert("Upvote for issue: " + id);
+  handleAddTokensClick: function(issue_id) {
+    this.props.onAddTokens(issue_id, 200);
   },
 
     render: function () {
@@ -94,7 +94,7 @@ var IssueRow = React.createClass({
           <tr>
             <td className="vert-align">{this.props.title}</td>
             {contributorCols}
-            <td className="vert-align"><a href="#" className="btn btn-success btn-sm" role="button" onClick={this.handleUpvote.bind(this, this.props.id)}><i className="fa fa-plus-circle"></i> <b>add tokens</b></a></td>
+            <td className="vert-align"><a href="#" className="btn btn-success btn-sm" role="button" onClick={this.handleAddTokensClick.bind(this, this.props.id)}><i className="fa fa-plus-circle"></i> <b>add tokens</b></a></td>
           </tr>
         );
     }

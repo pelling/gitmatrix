@@ -221,10 +221,22 @@
 	  },
 
 	  handleIssueVotesLoaded: function handleIssueVotesLoaded(issueVotes) {
-	    alert(JSON.stringify(issueVotes));
 	    var issueVotesJson = JSON.parse(issueVotes);
 	    this.setState({ issue_votes: issueVotesJson });
 	    (0, _consoleLogJs2['default'])('issue votes loaded - number found: ' + issueVotesJson.length);
+	  },
+
+	  handleAddTokens: function handleAddTokens(issue_id, tokens) {
+	    var _this2 = this;
+
+	    this.handleAddToGitHubConsole('adding tokens');
+	    fetch('addtokens?access_token=' + this.state.access_token + '&full_name=' + this.state.repository.full_name + '&issue_id=' + issue_id + '&tokens=' + tokens).then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this2.handleClearGitHubConsole();
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error adding tokens: ' + error);
+	    });
 	  },
 
 	  handleSignOut: function handleSignOut() {
@@ -269,6 +281,7 @@
 	      onContributorsLoaded: this.handleContributorsLoaded.bind(this),
 	      onIssuesLoaded: this.handleIssuesLoaded.bind(this),
 	      onIssueVotesLoaded: this.handleIssueVotesLoaded.bind(this),
+	      onAddTokens: this.handleAddTokens.bind(this),
 	      onSignOut: this.handleSignOut.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
 	    });
@@ -25383,7 +25396,7 @@
 	        return _react2['default'].createElement(
 	            'span',
 	            null,
-	            '> ',
+	            '>_ ',
 	            this.props.text,
 	            _react2['default'].createElement('br', null)
 	        );
@@ -26592,7 +26605,7 @@
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'col-md-12' },
-	          _react2['default'].createElement(IssueTable, { issue_votes: this.props.issue_votes, issues: this.props.issues, contributors: this.props.contributors })
+	          _react2['default'].createElement(IssueTable, { issue_votes: this.props.issue_votes, issues: this.props.issues, contributors: this.props.contributors, onAddTokens: this.props.onAddTokens })
 	        )
 	      )
 	    );
@@ -26614,7 +26627,7 @@
 	      if (results.length > 0) {
 	        votes = results[0].votes;
 	      }
-	      return _react2['default'].createElement(IssueRow, { id: issue.id, title: issue.title, contributors: this.props.contributors, votes: votes });
+	      return _react2['default'].createElement(IssueRow, { id: issue.id, title: issue.title, contributors: this.props.contributors, votes: votes, onAddTokens: this.props.onAddTokens });
 	    }).bind(this));
 
 	    var contributorHeaders = this.props.contributors.map((function (contributor) {
@@ -26667,8 +26680,8 @@
 	var IssueRow = _react2['default'].createClass({
 	  displayName: 'IssueRow',
 
-	  handleUpvote: function handleUpvote(id) {
-	    alert("Upvote for issue: " + id);
+	  handleAddTokensClick: function handleAddTokensClick(issue_id) {
+	    this.props.onAddTokens(issue_id, 200);
 	  },
 
 	  render: function render() {
@@ -26698,7 +26711,7 @@
 	        { className: 'vert-align' },
 	        _react2['default'].createElement(
 	          'a',
-	          { href: '#', className: 'btn btn-success btn-sm', role: 'button', onClick: this.handleUpvote.bind(this, this.props.id) },
+	          { href: '#', className: 'btn btn-success btn-sm', role: 'button', onClick: this.handleAddTokensClick.bind(this, this.props.id) },
 	          _react2['default'].createElement('i', { className: 'fa fa-plus-circle' }),
 	          ' ',
 	          _react2['default'].createElement(

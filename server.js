@@ -184,14 +184,18 @@ var SampleApp = function() {
         self.app.get('/getuser', function(req, res){
           var access_token = req.query.access_token;
           var relativeUrl = 'user?access_token=' + access_token;
-          self.requestFromGitHubAndSendResponse(relativeUrl, res);
+          self.requestFromGitHub(relativeUrl, function(body) { res.json(body); res.end(); });
+
+
+
+
 
         });
 
         self.app.get('/getrepositories', function(req, res){
           var access_token = req.query.access_token;
           var relativeUrl = 'user/repos?access_token=' + access_token;
-          self.requestFromGitHubAndSendResponse(relativeUrl, res);
+          self.requestFromGitHub(relativeUrl, function(body) { res.json(body); res.end(); });
         });
 
 
@@ -200,7 +204,7 @@ var SampleApp = function() {
           var access_token = req.query.access_token;
           var full_name = req.query.full_name;
           var relativeUrl = 'repos/' + full_name + '/contributors?access_token=' + access_token;
-          self.requestFromGitHubAndSendResponse(relativeUrl, res);
+          self.requestFromGitHub(relativeUrl, function(body) { res.json(body); res.end(); });
 
         });
 
@@ -209,7 +213,7 @@ var SampleApp = function() {
           var access_token = req.query.access_token;
           var full_name = req.query.full_name;
           var relativeUrl = 'repos/' + full_name + '/issues?access_token=' + access_token;
-          self.requestFromGitHubAndSendResponse(relativeUrl, res);
+          self.requestFromGitHub(relativeUrl, function(body) { res.json(body); res.end(); });
 
         });
 
@@ -221,6 +225,22 @@ var SampleApp = function() {
           // might be able to remove the json stringify once getting from db
           res.json(JSON.stringify(self.issue_votes));
           res.end();
+        });
+
+
+        self.app.get('/addtokens', function(req, res){
+          var access_token = req.query.access_token;
+          var full_name = req.query.full_name;
+          var issue_id = req.query.issue_id;
+          var tokens = req.query.tokens;
+
+          var relativeUrl = 'user?access_token=' + access_token;
+          self.requestFromGitHub(relativeUrl, function(body) {
+                var login = JSON.parse(body).login;
+                var loginObject = {"login":login, "time":"999", "tokens":tokens};
+                res.json(JSON.stringify(loginObject));
+                res.end();
+          });
         });
 
 
@@ -261,7 +281,7 @@ var SampleApp = function() {
     };
 
 
-    self.requestFromGitHubAndSendResponse = function(relativeUrl, res) {
+    self.requestFromGitHub = function(relativeUrl, callback) {
       var requestUrl = 'https://api.github.com/' + relativeUrl;
       request({
         uri: requestUrl,
@@ -271,11 +291,11 @@ var SampleApp = function() {
         followRedirect: true,
         maxRedirects: 10
         }, function(error, response, body) {
-          res.json(body);
-          res.end();
+          callback(body);
         });
-
     }
+
+
 
     /**
      *  Initializes the sample application.

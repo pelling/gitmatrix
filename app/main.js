@@ -112,10 +112,21 @@ var Main = React.createClass({
   },
 
   handleIssueVotesLoaded: function(issueVotes){
-    alert(JSON.stringify(issueVotes));
     var issueVotesJson = JSON.parse(issueVotes);
     this.setState({issue_votes : issueVotesJson});
     consoleLog('issue votes loaded - number found: ' +  issueVotesJson.length);
+  },
+
+  handleAddTokens: function(issue_id, tokens){
+    this.handleAddToGitHubConsole('adding tokens');
+    fetch('addtokens?access_token=' + this.state.access_token + '&full_name=' + this.state.repository.full_name + '&issue_id=' + issue_id + '&tokens=' + tokens)
+    .then((response) => response.json())
+    .then((responseData) => {
+      this.handleClearGitHubConsole();
+    })
+    .catch((error) => {
+      consoleLog('Error adding tokens: ' + error);
+    });
   },
 
   handleSignOut : function(){
@@ -161,6 +172,7 @@ var Main = React.createClass({
           onContributorsLoaded: this.handleContributorsLoaded.bind(this),
           onIssuesLoaded: this.handleIssuesLoaded.bind(this),
           onIssueVotesLoaded: this.handleIssueVotesLoaded.bind(this),
+          onAddTokens: this.handleAddTokens.bind(this),
           onSignOut: this.handleSignOut.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
         } );

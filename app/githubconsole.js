@@ -24,7 +24,7 @@ var Message = React.createClass({
 
     render: function () {
         return (
-                <span>> {this.props.text}<br/></span>
+                <span>>_ {this.props.text}<br/></span>
         );
     }
 });
