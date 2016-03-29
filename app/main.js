@@ -8,10 +8,12 @@ import LoadUser from './loadUser.js';
 import LoadRepositories from './loadRepositories.js';
 import LoadContributors from './loadContributors.js';
 import LoadIssues from './loadIssues.js';
+import LoadIssueVotes from './loadIssueVotes.js';
 import ViewUserData from './viewUserData.js';
 import ViewRepositoriesData from './viewRepositoriesData.js';
 import ViewContributorsData from './viewContributorsData.js';
 import ViewIssuesData from './viewIssuesData.js';
+import ViewIssueVotesData from './viewIssueVotesData.js';
 import SelectProduct from './selectProduct.js';
 import BacklogLoader from './backlogLoader.js';
 import Backlog from './backlog.js';
@@ -33,10 +35,7 @@ var Main = React.createClass({
       repository: 'not found',
       contributors: 'not found',
       issues: 'not found',
-      issue_votes: [
-        {issue:"142180356", votes:[{login:"pelling", time:"555", tokens:"100"},{login:"pelling", time:"666", tokens:"200"}]},
-        {issue:"142180328", votes:[{login:"pelling", time:"555", tokens:"100"},{login:"wilma", time:"999", tokens:"900"}]}
-      ],
+      issue_votes: 'not found',
       session: false,
       projects: [],
       backlog: { "contributors":[], "items":[]}
@@ -112,6 +111,13 @@ var Main = React.createClass({
     consoleLog('issues loaded - number found: ' +  issuesJson.length);
   },
 
+  handleIssueVotesLoaded: function(issueVotes){
+    alert(JSON.stringify(issueVotes));
+    var issueVotesJson = JSON.parse(issueVotes);
+    this.setState({issue_votes : issueVotesJson});
+    consoleLog('issue votes loaded - number found: ' +  issueVotesJson.length);
+  },
+
   handleSignOut : function(){
     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     this.setState({oauth_code : 'not found'});
@@ -121,6 +127,7 @@ var Main = React.createClass({
     this.setState({repository : 'not found'});
     this.setState({contributors : 'not found'});
     this.setState({issues : 'not found'});
+    this.setState({issue_votes : 'not found'});
   },
 
 
@@ -153,6 +160,7 @@ var Main = React.createClass({
           onSelectRepository: this.handleRepositorySelected.bind(this),
           onContributorsLoaded: this.handleContributorsLoaded.bind(this),
           onIssuesLoaded: this.handleIssuesLoaded.bind(this),
+          onIssueVotesLoaded: this.handleIssueVotesLoaded.bind(this),
           onSignOut: this.handleSignOut.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
         } );
@@ -174,6 +182,8 @@ var Main = React.createClass({
                       <Link to="/viewContributorsData">contributors data</Link>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <Link to="/viewIssuesData">issues data</Link>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <Link to="/viewIssueVotesData">issues votes data</Link>
                    </div>
 
             </div>
@@ -193,10 +203,12 @@ React.render((
       <Route path="loadRepositories" component={LoadRepositories} />
       <Route path="loadContributors" component={LoadContributors} />
       <Route path="loadIssues" component={LoadIssues} />
+      <Route path="loadIssueVotes" component={LoadIssueVotes} />
       <Route path="viewUserData" component={ViewUserData} />
       <Route path="viewRepositoriesData" component={ViewRepositoriesData} />
       <Route path="viewContributorsData" component={ViewContributorsData} />
       <Route path="viewIssuesData" component={ViewIssuesData} />
+      <Route path="viewIssueVotesData" component={ViewIssueVotesData} />
       <Route path="selectProduct" component={SelectProduct} />
       <Route path="backlogLoader" component={BacklogLoader} />
       <Route path="backlog" component={Backlog} />

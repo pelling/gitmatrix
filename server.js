@@ -55,6 +55,12 @@ var SampleApp = function() {
         };
 
 
+        // TEMPORARY
+        self.issue_votes = [{"issue":"142180356", "votes":[{"login":"pelling", "time":"555", "tokens":"100"},{"login":"pelling", "time":"666", "tokens":"200"}]},
+          {"issue":"142180328", "votes":[{"login":"pelling", "time":"555", "tokens":"100"},{"login":"wilma", "time":"999", "tokens":"900"}]}
+        ];
+
+
     };
 
 
@@ -205,6 +211,16 @@ var SampleApp = function() {
           var relativeUrl = 'repos/' + full_name + '/issues?access_token=' + access_token;
           self.requestFromGitHubAndSendResponse(relativeUrl, res);
 
+        });
+
+
+        self.app.get('/getissuevotes', function(req, res){
+          var access_token = req.query.access_token;
+          var full_name = req.query.full_name;
+          // need to add something here to verify this person is legit
+          // might be able to remove the json stringify once getting from db
+          res.json(JSON.stringify(self.issue_votes));
+          res.end();
         });
 
 

@@ -86,35 +86,43 @@
 
 	var _loadIssuesJs2 = _interopRequireDefault(_loadIssuesJs);
 
-	var _viewUserDataJs = __webpack_require__(225);
+	var _loadIssueVotesJs = __webpack_require__(225);
+
+	var _loadIssueVotesJs2 = _interopRequireDefault(_loadIssueVotesJs);
+
+	var _viewUserDataJs = __webpack_require__(226);
 
 	var _viewUserDataJs2 = _interopRequireDefault(_viewUserDataJs);
 
-	var _viewRepositoriesDataJs = __webpack_require__(226);
+	var _viewRepositoriesDataJs = __webpack_require__(227);
 
 	var _viewRepositoriesDataJs2 = _interopRequireDefault(_viewRepositoriesDataJs);
 
-	var _viewContributorsDataJs = __webpack_require__(227);
+	var _viewContributorsDataJs = __webpack_require__(228);
 
 	var _viewContributorsDataJs2 = _interopRequireDefault(_viewContributorsDataJs);
 
-	var _viewIssuesDataJs = __webpack_require__(228);
+	var _viewIssuesDataJs = __webpack_require__(229);
 
 	var _viewIssuesDataJs2 = _interopRequireDefault(_viewIssuesDataJs);
 
-	var _selectProductJs = __webpack_require__(229);
+	var _viewIssueVotesDataJs = __webpack_require__(230);
+
+	var _viewIssueVotesDataJs2 = _interopRequireDefault(_viewIssueVotesDataJs);
+
+	var _selectProductJs = __webpack_require__(231);
 
 	var _selectProductJs2 = _interopRequireDefault(_selectProductJs);
 
-	var _backlogLoaderJs = __webpack_require__(230);
+	var _backlogLoaderJs = __webpack_require__(232);
 
 	var _backlogLoaderJs2 = _interopRequireDefault(_backlogLoaderJs);
 
-	var _backlogJs = __webpack_require__(231);
+	var _backlogJs = __webpack_require__(233);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	var _calibrateJs = __webpack_require__(232);
+	var _calibrateJs = __webpack_require__(234);
 
 	var _calibrateJs2 = _interopRequireDefault(_calibrateJs);
 
@@ -138,7 +146,7 @@
 	      repository: 'not found',
 	      contributors: 'not found',
 	      issues: 'not found',
-	      issue_votes: [{ issue: "142180356", votes: [{ login: "pelling", time: "555", tokens: "100" }, { login: "pelling", time: "666", tokens: "200" }] }, { issue: "142180328", votes: [{ login: "pelling", time: "555", tokens: "100" }, { login: "wilma", time: "999", tokens: "900" }] }],
+	      issue_votes: 'not found',
 	      session: false,
 	      projects: [],
 	      backlog: { "contributors": [], "items": [] }
@@ -212,6 +220,13 @@
 	    (0, _consoleLogJs2['default'])('issues loaded - number found: ' + issuesJson.length);
 	  },
 
+	  handleIssueVotesLoaded: function handleIssueVotesLoaded(issueVotes) {
+	    alert(JSON.stringify(issueVotes));
+	    var issueVotesJson = JSON.parse(issueVotes);
+	    this.setState({ issue_votes: issueVotesJson });
+	    (0, _consoleLogJs2['default'])('issue votes loaded - number found: ' + issueVotesJson.length);
+	  },
+
 	  handleSignOut: function handleSignOut() {
 	    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 	    this.setState({ oauth_code: 'not found' });
@@ -221,6 +236,7 @@
 	    this.setState({ repository: 'not found' });
 	    this.setState({ contributors: 'not found' });
 	    this.setState({ issues: 'not found' });
+	    this.setState({ issue_votes: 'not found' });
 	  },
 
 	  handleBacklogLoaded: function handleBacklogLoaded(newBacklog) {
@@ -252,6 +268,7 @@
 	      onSelectRepository: this.handleRepositorySelected.bind(this),
 	      onContributorsLoaded: this.handleContributorsLoaded.bind(this),
 	      onIssuesLoaded: this.handleIssuesLoaded.bind(this),
+	      onIssueVotesLoaded: this.handleIssueVotesLoaded.bind(this),
 	      onSignOut: this.handleSignOut.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
 	    });
@@ -301,6 +318,12 @@
 	          _reactRouter.Link,
 	          { to: '/viewIssuesData' },
 	          'issues data'
+	        ),
+	        '     |     ',
+	        _react2['default'].createElement(
+	          _reactRouter.Link,
+	          { to: '/viewIssueVotesData' },
+	          'issues votes data'
 	        )
 	      )
 	    );
@@ -320,10 +343,12 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepositories', component: _loadRepositoriesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadContributors', component: _loadContributorsJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadIssues', component: _loadIssuesJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadIssueVotes', component: _loadIssueVotesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewUserData', component: _viewUserDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepositoriesData', component: _viewRepositoriesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewContributorsData', component: _viewContributorsDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewIssuesData', component: _viewIssuesDataJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewIssueVotesData', component: _viewIssueVotesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProduct', component: _selectProductJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlogLoader', component: _backlogLoaderJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlog', component: _backlogJs2['default'] }),
@@ -26117,7 +26142,7 @@
 	    }).then(function (responseData) {
 	      _this.props.onIssuesLoaded(responseData);
 	      _this.props.onAddToGitHubConsole('issues received');
-	      _reactRouter.browserHistory.push('/backlog');
+	      _reactRouter.browserHistory.push('/loadIssueVotes');
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading issues: ' + error);
 	    });
@@ -26134,6 +26159,57 @@
 
 /***/ },
 /* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var _consoleLogJs = __webpack_require__(218);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
+
+	var LoadIssueVotes = _react2['default'].createClass({
+	  displayName: 'LoadIssueVotes',
+
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
+	    this.props.onAddToGitHubConsole('requesting issue votes');
+	    fetch('getissuevotes?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name).then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.props.onIssueVotesLoaded(responseData);
+	      _this.props.onAddToGitHubConsole('issue votes received');
+	      _reactRouter.browserHistory.push('/backlog');
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error loading issue votes: ' + error);
+	    });
+	  },
+
+	  render: function render() {
+	    return _react2['default'].createElement('div', null);
+	  }
+
+	});
+
+	exports['default'] = LoadIssueVotes;
+	module.exports = exports['default'];
+
+/***/ },
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26172,7 +26248,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 226 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26211,7 +26287,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 227 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26250,7 +26326,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 228 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26289,7 +26365,46 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 229 */
+/* 230 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var ViewIssueVotesData = _react2['default'].createClass({
+	  displayName: 'ViewIssueVotesData',
+
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      { className: 'container-fluid' },
+	      _react2['default'].createElement(
+	        'h3',
+	        null,
+	        'Issue Votes'
+	      ),
+	      JSON.stringify(this.props.issue_votes)
+	    );
+	  }
+
+	});
+
+	exports['default'] = ViewIssueVotesData;
+	module.exports = exports['default'];
+
+/***/ },
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26369,7 +26484,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 230 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26422,7 +26537,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 231 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26613,7 +26728,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 232 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
