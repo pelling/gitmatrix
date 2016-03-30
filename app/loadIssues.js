@@ -13,7 +13,7 @@ var LoadIssues = React.createClass({
       .then((responseData) => {
         this.props.onIssuesLoaded(responseData);
         this.props.onAddToGitHubConsole('issues received');
-        browserHistory.push('/loadIssueVotes');
+        browserHistory.push('/loadRepoVotes');
       })
       .catch((error) => {
         consoleLog('Error loading issues: ' + error);

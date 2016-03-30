@@ -8,7 +8,7 @@ import LoadUser from './loadUser.js';
 import LoadRepositories from './loadRepositories.js';
 import LoadContributors from './loadContributors.js';
 import LoadIssues from './loadIssues.js';
-import LoadIssueVotes from './loadIssueVotes.js';
+import LoadRepoVotes from './loadRepoVotes.js';
 import ViewUserData from './viewUserData.js';
 import ViewRepositoriesData from './viewRepositoriesData.js';
 import ViewContributorsData from './viewContributorsData.js';
@@ -35,7 +35,7 @@ var Main = React.createClass({
       repository: 'not found',
       contributors: 'not found',
       issues: 'not found',
-      issue_votes: 'not found',
+      repo_votes: 'not found',
       session: false,
       projects: [],
       backlog: { "contributors":[], "items":[]}
@@ -111,18 +111,19 @@ var Main = React.createClass({
     consoleLog('issues loaded - number found: ' +  issuesJson.length);
   },
 
-  handleIssueVotesLoaded: function(issueVotes){
-    var issueVotesJson = JSON.parse(issueVotes);
-    this.setState({issue_votes : issueVotesJson});
-    consoleLog('issue votes loaded - number found: ' +  issueVotesJson.length);
+  handleRepoVotesLoaded: function(repoVotes){
+    var repoVotesJson = JSON.parse(repoVotes);
+    this.setState({repo_votes : repoVotesJson});
+    consoleLog('repo votes loaded - number found: ' +  repoVotesJson.length);
   },
 
   handleAddTokens: function(issue_id, tokens){
     this.handleAddToGitHubConsole('adding tokens');
-    fetch('addtokens?access_token=' + this.state.access_token + '&full_name=' + this.state.repository.full_name + '&issue_id=' + issue_id + '&tokens=' + tokens)
+    fetch('addtokens?access_token=' + this.state.access_token + '&repo_id=' + this.state.repository.id + '&issue_id=' + issue_id + '&tokens=' + tokens)
     .then((response) => response.json())
     .then((responseData) => {
       this.handleClearGitHubConsole();
+      alert(responseData);
     })
     .catch((error) => {
       consoleLog('Error adding tokens: ' + error);
@@ -138,7 +139,7 @@ var Main = React.createClass({
     this.setState({repository : 'not found'});
     this.setState({contributors : 'not found'});
     this.setState({issues : 'not found'});
-    this.setState({issue_votes : 'not found'});
+    this.setState({repo_votes : 'not found'});
   },
 
 
@@ -159,7 +160,7 @@ var Main = React.createClass({
           repository: this.state.repository,
           contributors: this.state.contributors,
           issues: this.state.issues,
-          issue_votes: this.state.issue_votes,
+          repo_votes: this.state.repo_votes,
           session: this.state.session,
           backlog: this.state.backlog,
           onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
@@ -171,7 +172,7 @@ var Main = React.createClass({
           onSelectRepository: this.handleRepositorySelected.bind(this),
           onContributorsLoaded: this.handleContributorsLoaded.bind(this),
           onIssuesLoaded: this.handleIssuesLoaded.bind(this),
-          onIssueVotesLoaded: this.handleIssueVotesLoaded.bind(this),
+          onRepoVotesLoaded: this.handleRepoVotesLoaded.bind(this),
           onAddTokens: this.handleAddTokens.bind(this),
           onSignOut: this.handleSignOut.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -215,7 +216,7 @@ React.render((
       <Route path="loadRepositories" component={LoadRepositories} />
       <Route path="loadContributors" component={LoadContributors} />
       <Route path="loadIssues" component={LoadIssues} />
-      <Route path="loadIssueVotes" component={LoadIssueVotes} />
+      <Route path="loadRepoVotes" component={LoadRepoVotes} />
       <Route path="viewUserData" component={ViewUserData} />
       <Route path="viewRepositoriesData" component={ViewRepositoriesData} />
       <Route path="viewContributorsData" component={ViewContributorsData} />

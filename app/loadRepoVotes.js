@@ -4,19 +4,19 @@ import consoleLog from './consoleLog.js';
 import 'whatwg-fetch';
 
 
-var LoadIssueVotes = React.createClass({
+var LoadRepoVotes = React.createClass({
 
   componentDidMount: function() {
-      this.props.onAddToGitHubConsole('requesting issue votes');
-      fetch('getissuevotes?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name)
+      this.props.onAddToGitHubConsole('requesting repo votes');
+      fetch('getrepovotes?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id)
       .then((response) => response.json())
       .then((responseData) => {
-        this.props.onIssueVotesLoaded(responseData);
-        this.props.onAddToGitHubConsole('issue votes received');
+        this.props.onRepoVotesLoaded(responseData);
+        this.props.onAddToGitHubConsole('repo votes received');
         browserHistory.push('/backlog');
       })
       .catch((error) => {
-        consoleLog('Error loading issue votes: ' + error);
+        consoleLog('Error loading repo votes: ' + error);
       });
 
     },
@@ -31,4 +31,4 @@ var LoadIssueVotes = React.createClass({
 });
 
 
-export default LoadIssueVotes;
+export default LoadRepoVotes;

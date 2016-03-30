@@ -218,28 +218,80 @@ var SampleApp = function() {
         });
 
 
-        self.app.get('/getissuevotes', function(req, res){
+        self.app.get('/getrepovotes', function(req, res){
           var access_token = req.query.access_token;
-          var full_name = req.query.full_name;
-          // need to add something here to verify this person is legit
-          // might be able to remove the json stringify once getting from db
-          res.json(JSON.stringify(self.issue_votes));
-          res.end();
+          var repo_id = req.query.repo_id;
+
+          var repo_votes = self.db.collection('repo_votes');
+
+          // first add an issue to repo if it doesn't exist
+
+          repo_votes.update(
+            { _id: repo_id },
+            { _id: repo_id, repo_votes:[]},
+            { upsert: true }
+          );
+
+
+          /*
+          repo_votes.insert(
+            { _id: repo_id },
+            { $setOnInsert: { issue_votes: [] } },
+            { upsert: true }
+          );*/
+
+          repo_votes.findOne({
+            _id: repo_id
+          }, function(err, doc) {
+            console.log("repo_votes=" + doc._id);
+            res.json(JSON.stringify(doc.repo_votes));
+            res.end();
+          });
         });
 
 
         self.app.get('/addtokens', function(req, res){
           var access_token = req.query.access_token;
-          var full_name = req.query.full_name;
+          var repo_id = req.query.repo_id;
           var issue_id = req.query.issue_id;
           var tokens = req.query.tokens;
+          var d = new Date();
+          var n = d.getTime();
 
           var relativeUrl = 'user?access_token=' + access_token;
           self.requestFromGitHub(relativeUrl, function(body) {
                 var login = JSON.parse(body).login;
-                var loginObject = {"login":login, "time":"999", "tokens":tokens};
-                res.json(JSON.stringify(loginObject));
-                res.end();
+                var issue_vote = {"login":login, "time":n, "tokens":tokens};
+
+
+                /*
+                self.issue_votes = [{"issue":"142180356", "votes":[{"login":"pelling", "time":"555", "tokens":"100"},{"login":"pelling", "time":"666", "tokens":"200"}]},
+                  {"issue":"142180328", "votes":[{"login":"pelling", "time":"555", "tokens":"100"},{"login":"wilma", "time":"999", "tokens":"900"}]}
+                ];
+                */
+
+
+                var repo_votes = self.db.collection('repo_votes');
+                // first add an issue to repo if it doesn't exist
+                repo_votes.update(
+                  { _id: repo_id },
+                  { $addToSet: { repo_votes: {issue_id: issue_id} } }
+                );
+
+                /*
+                repo_votes.update(
+                  { _id: repo_id, "issue_votes.issue_id": issue_id },
+                  { $addToSet: { issue_votes: issue_vote} }
+                );
+                */
+
+                repo_votes.findOne({
+                  _id: repo_id
+                }, function(err, doc) {
+                  res.json(JSON.stringify(doc));
+                  res.end();
+                });
+
           });
         });
 

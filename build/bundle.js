@@ -86,9 +86,9 @@
 
 	var _loadIssuesJs2 = _interopRequireDefault(_loadIssuesJs);
 
-	var _loadIssueVotesJs = __webpack_require__(225);
+	var _loadRepoVotesJs = __webpack_require__(225);
 
-	var _loadIssueVotesJs2 = _interopRequireDefault(_loadIssueVotesJs);
+	var _loadRepoVotesJs2 = _interopRequireDefault(_loadRepoVotesJs);
 
 	var _viewUserDataJs = __webpack_require__(226);
 
@@ -146,7 +146,7 @@
 	      repository: 'not found',
 	      contributors: 'not found',
 	      issues: 'not found',
-	      issue_votes: 'not found',
+	      repo_votes: 'not found',
 	      session: false,
 	      projects: [],
 	      backlog: { "contributors": [], "items": [] }
@@ -220,20 +220,21 @@
 	    (0, _consoleLogJs2['default'])('issues loaded - number found: ' + issuesJson.length);
 	  },
 
-	  handleIssueVotesLoaded: function handleIssueVotesLoaded(issueVotes) {
-	    var issueVotesJson = JSON.parse(issueVotes);
-	    this.setState({ issue_votes: issueVotesJson });
-	    (0, _consoleLogJs2['default'])('issue votes loaded - number found: ' + issueVotesJson.length);
+	  handleRepoVotesLoaded: function handleRepoVotesLoaded(repoVotes) {
+	    var repoVotesJson = JSON.parse(repoVotes);
+	    this.setState({ repo_votes: repoVotesJson });
+	    (0, _consoleLogJs2['default'])('repo votes loaded - number found: ' + repoVotesJson.length);
 	  },
 
 	  handleAddTokens: function handleAddTokens(issue_id, tokens) {
 	    var _this2 = this;
 
 	    this.handleAddToGitHubConsole('adding tokens');
-	    fetch('addtokens?access_token=' + this.state.access_token + '&full_name=' + this.state.repository.full_name + '&issue_id=' + issue_id + '&tokens=' + tokens).then(function (response) {
+	    fetch('addtokens?access_token=' + this.state.access_token + '&repo_id=' + this.state.repository.id + '&issue_id=' + issue_id + '&tokens=' + tokens).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
 	      _this2.handleClearGitHubConsole();
+	      alert(responseData);
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error adding tokens: ' + error);
 	    });
@@ -248,7 +249,7 @@
 	    this.setState({ repository: 'not found' });
 	    this.setState({ contributors: 'not found' });
 	    this.setState({ issues: 'not found' });
-	    this.setState({ issue_votes: 'not found' });
+	    this.setState({ repo_votes: 'not found' });
 	  },
 
 	  handleBacklogLoaded: function handleBacklogLoaded(newBacklog) {
@@ -268,7 +269,7 @@
 	      repository: this.state.repository,
 	      contributors: this.state.contributors,
 	      issues: this.state.issues,
-	      issue_votes: this.state.issue_votes,
+	      repo_votes: this.state.repo_votes,
 	      session: this.state.session,
 	      backlog: this.state.backlog,
 	      onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
@@ -280,7 +281,7 @@
 	      onSelectRepository: this.handleRepositorySelected.bind(this),
 	      onContributorsLoaded: this.handleContributorsLoaded.bind(this),
 	      onIssuesLoaded: this.handleIssuesLoaded.bind(this),
-	      onIssueVotesLoaded: this.handleIssueVotesLoaded.bind(this),
+	      onRepoVotesLoaded: this.handleRepoVotesLoaded.bind(this),
 	      onAddTokens: this.handleAddTokens.bind(this),
 	      onSignOut: this.handleSignOut.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -356,7 +357,7 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepositories', component: _loadRepositoriesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadContributors', component: _loadContributorsJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadIssues', component: _loadIssuesJs2['default'] }),
-	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadIssueVotes', component: _loadIssueVotesJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepoVotes', component: _loadRepoVotesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewUserData', component: _viewUserDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepositoriesData', component: _viewRepositoriesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewContributorsData', component: _viewContributorsDataJs2['default'] }),
@@ -26155,7 +26156,7 @@
 	    }).then(function (responseData) {
 	      _this.props.onIssuesLoaded(responseData);
 	      _this.props.onAddToGitHubConsole('issues received');
-	      _reactRouter.browserHistory.push('/loadIssueVotes');
+	      _reactRouter.browserHistory.push('/loadRepoVotes');
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading issues: ' + error);
 	    });
@@ -26194,21 +26195,21 @@
 
 	__webpack_require__(220);
 
-	var LoadIssueVotes = _react2['default'].createClass({
-	  displayName: 'LoadIssueVotes',
+	var LoadRepoVotes = _react2['default'].createClass({
+	  displayName: 'LoadRepoVotes',
 
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
-	    this.props.onAddToGitHubConsole('requesting issue votes');
-	    fetch('getissuevotes?access_token=' + this.props.access_token + '&full_name=' + this.props.repository.full_name).then(function (response) {
+	    this.props.onAddToGitHubConsole('requesting repo votes');
+	    fetch('getrepovotes?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
-	      _this.props.onIssueVotesLoaded(responseData);
-	      _this.props.onAddToGitHubConsole('issue votes received');
+	      _this.props.onRepoVotesLoaded(responseData);
+	      _this.props.onAddToGitHubConsole('repo votes received');
 	      _reactRouter.browserHistory.push('/backlog');
 	    })['catch'](function (error) {
-	      (0, _consoleLogJs2['default'])('Error loading issue votes: ' + error);
+	      (0, _consoleLogJs2['default'])('Error loading repo votes: ' + error);
 	    });
 	  },
 
@@ -26218,7 +26219,7 @@
 
 	});
 
-	exports['default'] = LoadIssueVotes;
+	exports['default'] = LoadRepoVotes;
 	module.exports = exports['default'];
 
 /***/ },
@@ -26605,7 +26606,7 @@
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'col-md-12' },
-	          _react2['default'].createElement(IssueTable, { issue_votes: this.props.issue_votes, issues: this.props.issues, contributors: this.props.contributors, onAddTokens: this.props.onAddTokens })
+	          _react2['default'].createElement(IssueTable, { repo_votes: this.props.repo_votes, issues: this.props.issues, contributors: this.props.contributors, onAddTokens: this.props.onAddTokens })
 	        )
 	      )
 	    );
@@ -26618,16 +26619,19 @@
 	  displayName: 'IssueTable',
 
 	  render: function render() {
-	    var issue_votes = this.props.issue_votes;
+	    var repo_votes = this.props.repo_votes;
 	    var issueRows = this.props.issues.map((function (issue) {
-	      var results = issue_votes.filter(function (item) {
-	        return item.issue == issue.id;
-	      });
-	      var votes = [];
-	      if (results.length > 0) {
-	        votes = results[0].votes;
+	      var issue_votes = [];
+	      if (repo_votes.length > 0) {
+	        var results = repo_votes.filter(function (item) {
+	          return item.issue_id == issue.id;
+	        });
+	        if (results.length > 0) {
+	          issue_votes = results[0].issue_votes;
+	        }
 	      }
-	      return _react2['default'].createElement(IssueRow, { id: issue.id, title: issue.title, contributors: this.props.contributors, votes: votes, onAddTokens: this.props.onAddTokens });
+
+	      return _react2['default'].createElement(IssueRow, { id: issue.id, title: issue.title, contributors: this.props.contributors, issue_votes: issue_votes, onAddTokens: this.props.onAddTokens });
 	    }).bind(this));
 
 	    var contributorHeaders = this.props.contributors.map((function (contributor) {
@@ -26685,9 +26689,9 @@
 	  },
 
 	  render: function render() {
-	    var votes = this.props.votes;
+	    var issue_votes = this.props.issue_votes;
 	    var contributorCols = this.props.contributors.map((function (contributor) {
-	      var results = votes.filter(function (item) {
+	      var results = issue_votes.filter(function (item) {
 	        return item.login == contributor.login;
 	      });
 	      var tokens = 0;

@@ -19,7 +19,7 @@ var Backlog = React.createClass({
                          my upvote tokens:&nbsp; <i className="fa fa-arrow-up"></i> 1355
                       </div>
                       <div className="col-md-12">
-                        <IssueTable issue_votes={this.props.issue_votes} issues={this.props.issues} contributors={this.props.contributors} onAddTokens={this.props.onAddTokens}/>
+                        <IssueTable repo_votes={this.props.repo_votes} issues={this.props.issues} contributors={this.props.contributors} onAddTokens={this.props.onAddTokens}/>
                       </div>
                 </div>
 
@@ -35,12 +35,15 @@ export default Backlog;
 
 var IssueTable = React.createClass({
     render: function () {
-      var issue_votes = this.props.issue_votes;
+      var repo_votes = this.props.repo_votes;
       var issueRows = this.props.issues.map(function(issue) {
-          var results = issue_votes.filter(function(item) {return item.issue == issue.id});
-          var votes = [];
-          if (results.length > 0) { votes = results[0].votes; }
-          return <IssueRow id={issue.id} title={issue.title} contributors={this.props.contributors} votes={votes} onAddTokens={this.props.onAddTokens}/>
+          var issue_votes = [];
+          if (repo_votes.length > 0) {
+              var results = repo_votes.filter(function(item) {return item.issue_id == issue.id});
+              if (results.length > 0) { issue_votes = results[0].issue_votes; }
+          }
+
+          return <IssueRow id={issue.id} title={issue.title} contributors={this.props.contributors} issue_votes={issue_votes} onAddTokens={this.props.onAddTokens}/>
       }.bind(this));
 
       var contributorHeaders = this.props.contributors.map(function(contributor) {
@@ -82,9 +85,9 @@ var IssueRow = React.createClass({
   },
 
     render: function () {
-      var votes = this.props.votes;
+      var issue_votes = this.props.issue_votes;
       var contributorCols = this.props.contributors.map(function(contributor) {
-          var results = votes.filter(function(item) {return item.login == contributor.login});
+          var results = issue_votes.filter(function(item) {return item.login == contributor.login});
           var tokens=0;
           results.map(function(item){ tokens = tokens + Number(item.tokens); });
           return <ContributorCol tokens={tokens}/>
