@@ -26599,10 +26599,7 @@
 	            ),
 	            ' / ',
 	            this.props.repository.name
-	          ),
-	          'my available upvote tokens:  ',
-	          _react2['default'].createElement('i', { className: 'fa fa-arrow-up' }),
-	          ' 1355'
+	          )
 	        ),
 	        _react2['default'].createElement(
 	          'div',
@@ -26656,8 +26653,10 @@
 	          contributorHeaders,
 	          _react2['default'].createElement(
 	            'th',
-	            null,
-	            'upvote'
+	            { className: 'col-md-2' },
+	            'my thumbs-up tokens:  ',
+	            _react2['default'].createElement('i', { className: 'fa fa-thumbs-o-up gm-logo-color' }),
+	            '  1355'
 	          )
 	        )
 	      ),
@@ -26685,8 +26684,8 @@
 	var IssueRow = _react2['default'].createClass({
 	  displayName: 'IssueRow',
 
-	  handleAddTokensClick: function handleAddTokensClick(issue_id) {
-	    this.props.onAddTokens(issue_id, 200);
+	  handleAddTokensClick: function handleAddTokensClick(issue_id, tokens) {
+	    this.props.onAddTokens(issue_id, tokens);
 	  },
 
 	  render: function render() {
@@ -26716,13 +26715,25 @@
 	        { className: 'vert-align' },
 	        _react2['default'].createElement(
 	          'a',
-	          { href: '#', className: 'btn btn-success btn-sm', role: 'button', onClick: this.handleAddTokensClick.bind(this, this.props.id) },
-	          _react2['default'].createElement('i', { className: 'fa fa-plus-circle' }),
+	          { href: '#', className: 'btn btn-success btn-sm', role: 'button', onClick: this.handleAddTokensClick.bind(this, this.props.id, 10) },
+	          _react2['default'].createElement('i', { className: 'fa fa-plus' }),
 	          ' ',
 	          _react2['default'].createElement(
 	            'b',
 	            null,
-	            'add tokens'
+	            '10 tokens'
+	          )
+	        ),
+	        '  ',
+	        _react2['default'].createElement(
+	          'a',
+	          { href: '#', className: 'btn btn-primary btn-sm', role: 'button', onClick: this.handleAddTokensClick.bind(this, this.props.id, 100) },
+	          _react2['default'].createElement('i', { className: 'fa fa-plus' }),
+	          ' ',
+	          _react2['default'].createElement(
+	            'b',
+	            null,
+	            '100 tokens'
 	          )
 	        )
 	      )
@@ -26737,8 +26748,8 @@
 	    return _react2['default'].createElement(
 	      'td',
 	      { className: 'vert-align' },
-	      _react2['default'].createElement('i', { className: 'fa fa-arrow-up' }),
-	      ' ',
+	      _react2['default'].createElement('i', { className: 'fa fa-thumbs-o-up gm-logo-color' }),
+	      '  ',
 	      this.props.tokens
 	    );
 	  }

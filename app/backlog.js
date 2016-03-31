@@ -16,7 +16,6 @@ var Backlog = React.createClass({
                 <div className="row-fluid">
                       <div className="col-md-12">
                         <h3><Link to="/selectProduct">{this.props.user.login}</Link> / {this.props.repository.name}</h3>
-                         my available upvote tokens:&nbsp; <i className="fa fa-arrow-up"></i> 1355
                       </div>
                       <div className="col-md-12">
                         <IssueTable repo_votes={this.props.repo_votes.repo_votes} issues={this.props.issues} contributors={this.props.contributors} onAddTokens={this.props.onAddTokens}/>
@@ -56,8 +55,10 @@ var IssueTable = React.createClass({
             <thead>
               <tr>
                 <th>title</th>
-                {contributorHeaders}
-                <th>upvote</th>
+                  {contributorHeaders}
+                <th className="col-md-2">
+                  my thumbs-up tokens:&nbsp; <i className="fa fa-thumbs-o-up gm-logo-color"></i>&nbsp; 1355
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -80,8 +81,8 @@ var ContributorHeader = React.createClass({
 var IssueRow = React.createClass({
 
 
-  handleAddTokensClick: function(issue_id) {
-    this.props.onAddTokens(issue_id, 200);
+  handleAddTokensClick: function(issue_id, tokens) {
+    this.props.onAddTokens(issue_id, tokens);
   },
 
     render: function () {
@@ -97,7 +98,11 @@ var IssueRow = React.createClass({
           <tr>
             <td className="vert-align">{this.props.title}</td>
             {contributorCols}
-            <td className="vert-align"><a href="#" className="btn btn-success btn-sm" role="button" onClick={this.handleAddTokensClick.bind(this, this.props.id)}><i className="fa fa-plus-circle"></i> <b>add tokens</b></a></td>
+            <td className="vert-align">
+                <a href="#" className="btn btn-success btn-sm" role="button" onClick={this.handleAddTokensClick.bind(this, this.props.id, 10)}><i className="fa fa-plus"></i> <b>10 tokens</b></a>
+                &nbsp;&nbsp;
+                <a href="#" className="btn btn-primary btn-sm" role="button" onClick={this.handleAddTokensClick.bind(this, this.props.id, 100)}><i className="fa fa-plus"></i> <b>100 tokens</b></a>
+            </td>
           </tr>
         );
     }
@@ -107,7 +112,9 @@ var IssueRow = React.createClass({
 var ContributorCol = React.createClass({
     render: function () {
         return (
-                <td className="vert-align"><i className="fa fa-arrow-up"></i> {this.props.tokens}</td>
+                <td className="vert-align">
+                  <i className="fa fa-thumbs-o-up gm-logo-color"></i>&nbsp; {this.props.tokens}
+                </td>
         );
     }
 });
