@@ -228,23 +228,18 @@ var SampleApp = function() {
 
           repo_votes.update(
             { _id: repo_id },
-            { _id: repo_id, repo_votes:[]},
+            {
+               $set: { _id: repo_id },
+               $setOnInsert: { repo_votes:[] }
+            },
             { upsert: true }
           );
-
-
-          /*
-          repo_votes.insert(
-            { _id: repo_id },
-            { $setOnInsert: { issue_votes: [] } },
-            { upsert: true }
-          );*/
 
           repo_votes.findOne({
             _id: repo_id
           }, function(err, doc) {
             console.log("repo_votes=" + doc._id);
-            res.json(JSON.stringify(doc.repo_votes));
+            res.json(JSON.stringify(doc));
             res.end();
           });
         });
@@ -263,34 +258,50 @@ var SampleApp = function() {
                 var login = JSON.parse(body).login;
                 var issue_vote = {"login":login, "time":n, "tokens":tokens};
 
-
-                /*
-                self.issue_votes = [{"issue":"142180356", "votes":[{"login":"pelling", "time":"555", "tokens":"100"},{"login":"pelling", "time":"666", "tokens":"200"}]},
-                  {"issue":"142180328", "votes":[{"login":"pelling", "time":"555", "tokens":"100"},{"login":"wilma", "time":"999", "tokens":"900"}]}
-                ];
-                */
-
-
                 var repo_votes = self.db.collection('repo_votes');
                 // first add an issue to repo if it doesn't exist
-                repo_votes.update(
-                  { _id: repo_id },
-                  { $addToSet: { repo_votes: {issue_id: issue_id} } }
-                );
+
+                repo_votes.findOne(
+                  { _id: repo_id, "repo_votes.issue_id": issue_id },
+                  function(err, doc) {
+                    if (doc === null) {
+                      // issue has not been added yet (no tokens).  Need to add blank issue to repo_votes
+                      repo_votes.update(
+                        { _id: repo_id },
+                        { $push: { repo_votes: {issue_id: issue_id} } }
+                      );
+
+                    }
+
+                    repo_votes.update(
+                      { _id: repo_id, "repo_votes.issue_id": issue_id },
+                      { $push: { "repo_votes.$.issue_votes" : issue_vote } },
+                      function(err, doc) {
+
+                          repo_votes.findOne({
+                            _id: repo_id
+                          }, function(err, doc) {
+                            console.log("repo_votes=" + doc._id);
+                            res.json(JSON.stringify(doc));
+                            res.end();
+                          });
+                      }
+                    );
+
+
+
+
+                });
+
 
                 /*
-                repo_votes.update(
-                  { _id: repo_id, "issue_votes.issue_id": issue_id },
-                  { $addToSet: { issue_votes: issue_vote} }
-                );
-                */
-
                 repo_votes.findOne({
                   _id: repo_id
                 }, function(err, doc) {
                   res.json(JSON.stringify(doc));
                   res.end();
                 });
+                */
 
           });
         });

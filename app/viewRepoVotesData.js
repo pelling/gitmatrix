@@ -3,14 +3,14 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 
 
 
-var ViewIssueVotesData = React.createClass({
+var ViewRepoVotesData = React.createClass({
 
 
     render : function() {
       return (
         <div className="container-fluid">
-          <h3>Issue Votes</h3>
-          {JSON.stringify(this.props.issue_votes)}
+          <h3>Repo Votes</h3>
+          {JSON.stringify(this.props.repo_votes)}
         </div>
       );
     }
@@ -18,4 +18,4 @@ var ViewIssueVotesData = React.createClass({
 });
 
 
-export default ViewIssueVotesData;
+export default ViewRepoVotesData;

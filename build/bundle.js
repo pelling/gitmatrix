@@ -106,9 +106,9 @@
 
 	var _viewIssuesDataJs2 = _interopRequireDefault(_viewIssuesDataJs);
 
-	var _viewIssueVotesDataJs = __webpack_require__(230);
+	var _viewRepoVotesDataJs = __webpack_require__(230);
 
-	var _viewIssueVotesDataJs2 = _interopRequireDefault(_viewIssueVotesDataJs);
+	var _viewRepoVotesDataJs2 = _interopRequireDefault(_viewRepoVotesDataJs);
 
 	var _selectProductJs = __webpack_require__(231);
 
@@ -234,7 +234,8 @@
 	      return response.json();
 	    }).then(function (responseData) {
 	      _this2.handleClearGitHubConsole();
-	      alert(responseData);
+	      var repoVotesJson = JSON.parse(responseData);
+	      _this2.setState({ repo_votes: repoVotesJson });
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error adding tokens: ' + error);
 	    });
@@ -336,8 +337,8 @@
 	        '     |     ',
 	        _react2['default'].createElement(
 	          _reactRouter.Link,
-	          { to: '/viewIssueVotesData' },
-	          'issues votes data'
+	          { to: '/viewRepoVotesData' },
+	          'repo votes data'
 	        )
 	      )
 	    );
@@ -362,7 +363,7 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepositoriesData', component: _viewRepositoriesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewContributorsData', component: _viewContributorsDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewIssuesData', component: _viewIssuesDataJs2['default'] }),
-	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewIssueVotesData', component: _viewIssueVotesDataJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepoVotesData', component: _viewRepoVotesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProduct', component: _selectProductJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlogLoader', component: _backlogLoaderJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlog', component: _backlogJs2['default'] }),
@@ -26396,8 +26397,8 @@
 
 	var _reactRouter = __webpack_require__(158);
 
-	var ViewIssueVotesData = _react2['default'].createClass({
-	  displayName: 'ViewIssueVotesData',
+	var ViewRepoVotesData = _react2['default'].createClass({
+	  displayName: 'ViewRepoVotesData',
 
 	  render: function render() {
 	    return _react2['default'].createElement(
@@ -26406,15 +26407,15 @@
 	      _react2['default'].createElement(
 	        'h3',
 	        null,
-	        'Issue Votes'
+	        'Repo Votes'
 	      ),
-	      JSON.stringify(this.props.issue_votes)
+	      JSON.stringify(this.props.repo_votes)
 	    );
 	  }
 
 	});
 
-	exports['default'] = ViewIssueVotesData;
+	exports['default'] = ViewRepoVotesData;
 	module.exports = exports['default'];
 
 /***/ },
@@ -26599,14 +26600,14 @@
 	            ' / ',
 	            this.props.repository.name
 	          ),
-	          'my upvote tokens:  ',
+	          'my available upvote tokens:  ',
 	          _react2['default'].createElement('i', { className: 'fa fa-arrow-up' }),
 	          ' 1355'
 	        ),
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'col-md-12' },
-	          _react2['default'].createElement(IssueTable, { repo_votes: this.props.repo_votes, issues: this.props.issues, contributors: this.props.contributors, onAddTokens: this.props.onAddTokens })
+	          _react2['default'].createElement(IssueTable, { repo_votes: this.props.repo_votes.repo_votes, issues: this.props.issues, contributors: this.props.contributors, onAddTokens: this.props.onAddTokens })
 	        )
 	      )
 	    );

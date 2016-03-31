@@ -13,7 +13,7 @@ import ViewUserData from './viewUserData.js';
 import ViewRepositoriesData from './viewRepositoriesData.js';
 import ViewContributorsData from './viewContributorsData.js';
 import ViewIssuesData from './viewIssuesData.js';
-import ViewIssueVotesData from './viewIssueVotesData.js';
+import ViewRepoVotesData from './viewRepoVotesData.js';
 import SelectProduct from './selectProduct.js';
 import BacklogLoader from './backlogLoader.js';
 import Backlog from './backlog.js';
@@ -123,7 +123,8 @@ var Main = React.createClass({
     .then((response) => response.json())
     .then((responseData) => {
       this.handleClearGitHubConsole();
-      alert(responseData);
+      var repoVotesJson = JSON.parse(responseData);
+      this.setState({repo_votes : repoVotesJson});
     })
     .catch((error) => {
       consoleLog('Error adding tokens: ' + error);
@@ -196,7 +197,7 @@ var Main = React.createClass({
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <Link to="/viewIssuesData">issues data</Link>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <Link to="/viewIssueVotesData">issues votes data</Link>
+                      <Link to="/viewRepoVotesData">repo votes data</Link>
                    </div>
 
             </div>
@@ -221,7 +222,7 @@ React.render((
       <Route path="viewRepositoriesData" component={ViewRepositoriesData} />
       <Route path="viewContributorsData" component={ViewContributorsData} />
       <Route path="viewIssuesData" component={ViewIssuesData} />
-      <Route path="viewIssueVotesData" component={ViewIssueVotesData} />
+      <Route path="viewRepoVotesData" component={ViewRepoVotesData} />
       <Route path="selectProduct" component={SelectProduct} />
       <Route path="backlogLoader" component={BacklogLoader} />
       <Route path="backlog" component={Backlog} />
