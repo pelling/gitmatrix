@@ -224,23 +224,24 @@ var SampleApp = function() {
 
           var repo_votes = self.db.collection('repo_votes');
 
-          // first add an issue to repo if it doesn't exist
-
-          repo_votes.update(
-            { _id: repo_id },
-            {
-               $set: { _id: repo_id },
-               $setOnInsert: { repo_votes:[] }
-            },
-            { upsert: true }
-          );
-
           repo_votes.findOne({
             _id: repo_id
           }, function(err, doc) {
-            console.log("repo_votes=" + doc._id);
-            res.json(JSON.stringify(doc));
-            res.end();
+            if(doc === null) {
+              // repo does not exist yet.  insert it
+              repo_votes.insert(
+                {_id: repo_id,
+                  repo_votes:[]
+                }
+              )
+              res.json('{"_id": "' + repo_id + '", "repo_votes":[]}');
+              res.end();
+            } else {
+              res.json(JSON.stringify(doc));
+              res.end();
+            }
+
+
           });
         });
 
