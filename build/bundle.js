@@ -26490,6 +26490,8 @@
 	    return _react2['default'].createElement(
 	      'a',
 	      { href: '#', className: 'list-group-item', onClick: this.handleSelectProduct.bind(this, this.props.index) },
+	      _react2['default'].createElement('i', { className: 'fa fa-file-code-o' }),
+	      '  ',
 	      this.props.name
 	    );
 	  }
@@ -26592,6 +26594,8 @@
 	          _react2['default'].createElement(
 	            'h3',
 	            null,
+	            _react2['default'].createElement('i', { className: 'fa fa-file-code-o' }),
+	            ' ',
 	            _react2['default'].createElement(
 	              _reactRouter.Link,
 	              { to: '/selectProduct' },

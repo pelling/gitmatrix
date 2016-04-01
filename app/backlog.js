@@ -15,7 +15,10 @@ var Backlog = React.createClass({
           <div>
                 <div className="row-fluid">
                       <div className="col-md-12">
-                        <h3><Link to="/selectProduct">{this.props.user.login}</Link> / {this.props.repository.name}</h3>
+                        <h3>
+                            <i className="fa fa-file-code-o"></i>&nbsp;
+                            <Link to="/selectProduct">{this.props.user.login}</Link> / {this.props.repository.name}
+                        </h3>
                       </div>
                       <div className="col-md-12">
                         <IssueTable repo_votes={this.props.repo_votes.repo_votes} issues={this.props.issues} contributors={this.props.contributors} onAddTokens={this.props.onAddTokens}/>

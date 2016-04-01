@@ -46,7 +46,10 @@ var Product = React.createClass({
 
     render: function () {
         return (
-                <a href="#" className="list-group-item" onClick={this.handleSelectProduct.bind(this, this.props.index)}>{this.props.name}</a>
+                <a href="#" className="list-group-item" onClick={this.handleSelectProduct.bind(this, this.props.index)}>
+                  <i className="fa fa-file-code-o"></i>&nbsp;&nbsp;
+                  {this.props.name}
+                </a>
         );
     }
 });
