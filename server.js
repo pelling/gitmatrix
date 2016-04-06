@@ -294,7 +294,6 @@ var SampleApp = function() {
                           repo_votes.findOne({
                             _id: repo_id
                           }, function(err, doc) {
-                            console.log("repo_votes=" + doc._id);
                             res.json(JSON.stringify(doc));
                             res.end();
                           });
@@ -305,16 +304,6 @@ var SampleApp = function() {
 
 
                 });
-
-
-                /*
-                repo_votes.findOne({
-                  _id: repo_id
-                }, function(err, doc) {
-                  res.json(JSON.stringify(doc));
-                  res.end();
-                });
-                */
 
           });
         });

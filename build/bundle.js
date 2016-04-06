@@ -26719,7 +26719,10 @@
 	            ),
 	            ' / ',
 	            this.props.repository.name
-	          )
+	          ),
+	          'my available tokens:  ',
+	          _react2['default'].createElement('i', { className: 'fa fa-plus-circle gm-logo-color' }),
+	          ' 1355'
 	        ),
 	        _react2['default'].createElement(
 	          'div',
@@ -26774,9 +26777,7 @@
 	          _react2['default'].createElement(
 	            'th',
 	            { className: 'col-md-2' },
-	            'my thumbs-up tokens:  ',
-	            _react2['default'].createElement('i', { className: 'fa fa-thumbs-o-up gm-logo-color' }),
-	            '  1355'
+	            'add tokens'
 	          )
 	        )
 	      ),
@@ -26841,7 +26842,7 @@
 	          _react2['default'].createElement(
 	            'b',
 	            null,
-	            '10 tokens'
+	            '10'
 	          )
 	        ),
 	        '  ',
@@ -26853,7 +26854,7 @@
 	          _react2['default'].createElement(
 	            'b',
 	            null,
-	            '100 tokens'
+	            '100'
 	          )
 	        )
 	      )
@@ -26868,8 +26869,8 @@
 	    return _react2['default'].createElement(
 	      'td',
 	      { className: 'vert-align' },
-	      _react2['default'].createElement('i', { className: 'fa fa-thumbs-o-up gm-logo-color' }),
-	      '  ',
+	      _react2['default'].createElement('i', { className: 'fa fa-plus-circle gm-logo-color' }),
+	      ' ',
 	      this.props.tokens
 	    );
 	  }

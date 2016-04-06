@@ -19,6 +19,7 @@ var Backlog = React.createClass({
                             <i className="fa fa-file-code-o"></i>&nbsp;
                             <Link to="/selectProduct">{this.props.user.login}</Link> / {this.props.repository.name}
                         </h3>
+                        my available tokens:&nbsp; <i className="fa fa-plus-circle gm-logo-color"></i> 1355
                       </div>
                       <div className="col-md-12">
                         <IssueTable repo_votes={this.props.repo_votes.repo_votes} issues={this.props.issues} contributors={this.props.contributors} onAddTokens={this.props.onAddTokens}/>
@@ -60,7 +61,7 @@ var IssueTable = React.createClass({
                 <th>title</th>
                   {contributorHeaders}
                 <th className="col-md-2">
-                  my thumbs-up tokens:&nbsp; <i className="fa fa-thumbs-o-up gm-logo-color"></i>&nbsp; 1355
+                  add tokens
                 </th>
               </tr>
             </thead>
@@ -102,9 +103,9 @@ var IssueRow = React.createClass({
             <td className="vert-align">{this.props.title}</td>
             {contributorCols}
             <td className="vert-align">
-                <a href="#" className="btn btn-success btn-sm" role="button" onClick={this.handleAddTokensClick.bind(this, this.props.id, 10)}><i className="fa fa-plus"></i> <b>10 tokens</b></a>
+                <a href="#" className="btn btn-success btn-sm" role="button" onClick={this.handleAddTokensClick.bind(this, this.props.id, 10)}><i className="fa fa-plus"></i> <b>10</b></a>
                 &nbsp;&nbsp;
-                <a href="#" className="btn btn-primary btn-sm" role="button" onClick={this.handleAddTokensClick.bind(this, this.props.id, 100)}><i className="fa fa-plus"></i> <b>100 tokens</b></a>
+                <a href="#" className="btn btn-primary btn-sm" role="button" onClick={this.handleAddTokensClick.bind(this, this.props.id, 100)}><i className="fa fa-plus"></i> <b>100</b></a>
             </td>
           </tr>
         );
@@ -116,7 +117,7 @@ var ContributorCol = React.createClass({
     render: function () {
         return (
                 <td className="vert-align">
-                  <i className="fa fa-thumbs-o-up gm-logo-color"></i>&nbsp; {this.props.tokens}
+                  <i className="fa fa-plus-circle gm-logo-color"></i> {this.props.tokens}
                 </td>
         );
     }
