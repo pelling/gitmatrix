@@ -246,6 +246,18 @@ var SampleApp = function() {
         });
 
 
+        self.app.get('/gettokens', function(req, res){
+          var access_token = req.query.access_token;
+          var repo_id = req.query.repo_id;
+
+          res.json(JSON.stringify("found tokens!  access_token=" + access_token + " and repo_id=" + repo_id));
+          res.end();
+
+        });
+
+
+
+
         self.app.get('/addtokens', function(req, res){
           var access_token = req.query.access_token;
           var repo_id = req.query.repo_id;

@@ -90,39 +90,47 @@
 
 	var _loadRepoVotesJs2 = _interopRequireDefault(_loadRepoVotesJs);
 
-	var _viewUserDataJs = __webpack_require__(226);
+	var _loadTokensJs = __webpack_require__(226);
+
+	var _loadTokensJs2 = _interopRequireDefault(_loadTokensJs);
+
+	var _viewUserDataJs = __webpack_require__(227);
 
 	var _viewUserDataJs2 = _interopRequireDefault(_viewUserDataJs);
 
-	var _viewRepositoriesDataJs = __webpack_require__(227);
+	var _viewRepositoriesDataJs = __webpack_require__(228);
 
 	var _viewRepositoriesDataJs2 = _interopRequireDefault(_viewRepositoriesDataJs);
 
-	var _viewContributorsDataJs = __webpack_require__(228);
+	var _viewContributorsDataJs = __webpack_require__(229);
 
 	var _viewContributorsDataJs2 = _interopRequireDefault(_viewContributorsDataJs);
 
-	var _viewIssuesDataJs = __webpack_require__(229);
+	var _viewIssuesDataJs = __webpack_require__(230);
 
 	var _viewIssuesDataJs2 = _interopRequireDefault(_viewIssuesDataJs);
 
-	var _viewRepoVotesDataJs = __webpack_require__(230);
+	var _viewRepoVotesDataJs = __webpack_require__(231);
 
 	var _viewRepoVotesDataJs2 = _interopRequireDefault(_viewRepoVotesDataJs);
 
-	var _selectProductJs = __webpack_require__(231);
+	var _viewTokensDataJs = __webpack_require__(232);
+
+	var _viewTokensDataJs2 = _interopRequireDefault(_viewTokensDataJs);
+
+	var _selectProductJs = __webpack_require__(233);
 
 	var _selectProductJs2 = _interopRequireDefault(_selectProductJs);
 
-	var _backlogLoaderJs = __webpack_require__(232);
+	var _backlogLoaderJs = __webpack_require__(234);
 
 	var _backlogLoaderJs2 = _interopRequireDefault(_backlogLoaderJs);
 
-	var _backlogJs = __webpack_require__(233);
+	var _backlogJs = __webpack_require__(235);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	var _calibrateJs = __webpack_require__(234);
+	var _calibrateJs = __webpack_require__(236);
 
 	var _calibrateJs2 = _interopRequireDefault(_calibrateJs);
 
@@ -147,6 +155,7 @@
 	      contributors: 'not found',
 	      issues: 'not found',
 	      repo_votes: 'not found',
+	      tokens: 'not found',
 	      session: false,
 	      projects: [],
 	      backlog: { "contributors": [], "items": [] }
@@ -226,6 +235,12 @@
 	    (0, _consoleLogJs2['default'])('repo votes loaded - number found: ' + repoVotesJson.length);
 	  },
 
+	  handleTokensLoaded: function handleTokensLoaded(tokens) {
+	    var tokensJson = JSON.parse(tokens);
+	    this.setState({ tokens: tokensJson });
+	    (0, _consoleLogJs2['default'])('tokens loaded - number found: ' + tokensJson.length);
+	  },
+
 	  handleAddTokens: function handleAddTokens(issue_id, tokens) {
 	    var _this2 = this;
 
@@ -251,6 +266,7 @@
 	    this.setState({ contributors: 'not found' });
 	    this.setState({ issues: 'not found' });
 	    this.setState({ repo_votes: 'not found' });
+	    this.setState({ tokens: 'not found' });
 	  },
 
 	  handleBacklogLoaded: function handleBacklogLoaded(newBacklog) {
@@ -271,6 +287,7 @@
 	      contributors: this.state.contributors,
 	      issues: this.state.issues,
 	      repo_votes: this.state.repo_votes,
+	      tokens: this.state.tokens,
 	      session: this.state.session,
 	      backlog: this.state.backlog,
 	      onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
@@ -283,6 +300,7 @@
 	      onContributorsLoaded: this.handleContributorsLoaded.bind(this),
 	      onIssuesLoaded: this.handleIssuesLoaded.bind(this),
 	      onRepoVotesLoaded: this.handleRepoVotesLoaded.bind(this),
+	      onTokensLoaded: this.handleTokensLoaded.bind(this),
 	      onAddTokens: this.handleAddTokens.bind(this),
 	      onSignOut: this.handleSignOut.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -339,6 +357,12 @@
 	          _reactRouter.Link,
 	          { to: '/viewRepoVotesData' },
 	          'repo votes data'
+	        ),
+	        '     |     ',
+	        _react2['default'].createElement(
+	          _reactRouter.Link,
+	          { to: '/viewTokensData' },
+	          'tokens data'
 	        )
 	      )
 	    );
@@ -359,11 +383,13 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadContributors', component: _loadContributorsJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadIssues', component: _loadIssuesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepoVotes', component: _loadRepoVotesJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadTokens', component: _loadTokensJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewUserData', component: _viewUserDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepositoriesData', component: _viewRepositoriesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewContributorsData', component: _viewContributorsDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewIssuesData', component: _viewIssuesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepoVotesData', component: _viewRepoVotesDataJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewTokensData', component: _viewTokensDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProduct', component: _selectProductJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlogLoader', component: _backlogLoaderJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlog', component: _backlogJs2['default'] }),
@@ -26208,7 +26234,7 @@
 	    }).then(function (responseData) {
 	      _this.props.onRepoVotesLoaded(responseData);
 	      _this.props.onAddToGitHubConsole('repo votes received');
-	      _reactRouter.browserHistory.push('/backlog');
+	      _reactRouter.browserHistory.push('/loadTokens');
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading repo votes: ' + error);
 	    });
@@ -26225,6 +26251,57 @@
 
 /***/ },
 /* 226 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var _consoleLogJs = __webpack_require__(218);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
+
+	var LoadTokens = _react2['default'].createClass({
+	  displayName: 'LoadTokens',
+
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
+	    this.props.onAddToGitHubConsole('requesting tokens');
+	    fetch('gettokens?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id).then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.props.onTokensLoaded(responseData);
+	      _this.props.onAddToGitHubConsole('tokens received');
+	      _reactRouter.browserHistory.push('/backlog');
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error loading tokens: ' + error);
+	    });
+	  },
+
+	  render: function render() {
+	    return _react2['default'].createElement('div', null);
+	  }
+
+	});
+
+	exports['default'] = LoadTokens;
+	module.exports = exports['default'];
+
+/***/ },
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26263,7 +26340,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 227 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26302,7 +26379,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 228 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26341,7 +26418,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 229 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26380,7 +26457,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 230 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26419,7 +26496,46 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 231 */
+/* 232 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var ViewTokensData = _react2['default'].createClass({
+	  displayName: 'ViewTokensData',
+
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      { className: 'container-fluid' },
+	      _react2['default'].createElement(
+	        'h3',
+	        null,
+	        'Tokens'
+	      ),
+	      JSON.stringify(this.props.tokens)
+	    );
+	  }
+
+	});
+
+	exports['default'] = ViewTokensData;
+	module.exports = exports['default'];
+
+/***/ },
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26501,7 +26617,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 232 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26554,7 +26670,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 233 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26761,7 +26877,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 234 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

@@ -9,11 +9,13 @@ import LoadRepositories from './loadRepositories.js';
 import LoadContributors from './loadContributors.js';
 import LoadIssues from './loadIssues.js';
 import LoadRepoVotes from './loadRepoVotes.js';
+import LoadTokens from './loadTokens.js';
 import ViewUserData from './viewUserData.js';
 import ViewRepositoriesData from './viewRepositoriesData.js';
 import ViewContributorsData from './viewContributorsData.js';
 import ViewIssuesData from './viewIssuesData.js';
 import ViewRepoVotesData from './viewRepoVotesData.js';
+import ViewTokensData from './viewTokensData.js';
 import SelectProduct from './selectProduct.js';
 import BacklogLoader from './backlogLoader.js';
 import Backlog from './backlog.js';
@@ -36,6 +38,7 @@ var Main = React.createClass({
       contributors: 'not found',
       issues: 'not found',
       repo_votes: 'not found',
+      tokens: 'not found',
       session: false,
       projects: [],
       backlog: { "contributors":[], "items":[]}
@@ -117,6 +120,12 @@ var Main = React.createClass({
     consoleLog('repo votes loaded - number found: ' +  repoVotesJson.length);
   },
 
+  handleTokensLoaded: function(tokens){
+    var tokensJson = JSON.parse(tokens);
+    this.setState({tokens : tokensJson});
+    consoleLog('tokens loaded - number found: ' +  tokensJson.length);
+  },
+
   handleAddTokens: function(issue_id, tokens){
     this.handleAddToGitHubConsole('adding tokens');
     fetch('addtokens?access_token=' + this.state.access_token + '&repo_id=' + this.state.repository.id + '&issue_id=' + issue_id + '&tokens=' + tokens)
@@ -141,6 +150,7 @@ var Main = React.createClass({
     this.setState({contributors : 'not found'});
     this.setState({issues : 'not found'});
     this.setState({repo_votes : 'not found'});
+    this.setState({tokens : 'not found'});
   },
 
 
@@ -162,6 +172,7 @@ var Main = React.createClass({
           contributors: this.state.contributors,
           issues: this.state.issues,
           repo_votes: this.state.repo_votes,
+          tokens: this.state.tokens,
           session: this.state.session,
           backlog: this.state.backlog,
           onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
@@ -174,6 +185,7 @@ var Main = React.createClass({
           onContributorsLoaded: this.handleContributorsLoaded.bind(this),
           onIssuesLoaded: this.handleIssuesLoaded.bind(this),
           onRepoVotesLoaded: this.handleRepoVotesLoaded.bind(this),
+          onTokensLoaded: this.handleTokensLoaded.bind(this),
           onAddTokens: this.handleAddTokens.bind(this),
           onSignOut: this.handleSignOut.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -198,6 +210,8 @@ var Main = React.createClass({
                       <Link to="/viewIssuesData">issues data</Link>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <Link to="/viewRepoVotesData">repo votes data</Link>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <Link to="/viewTokensData">tokens data</Link>
                    </div>
 
             </div>
@@ -218,11 +232,13 @@ React.render((
       <Route path="loadContributors" component={LoadContributors} />
       <Route path="loadIssues" component={LoadIssues} />
       <Route path="loadRepoVotes" component={LoadRepoVotes} />
+      <Route path="loadTokens" component={LoadTokens} />
       <Route path="viewUserData" component={ViewUserData} />
       <Route path="viewRepositoriesData" component={ViewRepositoriesData} />
       <Route path="viewContributorsData" component={ViewContributorsData} />
       <Route path="viewIssuesData" component={ViewIssuesData} />
       <Route path="viewRepoVotesData" component={ViewRepoVotesData} />
+      <Route path="viewTokensData" component={ViewTokensData} />
       <Route path="selectProduct" component={SelectProduct} />
       <Route path="backlogLoader" component={BacklogLoader} />
       <Route path="backlog" component={Backlog} />
