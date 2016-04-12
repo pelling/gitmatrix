@@ -4,14 +4,14 @@ import consoleLog from './consoleLog.js';
 import 'whatwg-fetch';
 
 
-var LoadTokens = React.createClass({
+var LoadRepoTokens = React.createClass({
 
   componentDidMount: function() {
       this.props.onAddToGitHubConsole('requesting tokens');
-      fetch('gettokens?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id)
+      fetch('getrepotokens?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id)
       .then((response) => response.json())
       .then((responseData) => {
-        this.props.onTokensLoaded(responseData);
+        this.props.onRepoTokensLoaded(responseData);
         this.props.onAddToGitHubConsole('tokens received');
         browserHistory.push('/backlog');
       })
@@ -31,4 +31,4 @@ var LoadTokens = React.createClass({
 });
 
 
-export default LoadTokens;
+export default LoadRepoTokens;

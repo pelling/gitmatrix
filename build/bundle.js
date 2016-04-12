@@ -90,9 +90,9 @@
 
 	var _loadRepoVotesJs2 = _interopRequireDefault(_loadRepoVotesJs);
 
-	var _loadTokensJs = __webpack_require__(226);
+	var _loadRepoTokensJs = __webpack_require__(226);
 
-	var _loadTokensJs2 = _interopRequireDefault(_loadTokensJs);
+	var _loadRepoTokensJs2 = _interopRequireDefault(_loadRepoTokensJs);
 
 	var _viewUserDataJs = __webpack_require__(227);
 
@@ -114,9 +114,9 @@
 
 	var _viewRepoVotesDataJs2 = _interopRequireDefault(_viewRepoVotesDataJs);
 
-	var _viewTokensDataJs = __webpack_require__(232);
+	var _viewRepoTokensDataJs = __webpack_require__(232);
 
-	var _viewTokensDataJs2 = _interopRequireDefault(_viewTokensDataJs);
+	var _viewRepoTokensDataJs2 = _interopRequireDefault(_viewRepoTokensDataJs);
 
 	var _selectProductJs = __webpack_require__(233);
 
@@ -155,7 +155,7 @@
 	      contributors: 'not found',
 	      issues: 'not found',
 	      repo_votes: 'not found',
-	      tokens: 'not found',
+	      repo_tokens: 'not found',
 	      session: false,
 	      projects: [],
 	      backlog: { "contributors": [], "items": [] }
@@ -235,10 +235,10 @@
 	    (0, _consoleLogJs2['default'])('repo votes loaded - number found: ' + repoVotesJson.length);
 	  },
 
-	  handleTokensLoaded: function handleTokensLoaded(tokens) {
-	    var tokensJson = JSON.parse(tokens);
-	    this.setState({ tokens: tokensJson });
-	    (0, _consoleLogJs2['default'])('tokens loaded - number found: ' + tokensJson.length);
+	  handleRepoTokensLoaded: function handleRepoTokensLoaded(repoTokens) {
+	    var repoTokensJson = JSON.parse(repoTokens);
+	    this.setState({ repo_tokens: repoTokensJson });
+	    (0, _consoleLogJs2['default'])('tokens loaded - number found: ' + repoTokensJson.length);
 	  },
 
 	  handleAddTokens: function handleAddTokens(issue_id, tokens) {
@@ -266,7 +266,7 @@
 	    this.setState({ contributors: 'not found' });
 	    this.setState({ issues: 'not found' });
 	    this.setState({ repo_votes: 'not found' });
-	    this.setState({ tokens: 'not found' });
+	    this.setState({ repo_tokens: 'not found' });
 	  },
 
 	  handleBacklogLoaded: function handleBacklogLoaded(newBacklog) {
@@ -287,7 +287,7 @@
 	      contributors: this.state.contributors,
 	      issues: this.state.issues,
 	      repo_votes: this.state.repo_votes,
-	      tokens: this.state.tokens,
+	      repo_tokens: this.state.repo_tokens,
 	      session: this.state.session,
 	      backlog: this.state.backlog,
 	      onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
@@ -300,7 +300,7 @@
 	      onContributorsLoaded: this.handleContributorsLoaded.bind(this),
 	      onIssuesLoaded: this.handleIssuesLoaded.bind(this),
 	      onRepoVotesLoaded: this.handleRepoVotesLoaded.bind(this),
-	      onTokensLoaded: this.handleTokensLoaded.bind(this),
+	      onRepoTokensLoaded: this.handleRepoTokensLoaded.bind(this),
 	      onAddTokens: this.handleAddTokens.bind(this),
 	      onSignOut: this.handleSignOut.bind(this),
 	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -361,8 +361,8 @@
 	        '     |     ',
 	        _react2['default'].createElement(
 	          _reactRouter.Link,
-	          { to: '/viewTokensData' },
-	          'tokens data'
+	          { to: '/viewRepoTokensData' },
+	          'repo tokens data'
 	        )
 	      )
 	    );
@@ -383,13 +383,13 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadContributors', component: _loadContributorsJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadIssues', component: _loadIssuesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepoVotes', component: _loadRepoVotesJs2['default'] }),
-	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadTokens', component: _loadTokensJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepoTokens', component: _loadRepoTokensJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewUserData', component: _viewUserDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepositoriesData', component: _viewRepositoriesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewContributorsData', component: _viewContributorsDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewIssuesData', component: _viewIssuesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepoVotesData', component: _viewRepoVotesDataJs2['default'] }),
-	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewTokensData', component: _viewTokensDataJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepoTokensData', component: _viewRepoTokensDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'selectProduct', component: _selectProductJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlogLoader', component: _backlogLoaderJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'backlog', component: _backlogJs2['default'] }),
@@ -26234,7 +26234,7 @@
 	    }).then(function (responseData) {
 	      _this.props.onRepoVotesLoaded(responseData);
 	      _this.props.onAddToGitHubConsole('repo votes received');
-	      _reactRouter.browserHistory.push('/loadTokens');
+	      _reactRouter.browserHistory.push('/loadRepoTokens');
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading repo votes: ' + error);
 	    });
@@ -26273,17 +26273,17 @@
 
 	__webpack_require__(220);
 
-	var LoadTokens = _react2['default'].createClass({
-	  displayName: 'LoadTokens',
+	var LoadRepoTokens = _react2['default'].createClass({
+	  displayName: 'LoadRepoTokens',
 
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
 	    this.props.onAddToGitHubConsole('requesting tokens');
-	    fetch('gettokens?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id).then(function (response) {
+	    fetch('getrepotokens?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
-	      _this.props.onTokensLoaded(responseData);
+	      _this.props.onRepoTokensLoaded(responseData);
 	      _this.props.onAddToGitHubConsole('tokens received');
 	      _reactRouter.browserHistory.push('/backlog');
 	    })['catch'](function (error) {
@@ -26297,7 +26297,7 @@
 
 	});
 
-	exports['default'] = LoadTokens;
+	exports['default'] = LoadRepoTokens;
 	module.exports = exports['default'];
 
 /***/ },
@@ -26513,8 +26513,8 @@
 
 	var _reactRouter = __webpack_require__(158);
 
-	var ViewTokensData = _react2['default'].createClass({
-	  displayName: 'ViewTokensData',
+	var ViewRepoTokensData = _react2['default'].createClass({
+	  displayName: 'ViewRepoTokensData',
 
 	  render: function render() {
 	    return _react2['default'].createElement(
@@ -26525,13 +26525,13 @@
 	        null,
 	        'Tokens'
 	      ),
-	      JSON.stringify(this.props.tokens)
+	      JSON.stringify(this.props.repo_tokens)
 	    );
 	  }
 
 	});
 
-	exports['default'] = ViewTokensData;
+	exports['default'] = ViewRepoTokensData;
 	module.exports = exports['default'];
 
 /***/ },
@@ -26698,6 +26698,11 @@
 	  },
 
 	  render: function render() {
+	    var login = this.props.user.login;
+	    var my_tokens = this.props.repo_tokens.repo_tokens.filter(function (item) {
+	      return item.login == login;
+	    });
+	    my_tokens = my_tokens[0];
 	    return _react2['default'].createElement(
 	      'div',
 	      null,
@@ -26715,14 +26720,15 @@
 	            _react2['default'].createElement(
 	              _reactRouter.Link,
 	              { to: '/selectProduct' },
-	              this.props.user.login
+	              login
 	            ),
 	            ' / ',
 	            this.props.repository.name
 	          ),
 	          'my available tokens:  ',
 	          _react2['default'].createElement('i', { className: 'fa fa-plus-circle gm-logo-color' }),
-	          ' 1355'
+	          ' ',
+	          my_tokens.total
 	        ),
 	        _react2['default'].createElement(
 	          'div',

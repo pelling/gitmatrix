@@ -11,15 +11,18 @@ var Backlog = React.createClass({
   },
 
     render: function () {
+        var login = this.props.user.login;
+        var my_tokens = this.props.repo_tokens.repo_tokens.filter(function(item) {return item.login == login});
+        my_tokens = my_tokens[0];
         return (
           <div>
                 <div className="row-fluid">
                       <div className="col-md-12">
                         <h3>
                             <i className="fa fa-file-code-o"></i>&nbsp;
-                            <Link to="/selectProduct">{this.props.user.login}</Link> / {this.props.repository.name}
+                            <Link to="/selectProduct">{login}</Link> / {this.props.repository.name}
                         </h3>
-                        my available tokens:&nbsp; <i className="fa fa-plus-circle gm-logo-color"></i> 1355
+                        my available tokens:&nbsp; <i className="fa fa-plus-circle gm-logo-color"></i> {my_tokens.total}
                       </div>
                       <div className="col-md-12">
                         <IssueTable repo_votes={this.props.repo_votes.repo_votes} issues={this.props.issues} contributors={this.props.contributors} onAddTokens={this.props.onAddTokens}/>

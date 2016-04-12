@@ -246,11 +246,16 @@ var SampleApp = function() {
         });
 
 
-        self.app.get('/gettokens', function(req, res){
+        self.app.get('/getrepotokens', function(req, res){
           var access_token = req.query.access_token;
           var repo_id = req.query.repo_id;
+          var d = new Date();
+          var n = d.getTime();
 
-          res.json(JSON.stringify("found tokens!  access_token=" + access_token + " and repo_id=" + repo_id));
+          var repo_tokens = [{"login":"pelling", "total":"12000", "tokens_per_second":".0001", "time":"tbd"}];
+          var doc = {_id: repo_id, repo_tokens: repo_tokens};
+
+          res.json(JSON.stringify(doc));
           res.end();
 
         });

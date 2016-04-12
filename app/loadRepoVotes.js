@@ -13,7 +13,7 @@ var LoadRepoVotes = React.createClass({
       .then((responseData) => {
         this.props.onRepoVotesLoaded(responseData);
         this.props.onAddToGitHubConsole('repo votes received');
-        browserHistory.push('/loadTokens');
+        browserHistory.push('/loadRepoTokens');
       })
       .catch((error) => {
         consoleLog('Error loading repo votes: ' + error);

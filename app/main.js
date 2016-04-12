@@ -9,13 +9,13 @@ import LoadRepositories from './loadRepositories.js';
 import LoadContributors from './loadContributors.js';
 import LoadIssues from './loadIssues.js';
 import LoadRepoVotes from './loadRepoVotes.js';
-import LoadTokens from './loadTokens.js';
+import LoadRepoTokens from './loadRepoTokens.js';
 import ViewUserData from './viewUserData.js';
 import ViewRepositoriesData from './viewRepositoriesData.js';
 import ViewContributorsData from './viewContributorsData.js';
 import ViewIssuesData from './viewIssuesData.js';
 import ViewRepoVotesData from './viewRepoVotesData.js';
-import ViewTokensData from './viewTokensData.js';
+import ViewRepoTokensData from './viewRepoTokensData.js';
 import SelectProduct from './selectProduct.js';
 import BacklogLoader from './backlogLoader.js';
 import Backlog from './backlog.js';
@@ -38,7 +38,7 @@ var Main = React.createClass({
       contributors: 'not found',
       issues: 'not found',
       repo_votes: 'not found',
-      tokens: 'not found',
+      repo_tokens: 'not found',
       session: false,
       projects: [],
       backlog: { "contributors":[], "items":[]}
@@ -120,10 +120,10 @@ var Main = React.createClass({
     consoleLog('repo votes loaded - number found: ' +  repoVotesJson.length);
   },
 
-  handleTokensLoaded: function(tokens){
-    var tokensJson = JSON.parse(tokens);
-    this.setState({tokens : tokensJson});
-    consoleLog('tokens loaded - number found: ' +  tokensJson.length);
+  handleRepoTokensLoaded: function(repoTokens){
+    var repoTokensJson = JSON.parse(repoTokens);
+    this.setState({repo_tokens : repoTokensJson});
+    consoleLog('tokens loaded - number found: ' +  repoTokensJson.length);
   },
 
   handleAddTokens: function(issue_id, tokens){
@@ -150,7 +150,7 @@ var Main = React.createClass({
     this.setState({contributors : 'not found'});
     this.setState({issues : 'not found'});
     this.setState({repo_votes : 'not found'});
-    this.setState({tokens : 'not found'});
+    this.setState({repo_tokens : 'not found'});
   },
 
 
@@ -172,7 +172,7 @@ var Main = React.createClass({
           contributors: this.state.contributors,
           issues: this.state.issues,
           repo_votes: this.state.repo_votes,
-          tokens: this.state.tokens,
+          repo_tokens: this.state.repo_tokens,
           session: this.state.session,
           backlog: this.state.backlog,
           onAddToGitHubConsole: this.handleAddToGitHubConsole.bind(this),
@@ -185,7 +185,7 @@ var Main = React.createClass({
           onContributorsLoaded: this.handleContributorsLoaded.bind(this),
           onIssuesLoaded: this.handleIssuesLoaded.bind(this),
           onRepoVotesLoaded: this.handleRepoVotesLoaded.bind(this),
-          onTokensLoaded: this.handleTokensLoaded.bind(this),
+          onRepoTokensLoaded: this.handleRepoTokensLoaded.bind(this),
           onAddTokens: this.handleAddTokens.bind(this),
           onSignOut: this.handleSignOut.bind(this),
           onBacklogLoaded: this.handleBacklogLoaded.bind(this)
@@ -211,7 +211,7 @@ var Main = React.createClass({
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <Link to="/viewRepoVotesData">repo votes data</Link>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <Link to="/viewTokensData">tokens data</Link>
+                      <Link to="/viewRepoTokensData">repo tokens data</Link>
                    </div>
 
             </div>
@@ -232,13 +232,13 @@ React.render((
       <Route path="loadContributors" component={LoadContributors} />
       <Route path="loadIssues" component={LoadIssues} />
       <Route path="loadRepoVotes" component={LoadRepoVotes} />
-      <Route path="loadTokens" component={LoadTokens} />
+      <Route path="loadRepoTokens" component={LoadRepoTokens} />
       <Route path="viewUserData" component={ViewUserData} />
       <Route path="viewRepositoriesData" component={ViewRepositoriesData} />
       <Route path="viewContributorsData" component={ViewContributorsData} />
       <Route path="viewIssuesData" component={ViewIssuesData} />
       <Route path="viewRepoVotesData" component={ViewRepoVotesData} />
-      <Route path="viewTokensData" component={ViewTokensData} />
+      <Route path="viewRepoTokensData" component={ViewRepoTokensData} />
       <Route path="selectProduct" component={SelectProduct} />
       <Route path="backlogLoader" component={BacklogLoader} />
       <Route path="backlog" component={Backlog} />
