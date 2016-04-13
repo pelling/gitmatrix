@@ -26699,7 +26699,7 @@
 
 	  render: function render() {
 	    var login = this.props.user.login;
-	    var my_tokens = this.props.repo_tokens.repo_tokens.filter(function (item) {
+	    var my_tokens = this.props.repo_tokens.user_tokens.filter(function (item) {
 	      return item.login == login;
 	    });
 	    my_tokens = my_tokens[0];
@@ -26728,7 +26728,7 @@
 	          'my available tokens:  ',
 	          _react2['default'].createElement('i', { className: 'fa fa-plus-circle gm-logo-color' }),
 	          ' ',
-	          my_tokens.total
+	          my_tokens.new_total
 	        ),
 	        _react2['default'].createElement(
 	          'div',

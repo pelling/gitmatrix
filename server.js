@@ -252,9 +252,18 @@ var SampleApp = function() {
           var d = new Date();
           var n = d.getTime();
 
-          var repo_tokens = [{"login":"pelling", "total":"12000", "tokens_per_second":".0001", "time":"tbd"}];
-          var doc = {_id: repo_id, repo_tokens: repo_tokens};
+          var user_tokens = [{"login":"pelling", "total_at_last_transaction":"12000", "time_at_last_transaction":"1460432008498", "tokens_per_second":".001"}];
 
+          for (var j = 0; j < user_tokens.length; j++){
+            user_tokens[j].seconds_transpired = (n - Number(user_tokens[j].time_at_last_transaction)) / 1000;
+            user_tokens[j].tokens_accumulated = user_tokens[j].seconds_transpired * Number(user_tokens[j].tokens_per_second);
+            user_tokens[j].new_total =  user_tokens[j].tokens_accumulated  + Number(user_tokens[j].total_at_last_transaction);
+          }
+
+
+
+
+          var doc = {_id: repo_id, user_tokens: user_tokens};
           res.json(JSON.stringify(doc));
           res.end();
 
