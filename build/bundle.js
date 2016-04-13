@@ -26687,6 +26687,12 @@
 
 	var _reactRouter = __webpack_require__(158);
 
+	var _consoleLogJs = __webpack_require__(218);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
+
 	var Backlog = _react2['default'].createClass({
 	  displayName: 'Backlog',
 
@@ -26695,6 +26701,23 @@
 	    if (this.props.issues == 'not found') {
 	      //problem -- repositories were not loaded!
 	    }
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    // update the token count every 10 seconds
+	    this.timer = setInterval(this.updateTokens, 10000);
+	  },
+
+	  updateTokens: function updateTokens() {
+	    var _this = this;
+
+	    fetch('getrepotokens?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id).then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.props.onRepoTokensLoaded(responseData);
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error updating tokens: ' + error);
+	    });
 	  },
 
 	  render: function render() {

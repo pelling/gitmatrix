@@ -1,5 +1,7 @@
 import React from 'react';
 import { Router, Route, Link, browserHistory } from 'react-router';
+import consoleLog from './consoleLog.js';
+import 'whatwg-fetch';
 
 var Backlog = React.createClass({
 
@@ -9,6 +11,24 @@ var Backlog = React.createClass({
       //problem -- repositories were not loaded!
     }
   },
+
+  componentDidMount: function() {
+      // update the token count every 10 seconds
+      this.timer = setInterval(this.updateTokens, 10000);
+  },
+
+
+  updateTokens: function() {
+    fetch('getrepotokens?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id)
+    .then((response) => response.json())
+    .then((responseData) => {
+      this.props.onRepoTokensLoaded(responseData);
+    })
+    .catch((error) => {
+      consoleLog('Error updating tokens: ' + error);
+    });
+  },
+
 
     render: function () {
         var login = this.props.user.login;
