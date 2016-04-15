@@ -4,8 +4,8 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var fs      = require('fs');
 var config = require('./config.json');
-var MongoClient = require('mongodb').MongoClient;
-var mongojs = require('mongojs');
+var gm_db = require('./gm_db');
+
 
 
 
@@ -30,14 +30,14 @@ var SampleApp = function() {
         self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
         self.port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
-        // Set up the GitMatrix MongoDB variables using Openshifts pattern above
-        self.dbhost = process.env.OPENSHIFT_MONGODB_DB_HOST;
-        self.dbport = process.env.OPENSHIFT_MONGODB_DB_PORT;
-        self.dbusername = process.env.OPENSHIFT_MONGODB_DB_USERNAME;
-        self.dbpassword = process.env.OPENSHIFT_MONGODB_DB_PASSWORD;
-        self.dbsocket = process.env.OPENSHIFT_MONGODB_DB_SOCKET;
-        self.dburl = process.env.OPENSHIFT_MONGODB_DB_URL;
-        self.dbconnectionstring = 'mongodb://' + self.dbusername + ":" + self.dbpassword + "@" + self.dbhost + ':' + self.dbport + '/' + "gitmatrix";
+        gm_db.initialize(process.env);
+
+        gm_db.getGitHubAuth(function(doc) {
+          self.client_id = doc.client_id;
+          self.client_secret = doc.client_secret;
+          console.log("client id = " +  self.client_id);
+        });
+
 
 
         if (typeof self.ipaddress === "undefined") {
@@ -47,35 +47,10 @@ var SampleApp = function() {
             self.ipaddress = "127.0.0.1";
         };
 
-        if (typeof self.dburl === "undefined") {
-            //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
-            //  allows us to run/test the app locally.
-            console.warn('No OPENSHIFT_MONGODB_DB_URL, using local DB');
-            self.dbconnectionstring = 'mongodb://localhost:27017/mydatabase';
-        };
 
-
-        // TEMPORARY
-        self.issue_votes = [{"issue":"142180356", "votes":[{"login":"pelling", "time":"555", "tokens":"100"},{"login":"pelling", "time":"666", "tokens":"200"}]},
-          {"issue":"142180328", "votes":[{"login":"pelling", "time":"555", "tokens":"100"},{"login":"wilma", "time":"999", "tokens":"900"}]}
-        ];
 
 
     };
-
-
-    self.setupDatabase = function() {
-      self.db = mongojs(self.dbconnectionstring);
-
-      var githubAuthCollection = self.db.collection('githubAuthCollection');
-      githubAuthCollection.findOne({
-        _id: '001'
-      }, function(err, doc) {
-          self.client_id = doc.client_id;
-          self.client_secret = doc.client_secret;
-      });
-
-    }
 
 
     /**
@@ -186,10 +161,6 @@ var SampleApp = function() {
           var relativeUrl = 'user?access_token=' + access_token;
           self.requestFromGitHub(relativeUrl, function(body) { res.json(body); res.end(); });
 
-
-
-
-
         });
 
         self.app.get('/getrepositories', function(req, res){
@@ -222,28 +193,14 @@ var SampleApp = function() {
           var access_token = req.query.access_token;
           var repo_id = req.query.repo_id;
 
-          var repo_votes = self.db.collection('repo_votes');
-
-          repo_votes.findOne({
-            _id: repo_id
-          }, function(err, doc) {
-            if(doc === null) {
-              // repo does not exist yet.  insert it
-              repo_votes.insert(
-                {_id: repo_id,
-                  repo_votes:[]
-                }
-              )
-              res.json('{"_id": "' + repo_id + '", "repo_votes":[]}');
-              res.end();
-            } else {
-              res.json(JSON.stringify(doc));
-              res.end();
-            }
-
-
+          gm_db.getRepoVotes(repo_id, function(doc){
+            res.json(JSON.stringify(doc));
+            res.end();
           });
+
+
         });
+
 
 
         self.app.get('/getrepotokens', function(req, res){
@@ -259,9 +216,6 @@ var SampleApp = function() {
             user_tokens[j].tokens_accumulated = user_tokens[j].seconds_transpired * Number(user_tokens[j].tokens_per_second);
             user_tokens[j].new_total =  user_tokens[j].tokens_accumulated  + Number(user_tokens[j].total_at_last_transaction);
           }
-
-
-
 
           var doc = {_id: repo_id, user_tokens: user_tokens};
           res.json(JSON.stringify(doc));
@@ -284,39 +238,9 @@ var SampleApp = function() {
           self.requestFromGitHub(relativeUrl, function(body) {
                 var login = JSON.parse(body).login;
                 var issue_vote = {"login":login, "time":n, "tokens":tokens};
-
-                var repo_votes = self.db.collection('repo_votes');
-                // first add an issue to repo if it doesn't exist
-
-                repo_votes.findOne(
-                  { _id: repo_id, "repo_votes.issue_id": issue_id },
-                  function(err, doc) {
-                    if (doc === null) {
-                      // issue has not been added yet (no tokens).  Need to add blank issue to repo_votes
-                      repo_votes.update(
-                        { _id: repo_id },
-                        { $push: { repo_votes: {issue_id: issue_id} } }
-                      );
-
-                    }
-
-                    repo_votes.update(
-                      { _id: repo_id, "repo_votes.issue_id": issue_id },
-                      { $push: { "repo_votes.$.issue_votes" : issue_vote } },
-                      function(err, doc) {
-
-                          repo_votes.findOne({
-                            _id: repo_id
-                          }, function(err, doc) {
-                            res.json(JSON.stringify(doc));
-                            res.end();
-                          });
-                      }
-                    );
-
-
-
-
+                gm_db.addIssueVote(repo_id, issue_id, issue_vote, function(doc){
+                  res.json(JSON.stringify(doc));
+                  res.end();
                 });
 
           });
@@ -335,12 +259,13 @@ var SampleApp = function() {
 
         self.app.post('/setgithubauth', urlencodedParser, function(req, res) {
           if (!req.body) return res.sendStatus(400)
-          console.log("saved client_id = " + req.body.client_id);
-          console.log("saved client_secret = " + req.body.client_secret);
-          var githubAuthCollection = self.db.collection('githubAuthCollection');
-          githubAuthCollection.save({_id:"001", client_id: req.body.client_id, client_secret: req.body.client_secret})
-          res.send("success: keys have been updated");
-          res.end();
+          gm_db.saveGitHubAuth(req.body.client_id, req.body.client_secret, function(){
+            res.send("success: keys have been updated");
+            res.end();
+            console.log("saved client_id = " + client_id);
+            console.log("saved client_secret = " + client_secret);
+          });
+
         });
 
 
@@ -381,7 +306,6 @@ var SampleApp = function() {
      */
     self.initialize = function() {
         self.setupVariables();
-        self.setupDatabase();
         self.populateCache();
         self.setupTerminationHandlers();
 
