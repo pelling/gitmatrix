@@ -26708,6 +26708,10 @@
 	    this.timer = setInterval(this.updateTokens, 10000);
 	  },
 
+	  componentWillUnmount: function componentWillUnmount() {
+	    clearInterval(this.timer);
+	  },
+
 	  updateTokens: function updateTokens() {
 	    var _this = this;
 

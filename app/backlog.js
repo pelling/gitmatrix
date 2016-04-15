@@ -18,6 +18,11 @@ var Backlog = React.createClass({
   },
 
 
+  componentWillUnmount: function() {
+      clearInterval(this.timer);
+  },
+
+
   updateTokens: function() {
     fetch('getrepotokens?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id)
     .then((response) => response.json())
