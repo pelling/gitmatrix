@@ -94,43 +94,47 @@
 
 	var _loadRepoTokensJs2 = _interopRequireDefault(_loadRepoTokensJs);
 
-	var _viewUserDataJs = __webpack_require__(227);
+	var _initializeJs = __webpack_require__(227);
+
+	var _initializeJs2 = _interopRequireDefault(_initializeJs);
+
+	var _viewUserDataJs = __webpack_require__(228);
 
 	var _viewUserDataJs2 = _interopRequireDefault(_viewUserDataJs);
 
-	var _viewRepositoriesDataJs = __webpack_require__(228);
+	var _viewRepositoriesDataJs = __webpack_require__(229);
 
 	var _viewRepositoriesDataJs2 = _interopRequireDefault(_viewRepositoriesDataJs);
 
-	var _viewContributorsDataJs = __webpack_require__(229);
+	var _viewContributorsDataJs = __webpack_require__(230);
 
 	var _viewContributorsDataJs2 = _interopRequireDefault(_viewContributorsDataJs);
 
-	var _viewIssuesDataJs = __webpack_require__(230);
+	var _viewIssuesDataJs = __webpack_require__(231);
 
 	var _viewIssuesDataJs2 = _interopRequireDefault(_viewIssuesDataJs);
 
-	var _viewRepoVotesDataJs = __webpack_require__(231);
+	var _viewRepoVotesDataJs = __webpack_require__(232);
 
 	var _viewRepoVotesDataJs2 = _interopRequireDefault(_viewRepoVotesDataJs);
 
-	var _viewRepoTokensDataJs = __webpack_require__(232);
+	var _viewRepoTokensDataJs = __webpack_require__(233);
 
 	var _viewRepoTokensDataJs2 = _interopRequireDefault(_viewRepoTokensDataJs);
 
-	var _selectProductJs = __webpack_require__(233);
+	var _selectProductJs = __webpack_require__(234);
 
 	var _selectProductJs2 = _interopRequireDefault(_selectProductJs);
 
-	var _backlogLoaderJs = __webpack_require__(234);
+	var _backlogLoaderJs = __webpack_require__(235);
 
 	var _backlogLoaderJs2 = _interopRequireDefault(_backlogLoaderJs);
 
-	var _backlogJs = __webpack_require__(235);
+	var _backlogJs = __webpack_require__(236);
 
 	var _backlogJs2 = _interopRequireDefault(_backlogJs);
 
-	var _calibrateJs = __webpack_require__(236);
+	var _calibrateJs = __webpack_require__(237);
 
 	var _calibrateJs2 = _interopRequireDefault(_calibrateJs);
 
@@ -384,6 +388,7 @@
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadIssues', component: _loadIssuesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepoVotes', component: _loadRepoVotesJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'loadRepoTokens', component: _loadRepoTokensJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { path: 'initialize', component: _initializeJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewUserData', component: _viewUserDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewRepositoriesData', component: _viewRepositoriesDataJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { path: 'viewContributorsData', component: _viewContributorsDataJs2['default'] }),
@@ -26285,7 +26290,17 @@
 	    }).then(function (responseData) {
 	      _this.props.onRepoTokensLoaded(responseData);
 	      _this.props.onAddToGitHubConsole('tokens received');
-	      _reactRouter.browserHistory.push('/backlog');
+
+	      var repo_tokens = JSON.parse(responseData);
+	      var login = _this.props.user.login;
+	      var results = repo_tokens.user_tokens.filter(function (item) {
+	        return item.login == login;
+	      });
+	      if (results.length === 0) {
+	        _reactRouter.browserHistory.push('/initialize');
+	      } else {
+	        _reactRouter.browserHistory.push('/backlog');
+	      }
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error loading tokens: ' + error);
 	    });
@@ -26302,6 +26317,54 @@
 
 /***/ },
 /* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(158);
+
+	var _consoleLogJs = __webpack_require__(218);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
+
+	var Initialize = _react2['default'].createClass({
+	  displayName: 'Initialize',
+
+	  componentWillMount: function componentWillMount() {
+	    this.props.onClearGitHubConsole();
+	  },
+
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      { className: 'container-fluid' },
+	      _react2['default'].createElement(
+	        'h3',
+	        null,
+	        'Initialize'
+	      )
+	    );
+	  }
+
+	});
+
+	exports['default'] = Initialize;
+	module.exports = exports['default'];
+
+/***/ },
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26340,7 +26403,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 228 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26379,7 +26442,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 229 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26418,7 +26481,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 230 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26457,7 +26520,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 231 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26496,7 +26559,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 232 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26535,7 +26598,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 233 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26617,7 +26680,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 234 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26670,7 +26733,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 235 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26911,7 +26974,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 236 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

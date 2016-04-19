@@ -114,5 +114,31 @@ gm_db.addIssueVote = function(repo_id, issue_id, issue_vote, callback) {
 
 
 
+gm_db.getRepoTokens = function(repo_id, callback) {
+
+
+  var repo_tokens = gm_db.db.collection('repo_tokens');
+  // repo_tokens.drop();
+
+  repo_tokens.findOne({
+    _id: repo_id
+  }, function(err, doc) {
+    if(doc === null) {
+      // repo does not exist yet.  insert it
+      repo_tokens.insert(
+        {_id: repo_id,
+          user_tokens:[]
+        }
+      )
+      callback(JSON.parse('{"_id": "' + repo_id + '", "user_tokens":[]}'));
+    } else {
+      callback(doc);
+    }
+  });
+
+}
+
+
+
 
 module.exports = gm_db

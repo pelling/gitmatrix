@@ -10,6 +10,7 @@ import LoadContributors from './loadContributors.js';
 import LoadIssues from './loadIssues.js';
 import LoadRepoVotes from './loadRepoVotes.js';
 import LoadRepoTokens from './loadRepoTokens.js';
+import Initialize from './initialize.js';
 import ViewUserData from './viewUserData.js';
 import ViewRepositoriesData from './viewRepositoriesData.js';
 import ViewContributorsData from './viewContributorsData.js';
@@ -233,6 +234,7 @@ React.render((
       <Route path="loadIssues" component={LoadIssues} />
       <Route path="loadRepoVotes" component={LoadRepoVotes} />
       <Route path="loadRepoTokens" component={LoadRepoTokens} />
+      <Route path="initialize" component={Initialize} />
       <Route path="viewUserData" component={ViewUserData} />
       <Route path="viewRepositoriesData" component={ViewRepositoriesData} />
       <Route path="viewContributorsData" component={ViewContributorsData} />

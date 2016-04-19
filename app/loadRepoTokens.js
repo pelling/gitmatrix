@@ -13,7 +13,17 @@ var LoadRepoTokens = React.createClass({
       .then((responseData) => {
         this.props.onRepoTokensLoaded(responseData);
         this.props.onAddToGitHubConsole('tokens received');
-        browserHistory.push('/backlog');
+
+        var repo_tokens = JSON.parse(responseData);
+        var login = this.props.user.login;
+        var results = repo_tokens.user_tokens.filter(function(item) {return item.login == login});
+        if (results.length === 0) {
+            browserHistory.push('/initialize');
+        } else {
+            browserHistory.push('/backlog');
+        }
+
+
       })
       .catch((error) => {
         consoleLog('Error loading tokens: ' + error);
