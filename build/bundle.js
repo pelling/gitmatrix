@@ -26346,6 +26346,21 @@
 	    this.props.onClearGitHubConsole();
 	  },
 
+	  handleInitializeTokens: function handleInitializeTokens() {
+	    var _this = this;
+
+	    this.props.onAddToGitHubConsole('initializing first 200 tokens');
+	    fetch('initializeusertokens?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id).then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this.props.onRepoTokensLoaded(responseData);
+	      _this.props.onAddToGitHubConsole('token initialization complete');
+	      _reactRouter.browserHistory.push('/backlog');
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error initializing user tokens: ' + error);
+	    });
+	  },
+
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      'div',
@@ -26354,6 +26369,12 @@
 	        'h3',
 	        null,
 	        'Initialize'
+	      ),
+	      _react2['default'].createElement(
+	        'a',
+	        { href: '#', className: 'btn btn-primary', role: 'button', onClick: this.handleInitializeTokens.bind(this) },
+	        _react2['default'].createElement('i', { className: 'fa fa-plus' }),
+	        ' Get Started with First 200 Tokens'
 	      )
 	    );
 	  }

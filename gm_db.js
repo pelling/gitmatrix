@@ -114,6 +114,35 @@ gm_db.addIssueVote = function(repo_id, issue_id, issue_vote, callback) {
 
 
 
+
+gm_db.initializeUserTokens = function(repo_id, login, callback) {
+  var repo_tokens = gm_db.db.collection('repo_tokens');
+  var d = new Date();
+  var n = d.getTime();
+
+  repo_tokens.findOne(
+    { _id: repo_id, "user_tokens.login": login },
+    function(err, doc) {
+          if (doc === null) {
+                  // this is expected.  user_tokens with this login was not found.  ok to add it
+                  repo_tokens.update(
+                    { _id: repo_id },
+                    { $push: { user_tokens: {"login":login, "total_at_last_transaction":200, "time_at_last_transaction":n, "tokens_per_second":".001"} } }
+                  );
+
+                  repo_tokens.findOne({
+                    _id: repo_id
+                  }, function(err, doc) {
+                    callback(gm_db.makeTokenCountsCurrent(repo_id, doc));
+                  });
+          }
+
+  });
+
+}
+
+
+
 gm_db.getRepoTokens = function(repo_id, callback) {
 
 
@@ -124,17 +153,34 @@ gm_db.getRepoTokens = function(repo_id, callback) {
     _id: repo_id
   }, function(err, doc) {
     if(doc === null) {
-      // repo does not exist yet.  insert it
-      repo_tokens.insert(
-        {_id: repo_id,
-          user_tokens:[]
-        }
-      )
-      callback(JSON.parse('{"_id": "' + repo_id + '", "user_tokens":[]}'));
+          // repo does not exist yet.  insert it
+          repo_tokens.insert(
+            {_id: repo_id,
+              user_tokens:[]
+            }
+          )
+          callback(JSON.parse('{"_id": "' + repo_id + '", "user_tokens":[]}'));
     } else {
-      callback(doc);
+          callback(gm_db.makeTokenCountsCurrent(repo_id, doc));
     }
   });
+
+}
+
+
+gm_db.makeTokenCountsCurrent = function(repo_id, doc) {
+  var d = new Date();
+  var n = d.getTime();
+  var user_tokens = doc.user_tokens;
+
+  for (var j = 0; j < user_tokens.length; j++){
+    user_tokens[j].seconds_transpired = (n - Number(user_tokens[j].time_at_last_transaction)) / 1000;
+    user_tokens[j].tokens_accumulated = user_tokens[j].seconds_transpired * Number(user_tokens[j].tokens_per_second);
+    user_tokens[j].new_total =  user_tokens[j].tokens_accumulated  + Number(user_tokens[j].total_at_last_transaction);
+  }
+
+  var doc = {_id: repo_id, user_tokens: user_tokens};
+  return doc;
 
 }
 
