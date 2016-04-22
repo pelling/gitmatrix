@@ -127,6 +127,20 @@ var Main = React.createClass({
     consoleLog('tokens loaded - number found: ' +  repoTokensJson.length);
   },
 
+
+  handleRefreshTokens: function() {
+    fetch('getrepotokens?access_token=' + this.state.access_token + '&repo_id=' + this.state.repository.id)
+    .then((response) => response.json())
+    .then((responseData) => {
+      this.handleRepoTokensLoaded(responseData);
+    })
+    .catch((error) => {
+      consoleLog('Error updating tokens: ' + error);
+    });
+  },
+
+
+
   handleAddTokens: function(issue_id, tokens){
     this.handleAddToGitHubConsole('adding tokens');
     fetch('addtokens?access_token=' + this.state.access_token + '&repo_id=' + this.state.repository.id + '&issue_id=' + issue_id + '&tokens=' + tokens)
@@ -135,6 +149,7 @@ var Main = React.createClass({
       this.handleClearGitHubConsole();
       var repoVotesJson = JSON.parse(responseData);
       this.setState({repo_votes : repoVotesJson});
+      this.handleRefreshTokens();
     })
     .catch((error) => {
       consoleLog('Error adding tokens: ' + error);
@@ -181,6 +196,7 @@ var Main = React.createClass({
           onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
           onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
           onUserLoaded: this.handleUserLoaded.bind(this),
+          onRefreshTokens: this.handleRefreshTokens.bind(this),
           onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
           onSelectRepository: this.handleRepositorySelected.bind(this),
           onContributorsLoaded: this.handleContributorsLoaded.bind(this),

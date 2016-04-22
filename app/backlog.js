@@ -5,34 +5,22 @@ import 'whatwg-fetch';
 
 var Backlog = React.createClass({
 
-  componentWillMount: function () {
-    this.props.onClearGitHubConsole();
-    if (this.props.issues == 'not found') {
-      //problem -- repositories were not loaded!
-    }
-  },
+    componentWillMount: function () {
+      this.props.onClearGitHubConsole();
+      if (this.props.issues == 'not found') {
+        //problem -- repositories were not loaded!
+      }
+    },
 
-  componentDidMount: function() {
-      // update the token count every 10 seconds
-      this.timer = setInterval(this.updateTokens, 10000);
-  },
-
-
-  componentWillUnmount: function() {
-      clearInterval(this.timer);
-  },
+    componentDidMount: function() {
+        // update the token count every 10 seconds
+        this.timer = setInterval(this.props.onRefreshTokens, 10000);
+    },
 
 
-  updateTokens: function() {
-    fetch('getrepotokens?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id)
-    .then((response) => response.json())
-    .then((responseData) => {
-      this.props.onRepoTokensLoaded(responseData);
-    })
-    .catch((error) => {
-      consoleLog('Error updating tokens: ' + error);
-    });
-  },
+    componentWillUnmount: function() {
+        clearInterval(this.timer);
+    },
 
 
     render: function () {

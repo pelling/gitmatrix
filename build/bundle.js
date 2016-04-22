@@ -245,16 +245,29 @@
 	    (0, _consoleLogJs2['default'])('tokens loaded - number found: ' + repoTokensJson.length);
 	  },
 
-	  handleAddTokens: function handleAddTokens(issue_id, tokens) {
+	  handleRefreshTokens: function handleRefreshTokens() {
 	    var _this2 = this;
+
+	    fetch('getrepotokens?access_token=' + this.state.access_token + '&repo_id=' + this.state.repository.id).then(function (response) {
+	      return response.json();
+	    }).then(function (responseData) {
+	      _this2.handleRepoTokensLoaded(responseData);
+	    })['catch'](function (error) {
+	      (0, _consoleLogJs2['default'])('Error updating tokens: ' + error);
+	    });
+	  },
+
+	  handleAddTokens: function handleAddTokens(issue_id, tokens) {
+	    var _this3 = this;
 
 	    this.handleAddToGitHubConsole('adding tokens');
 	    fetch('addtokens?access_token=' + this.state.access_token + '&repo_id=' + this.state.repository.id + '&issue_id=' + issue_id + '&tokens=' + tokens).then(function (response) {
 	      return response.json();
 	    }).then(function (responseData) {
-	      _this2.handleClearGitHubConsole();
+	      _this3.handleClearGitHubConsole();
 	      var repoVotesJson = JSON.parse(responseData);
-	      _this2.setState({ repo_votes: repoVotesJson });
+	      _this3.setState({ repo_votes: repoVotesJson });
+	      _this3.handleRefreshTokens();
 	    })['catch'](function (error) {
 	      (0, _consoleLogJs2['default'])('Error adding tokens: ' + error);
 	    });
@@ -299,6 +312,7 @@
 	      onOauthCodeLoaded: this.handleOauthCodeLoaded.bind(this),
 	      onAccessTokenLoaded: this.handleAccessTokenLoaded.bind(this),
 	      onUserLoaded: this.handleUserLoaded.bind(this),
+	      onRefreshTokens: this.handleRefreshTokens.bind(this),
 	      onRepositoriesLoaded: this.handleRepositoriesLoaded.bind(this),
 	      onSelectRepository: this.handleRepositorySelected.bind(this),
 	      onContributorsLoaded: this.handleContributorsLoaded.bind(this),
@@ -26789,23 +26803,11 @@
 
 	  componentDidMount: function componentDidMount() {
 	    // update the token count every 10 seconds
-	    this.timer = setInterval(this.updateTokens, 10000);
+	    this.timer = setInterval(this.props.onRefreshTokens, 10000);
 	  },
 
 	  componentWillUnmount: function componentWillUnmount() {
 	    clearInterval(this.timer);
-	  },
-
-	  updateTokens: function updateTokens() {
-	    var _this = this;
-
-	    fetch('getrepotokens?access_token=' + this.props.access_token + '&repo_id=' + this.props.repository.id).then(function (response) {
-	      return response.json();
-	    }).then(function (responseData) {
-	      _this.props.onRepoTokensLoaded(responseData);
-	    })['catch'](function (error) {
-	      (0, _consoleLogJs2['default'])('Error updating tokens: ' + error);
-	    });
 	  },
 
 	  render: function render() {

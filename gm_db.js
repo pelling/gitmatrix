@@ -143,6 +143,40 @@ gm_db.initializeUserTokens = function(repo_id, login, callback) {
 
 
 
+
+
+
+gm_db.subtractUserTokens = function(repo_id, login, tokens, callback) {
+  var repo_tokens = gm_db.db.collection('repo_tokens');
+  var d = new Date();
+  var n = d.getTime();
+
+  repo_tokens.findOne(
+    { _id: repo_id, "user_tokens.login": login },
+    function(err, doc) {
+          if (doc === null) {
+                  // this is NOT expected.  user_tokens should exist.  throw Error
+          } else {
+                var currentDoc = gm_db.makeTokenCountsCurrent(repo_id, doc);
+                var my_tokens = currentDoc.user_tokens.filter(function(item) {return item.login == login});
+                my_tokens = my_tokens[0];
+                var new_total = my_tokens.new_total - tokens;
+                repo_tokens.update(
+                   { _id: repo_id, "user_tokens.login": login },
+                   { $set: { "user_tokens.$.total_at_last_transaction":new_total, "user_tokens.$.time_at_last_transaction":n } }
+                );
+                callback();
+          }
+
+  });
+
+}
+
+
+
+
+
+
 gm_db.getRepoTokens = function(repo_id, callback) {
 
 

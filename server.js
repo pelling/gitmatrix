@@ -250,9 +250,12 @@ var SampleApp = function() {
           self.requestFromGitHub(relativeUrl, function(body) {
                 var login = JSON.parse(body).login;
                 var issue_vote = {"login":login, "time":n, "tokens":tokens};
-                gm_db.addIssueVote(repo_id, issue_id, issue_vote, function(doc){
-                  res.json(JSON.stringify(doc));
-                  res.end();
+
+                gm_db.subtractUserTokens(repo_id, login, tokens, function(){
+                        gm_db.addIssueVote(repo_id, issue_id, issue_vote, function(doc){
+                          res.json(JSON.stringify(doc));
+                          res.end();
+                        });
                 });
 
           });
