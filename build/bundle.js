@@ -26774,7 +26774,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
-	  value: true
+	    value: true
 	});
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -26792,207 +26792,240 @@
 	__webpack_require__(220);
 
 	var Backlog = _react2['default'].createClass({
-	  displayName: 'Backlog',
+	    displayName: 'Backlog',
 
-	  componentWillMount: function componentWillMount() {
-	    this.props.onClearGitHubConsole();
-	    if (this.props.issues == 'not found') {
-	      //problem -- repositories were not loaded!
-	    }
-	  },
+	    componentWillMount: function componentWillMount() {
+	        this.props.onClearGitHubConsole();
+	        if (this.props.issues == 'not found') {
+	            //problem -- repositories were not loaded!
+	        }
+	    },
 
-	  componentDidMount: function componentDidMount() {
-	    // update the token count every 10 seconds
-	    this.timer = setInterval(this.props.onRefreshTokens, 10000);
-	  },
+	    componentDidMount: function componentDidMount() {
+	        // update the token count every 10 seconds
+	        this.timer = setInterval(this.props.onRefreshTokens, 10000);
+	    },
 
-	  componentWillUnmount: function componentWillUnmount() {
-	    clearInterval(this.timer);
-	  },
+	    componentWillUnmount: function componentWillUnmount() {
+	        clearInterval(this.timer);
+	    },
 
-	  render: function render() {
-	    var login = this.props.user.login;
-	    var my_tokens = this.props.repo_tokens.user_tokens.filter(function (item) {
-	      return item.login == login;
-	    });
-	    my_tokens = my_tokens[0];
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'row-fluid' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-12' },
-	          _react2['default'].createElement(
-	            'h3',
+	    render: function render() {
+	        var login = this.props.user.login;
+	        var my_tokens = this.props.repo_tokens.user_tokens.filter(function (item) {
+	            return item.login == login;
+	        });
+	        my_tokens = my_tokens[0];
+	        var percentNextToken = Math.floor(my_tokens.new_total % 1 * 100);
+	        var barStyle = { width: percentNextToken + '%' };
+
+	        return _react2['default'].createElement(
+	            'div',
 	            null,
-	            _react2['default'].createElement('i', { className: 'fa fa-file-code-o' }),
-	            ' ',
 	            _react2['default'].createElement(
-	              _reactRouter.Link,
-	              { to: '/selectProduct' },
-	              login
+	                'div',
+	                { className: 'row-fluid' },
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'col-md-12' },
+	                    _react2['default'].createElement(
+	                        'h3',
+	                        null,
+	                        _react2['default'].createElement('i', { className: 'fa fa-file-code-o' }),
+	                        ' ',
+	                        _react2['default'].createElement(
+	                            _reactRouter.Link,
+	                            { to: '/selectProduct' },
+	                            login
+	                        ),
+	                        ' / ',
+	                        this.props.repository.name
+	                    )
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'col-md-2' },
+	                    'my available tokens:  ',
+	                    _react2['default'].createElement('i', { className: 'fa fa-plus-circle gm-logo-color' }),
+	                    ' ',
+	                    Math.floor(my_tokens.new_total)
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'col-md-2' },
+	                    'my rate: 5 tokens per hour'
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'col-md-2' },
+	                    'next token: ',
+	                    percentNextToken + '%',
+	                    ' complete',
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'progress' },
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'progress-bar progress-bar-success', role: 'progressbar', 'aria-valuenow': '{percentNextToken}', 'aria-valuemin': '0', 'aria-valuemax': '100', style: barStyle },
+	                            _react2['default'].createElement(
+	                                'span',
+	                                { className: 'sr-only' },
+	                                'next token'
+	                            )
+	                        )
+	                    )
+	                ),
+	                _react2['default'].createElement('div', { className: 'col-md-6' })
 	            ),
-	            ' / ',
-	            this.props.repository.name
-	          ),
-	          'my available tokens:  ',
-	          _react2['default'].createElement('i', { className: 'fa fa-plus-circle gm-logo-color' }),
-	          ' ',
-	          my_tokens.new_total
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-12' },
-	          _react2['default'].createElement(IssueTable, { repo_votes: this.props.repo_votes.repo_votes, issues: this.props.issues, contributors: this.props.contributors, onAddTokens: this.props.onAddTokens })
-	        )
-	      )
-	    );
-	  }
+	            _react2['default'].createElement(
+	                'div',
+	                { className: 'col-md-12' },
+	                _react2['default'].createElement(IssueTable, { repo_votes: this.props.repo_votes.repo_votes, issues: this.props.issues, contributors: this.props.contributors, onAddTokens: this.props.onAddTokens })
+	            )
+	        );
+	    }
 	});
 
 	exports['default'] = Backlog;
 
 	var IssueTable = _react2['default'].createClass({
-	  displayName: 'IssueTable',
+	    displayName: 'IssueTable',
 
-	  render: function render() {
-	    var repo_votes = this.props.repo_votes;
-	    var issueRows = this.props.issues.map((function (issue) {
-	      var issue_votes = [];
-	      if (repo_votes.length > 0) {
-	        var results = repo_votes.filter(function (item) {
-	          return item.issue_id == issue.id;
-	        });
-	        if (results.length > 0) {
-	          issue_votes = results[0].issue_votes;
-	        }
-	      }
+	    render: function render() {
+	        var repo_votes = this.props.repo_votes;
+	        var issueRows = this.props.issues.map((function (issue) {
+	            var issue_votes = [];
+	            if (repo_votes.length > 0) {
+	                var results = repo_votes.filter(function (item) {
+	                    return item.issue_id == issue.id;
+	                });
+	                if (results.length > 0) {
+	                    issue_votes = results[0].issue_votes;
+	                }
+	            }
 
-	      return _react2['default'].createElement(IssueRow, { id: issue.id, title: issue.title, contributors: this.props.contributors, issue_votes: issue_votes, onAddTokens: this.props.onAddTokens });
-	    }).bind(this));
+	            return _react2['default'].createElement(IssueRow, { id: issue.id, title: issue.title, contributors: this.props.contributors, issue_votes: issue_votes, onAddTokens: this.props.onAddTokens });
+	        }).bind(this));
 
-	    var contributorHeaders = this.props.contributors.map((function (contributor) {
-	      return _react2['default'].createElement(ContributorHeader, { name: contributor.login });
-	    }).bind(this));
+	        var contributorHeaders = this.props.contributors.map((function (contributor) {
+	            return _react2['default'].createElement(ContributorHeader, { name: contributor.login });
+	        }).bind(this));
 
-	    return _react2['default'].createElement(
-	      'table',
-	      { className: 'table table-hover table-striped table-condensed' },
-	      _react2['default'].createElement(
-	        'thead',
-	        null,
-	        _react2['default'].createElement(
-	          'tr',
-	          null,
-	          _react2['default'].createElement(
-	            'th',
-	            null,
-	            'title'
-	          ),
-	          contributorHeaders,
-	          _react2['default'].createElement(
-	            'th',
-	            { className: 'col-md-2' },
-	            'add tokens'
-	          )
-	        )
-	      ),
-	      _react2['default'].createElement(
-	        'tbody',
-	        null,
-	        issueRows
-	      )
-	    );
-	  }
+	        return _react2['default'].createElement(
+	            'table',
+	            { className: 'table table-hover table-striped table-condensed' },
+	            _react2['default'].createElement(
+	                'thead',
+	                null,
+	                _react2['default'].createElement(
+	                    'tr',
+	                    null,
+	                    _react2['default'].createElement(
+	                        'th',
+	                        null,
+	                        'title'
+	                    ),
+	                    contributorHeaders,
+	                    _react2['default'].createElement(
+	                        'th',
+	                        { className: 'col-md-2' },
+	                        'add tokens'
+	                    )
+	                )
+	            ),
+	            _react2['default'].createElement(
+	                'tbody',
+	                null,
+	                issueRows
+	            )
+	        );
+	    }
 	});
 
 	var ContributorHeader = _react2['default'].createClass({
-	  displayName: 'ContributorHeader',
+	    displayName: 'ContributorHeader',
 
-	  render: function render() {
-	    return _react2['default'].createElement(
-	      'th',
-	      null,
-	      this.props.name
-	    );
-	  }
+	    render: function render() {
+	        return _react2['default'].createElement(
+	            'th',
+	            null,
+	            this.props.name
+	        );
+	    }
 	});
 
 	var IssueRow = _react2['default'].createClass({
-	  displayName: 'IssueRow',
+	    displayName: 'IssueRow',
 
-	  handleAddTokensClick: function handleAddTokensClick(issue_id, tokens) {
-	    this.props.onAddTokens(issue_id, tokens);
-	  },
+	    handleAddTokensClick: function handleAddTokensClick(issue_id, tokens) {
+	        this.props.onAddTokens(issue_id, tokens);
+	    },
 
-	  render: function render() {
-	    var issue_votes = this.props.issue_votes;
-	    var contributorCols = this.props.contributors.map((function (contributor) {
-	      var results = issue_votes.filter(function (item) {
-	        return item.login == contributor.login;
-	      });
-	      var tokens = 0;
-	      results.map(function (item) {
-	        tokens = tokens + Number(item.tokens);
-	      });
-	      return _react2['default'].createElement(ContributorCol, { tokens: tokens });
-	    }).bind(this));
+	    render: function render() {
+	        var issue_votes = this.props.issue_votes;
+	        var contributorCols = this.props.contributors.map((function (contributor) {
+	            var results = issue_votes.filter(function (item) {
+	                return item.login == contributor.login;
+	            });
+	            var tokens = 0;
+	            results.map(function (item) {
+	                tokens = tokens + Number(item.tokens);
+	            });
+	            return _react2['default'].createElement(ContributorCol, { tokens: tokens });
+	        }).bind(this));
 
-	    return _react2['default'].createElement(
-	      'tr',
-	      null,
-	      _react2['default'].createElement(
-	        'td',
-	        { className: 'vert-align' },
-	        this.props.title
-	      ),
-	      contributorCols,
-	      _react2['default'].createElement(
-	        'td',
-	        { className: 'vert-align' },
-	        _react2['default'].createElement(
-	          'a',
-	          { href: '#', className: 'btn btn-success btn-sm', role: 'button', onClick: this.handleAddTokensClick.bind(this, this.props.id, 10) },
-	          _react2['default'].createElement('i', { className: 'fa fa-plus' }),
-	          ' ',
-	          _react2['default'].createElement(
-	            'b',
+	        return _react2['default'].createElement(
+	            'tr',
 	            null,
-	            '10'
-	          )
-	        ),
-	        '  ',
-	        _react2['default'].createElement(
-	          'a',
-	          { href: '#', className: 'btn btn-primary btn-sm', role: 'button', onClick: this.handleAddTokensClick.bind(this, this.props.id, 100) },
-	          _react2['default'].createElement('i', { className: 'fa fa-plus' }),
-	          ' ',
-	          _react2['default'].createElement(
-	            'b',
-	            null,
-	            '100'
-	          )
-	        )
-	      )
-	    );
-	  }
+	            _react2['default'].createElement(
+	                'td',
+	                { className: 'vert-align' },
+	                this.props.title
+	            ),
+	            contributorCols,
+	            _react2['default'].createElement(
+	                'td',
+	                { className: 'vert-align' },
+	                _react2['default'].createElement(
+	                    'a',
+	                    { href: '#', className: 'btn btn-success btn-sm', role: 'button', onClick: this.handleAddTokensClick.bind(this, this.props.id, 10) },
+	                    _react2['default'].createElement('i', { className: 'fa fa-plus' }),
+	                    ' ',
+	                    _react2['default'].createElement(
+	                        'b',
+	                        null,
+	                        '10'
+	                    )
+	                ),
+	                '  ',
+	                _react2['default'].createElement(
+	                    'a',
+	                    { href: '#', className: 'btn btn-primary btn-sm', role: 'button', onClick: this.handleAddTokensClick.bind(this, this.props.id, 100) },
+	                    _react2['default'].createElement('i', { className: 'fa fa-plus' }),
+	                    ' ',
+	                    _react2['default'].createElement(
+	                        'b',
+	                        null,
+	                        '100'
+	                    )
+	                )
+	            )
+	        );
+	    }
 	});
 
 	var ContributorCol = _react2['default'].createClass({
-	  displayName: 'ContributorCol',
+	    displayName: 'ContributorCol',
 
-	  render: function render() {
-	    return _react2['default'].createElement(
-	      'td',
-	      { className: 'vert-align' },
-	      _react2['default'].createElement('i', { className: 'fa fa-plus-circle gm-logo-color' }),
-	      ' ',
-	      this.props.tokens
-	    );
-	  }
+	    render: function render() {
+	        return _react2['default'].createElement(
+	            'td',
+	            { className: 'vert-align' },
+	            _react2['default'].createElement('i', { className: 'fa fa-plus-circle gm-logo-color' }),
+	            ' ',
+	            this.props.tokens
+	        );
+	    }
 	});
 	module.exports = exports['default'];
 

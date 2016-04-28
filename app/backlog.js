@@ -27,19 +27,37 @@ var Backlog = React.createClass({
         var login = this.props.user.login;
         var my_tokens = this.props.repo_tokens.user_tokens.filter(function(item) {return item.login == login});
         my_tokens = my_tokens[0];
+        var percentNextToken = Math.floor((my_tokens.new_total % 1) * 100);
+        var barStyle = { width: percentNextToken + '%' };
+
         return (
           <div>
                 <div className="row-fluid">
                       <div className="col-md-12">
-                        <h3>
-                            <i className="fa fa-file-code-o"></i>&nbsp;
-                            <Link to="/selectProduct">{login}</Link> / {this.props.repository.name}
-                        </h3>
-                        my available tokens:&nbsp; <i className="fa fa-plus-circle gm-logo-color"></i> {my_tokens.new_total}
+                            <h3>
+                                <i className="fa fa-file-code-o"></i>&nbsp;
+                                <Link to="/selectProduct">{login}</Link> / {this.props.repository.name}
+                            </h3>
                       </div>
-                      <div className="col-md-12">
-                        <IssueTable repo_votes={this.props.repo_votes.repo_votes} issues={this.props.issues} contributors={this.props.contributors} onAddTokens={this.props.onAddTokens}/>
+                      <div className="col-md-2">
+                            my available tokens:&nbsp; <i className="fa fa-plus-circle gm-logo-color"></i> {Math.floor(my_tokens.new_total)}
                       </div>
+                      <div className="col-md-2">
+                            my rate: 5 tokens per hour
+                      </div>
+                      <div className="col-md-2">
+                            next token: {percentNextToken + '%'} complete
+                            <div className="progress">
+                                 <div className="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{percentNextToken}" aria-valuemin="0" aria-valuemax="100" style={barStyle}>
+                                   <span className="sr-only">next token</span>
+                                 </div>
+                             </div>
+                      </div>
+                      <div className="col-md-6">
+                      </div>
+                </div>
+                <div className="col-md-12">
+                    <IssueTable repo_votes={this.props.repo_votes.repo_votes} issues={this.props.issues} contributors={this.props.contributors} onAddTokens={this.props.onAddTokens}/>
                 </div>
 
           </div>
