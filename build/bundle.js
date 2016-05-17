@@ -25522,9 +25522,9 @@
 	      _react2['default'].createElement(
 	        'div',
 	        { className: 'gm-tagline' },
-	        'Welcome to the future',
+	        'Idea Prioritization',
 	        _react2['default'].createElement('br', null),
-	        ' of product backlog management.'
+	        ' via the consensus of the team.'
 	      )
 	    );
 	  }
