@@ -40,7 +40,7 @@ var Home = React.createClass({
 
         return (
           <div className="gm-landing">
-            <div className="gm-tagline">Idea Prioritization<br/> via the consensus of the team.</div>
+            <div className="gm-tagline">Idea Prioritization<br/> for agile teams.</div>
           </div>
 
         );

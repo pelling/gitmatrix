@@ -25524,7 +25524,7 @@
 	        { className: 'gm-tagline' },
 	        'Idea Prioritization',
 	        _react2['default'].createElement('br', null),
-	        ' via the consensus of the team.'
+	        ' for agile teams.'
 	      )
 	    );
 	  }
@@ -26853,7 +26853,12 @@
 	                _react2['default'].createElement(
 	                    'div',
 	                    { className: 'col-md-2' },
-	                    'my rate: 5 tokens per hour'
+	                    'my rate: ',
+	                    _react2['default'].createElement(
+	                        _reactRouter.Link,
+	                        { to: '/calibrate' },
+	                        '5 tokens per hour'
+	                    )
 	                ),
 	                _react2['default'].createElement(
 	                    'div',
@@ -27036,7 +27041,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
-	  value: true
+	    value: true
 	});
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -27047,58 +27052,76 @@
 
 	var _reactRouter = __webpack_require__(158);
 
+	var _consoleLogJs = __webpack_require__(218);
+
+	var _consoleLogJs2 = _interopRequireDefault(_consoleLogJs);
+
+	__webpack_require__(220);
+
 	var Calibrate = _react2['default'].createClass({
-	  displayName: 'Calibrate',
+	    displayName: 'Calibrate',
 
-	  render: function render() {
+	    render: function render() {
 
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'row-fluid' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-12' },
-	          _react2['default'].createElement(
-	            'h3',
+	        return _react2['default'].createElement(
+	            'div',
 	            null,
 	            _react2['default'].createElement(
-	              _reactRouter.Link,
-	              { to: '/selectProject' },
-	              this.props.session.userName
+	                'div',
+	                { className: 'row-fluid' },
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'col-md-12' },
+	                    _react2['default'].createElement(
+	                        'h3',
+	                        null,
+	                        _react2['default'].createElement('i', { className: 'fa fa-file-code-o' }),
+	                        ' ',
+	                        _react2['default'].createElement(
+	                            _reactRouter.Link,
+	                            { to: '/selectProduct' },
+	                            this.props.user.login
+	                        ),
+	                        ' / ',
+	                        _react2['default'].createElement(
+	                            _reactRouter.Link,
+	                            { to: '/backlog' },
+	                            this.props.repository.name
+	                        ),
+	                        ' / calibrate'
+	                    )
+	                )
 	            ),
-	            ' / ',
 	            _react2['default'].createElement(
-	              _reactRouter.Link,
-	              { to: '/backlog' },
-	              this.props.backlog.name
-	            ),
-	            ' / Calibrate'
-	          )
-	        )
-	      ),
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'row-fluid' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'col-md-12 top-pink' },
-	          _react2['default'].createElement(
-	            _reactRouter.Link,
-	            { to: '/backlog' },
-	            'Return to ',
-	            this.props.backlog.name,
-	            ' backlog'
-	          )
-	        )
-	      )
-	    );
-	  }
+	                'div',
+	                { className: 'row-fluid' },
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'col-md-12' },
+	                    _react2['default'].createElement(
+	                        _reactRouter.Link,
+	                        { to: '/backlog' },
+	                        'return to ',
+	                        this.props.repository.name,
+	                        ' backlog'
+	                    )
+	                )
+	            )
+	        );
+	    }
 	});
 
 	exports['default'] = Calibrate;
+
+	/*
+
+
+
+
+
+
+
+	*/
 	module.exports = exports['default'];
 
 /***/ }

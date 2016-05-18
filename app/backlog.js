@@ -43,7 +43,7 @@ var Backlog = React.createClass({
                             my available tokens:&nbsp; <i className="fa fa-plus-circle gm-logo-color"></i> {Math.floor(my_tokens.new_total)}
                       </div>
                       <div className="col-md-2">
-                            my rate: 5 tokens per hour
+                            my rate: <Link to="/calibrate">5 tokens per hour</Link>
                       </div>
                       <div className="col-md-2">
                             next token: {percentNextToken + '%'} complete
