@@ -27062,6 +27062,9 @@
 	    displayName: 'Calibrate',
 
 	    render: function render() {
+	        var contributorRows = this.props.contributors.map((function (contributor) {
+	            return _react2['default'].createElement(ContributorRow, { login: contributor.login });
+	        }).bind(this));
 
 	        return _react2['default'].createElement(
 	            'div',
@@ -27092,6 +27095,7 @@
 	                    )
 	                )
 	            ),
+	            contributorRows,
 	            _react2['default'].createElement(
 	                'div',
 	                { className: 'row-fluid' },
@@ -27113,15 +27117,49 @@
 
 	exports['default'] = Calibrate;
 
-	/*
+	var ContributorRow = _react2['default'].createClass({
+	    displayName: 'ContributorRow',
 
+	    render: function render() {
 
+	        var rates = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+	        var radioButtons = rates.map((function (rate) {
+	            return _react2['default'].createElement(RadioButton, { rate: rate });
+	        }).bind(this));
 
+	        return _react2['default'].createElement(
+	            'div',
+	            { className: 'row-fluid' },
+	            _react2['default'].createElement(
+	                'div',
+	                { className: 'col-md-1' },
+	                this.props.login
+	            ),
+	            _react2['default'].createElement(
+	                'div',
+	                { className: 'col-md-11' },
+	                radioButtons
+	            )
+	        );
+	    }
+	});
 
+	var RadioButton = _react2['default'].createClass({
+	    displayName: 'RadioButton',
 
-
-
-	*/
+	    render: function render() {
+	        var checked = "";
+	        if (this.props.rate === 5) {
+	            checked = "checked";
+	        }
+	        return _react2['default'].createElement(
+	            'label',
+	            { className: 'radio-inline' },
+	            _react2['default'].createElement('input', { type: 'radio', name: 'optradio', checked: checked }),
+	            this.props.rate
+	        );
+	    }
+	});
 	module.exports = exports['default'];
 
 /***/ }
