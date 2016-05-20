@@ -175,6 +175,10 @@ var Main = React.createClass({
     consoleLog('backlog loaded');
   },
 
+  handleChangeTokensPerSecond: function(new_tokens_per_second){
+    alert(new_tokens_per_second);
+  },
+
     render: function () {
         var localDevLink = "http://127.0.0.1:8080?access_token=" + this.state.access_token;
         let child = this.props.children && React.cloneElement(this.props.children, {
@@ -205,7 +209,8 @@ var Main = React.createClass({
           onRepoTokensLoaded: this.handleRepoTokensLoaded.bind(this),
           onAddTokens: this.handleAddTokens.bind(this),
           onSignOut: this.handleSignOut.bind(this),
-          onBacklogLoaded: this.handleBacklogLoaded.bind(this)
+          onBacklogLoaded: this.handleBacklogLoaded.bind(this),
+          onChangeTokensPerSecond: this.handleChangeTokensPerSecond.bind(this)
         } );
 
         return (

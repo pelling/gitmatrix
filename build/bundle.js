@@ -291,6 +291,10 @@
 	    (0, _consoleLogJs2['default'])('backlog loaded');
 	  },
 
+	  handleChangeTokensPerSecond: function handleChangeTokensPerSecond(new_tokens_per_second) {
+	    alert(new_tokens_per_second);
+	  },
+
 	  render: function render() {
 	    var localDevLink = "http://127.0.0.1:8080?access_token=" + this.state.access_token;
 	    var child = this.props.children && _react2['default'].cloneElement(this.props.children, {
@@ -321,7 +325,8 @@
 	      onRepoTokensLoaded: this.handleRepoTokensLoaded.bind(this),
 	      onAddTokens: this.handleAddTokens.bind(this),
 	      onSignOut: this.handleSignOut.bind(this),
-	      onBacklogLoaded: this.handleBacklogLoaded.bind(this)
+	      onBacklogLoaded: this.handleBacklogLoaded.bind(this),
+	      onChangeTokensPerSecond: this.handleChangeTokensPerSecond.bind(this)
 	    });
 
 	    return _react2['default'].createElement(
@@ -27062,8 +27067,8 @@
 	    displayName: 'Calibrate',
 
 	    render: function render() {
-	        var contributorRows = this.props.contributors.map((function (contributor) {
-	            return _react2['default'].createElement(ContributorRow, { login: contributor.login });
+	        var contributorRows = this.props.repo_tokens.user_tokens.map((function (user_tokens) {
+	            return _react2['default'].createElement(ContributorRow, { login: user_tokens.login, tokens_per_second: user_tokens.tokens_per_second, onChangeTokensPerSecond: this.props.onChangeTokensPerSecond });
 	        }).bind(this));
 
 	        return _react2['default'].createElement(
@@ -27124,7 +27129,7 @@
 
 	        var rates = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 	        var radioButtons = rates.map((function (rate) {
-	            return _react2['default'].createElement(RadioButton, { rate: rate });
+	            return _react2['default'].createElement(RadioButton, { tokens_per_hour: rate, onChangeTokensPerSecond: this.props.onChangeTokensPerSecond });
 	        }).bind(this));
 
 	        return _react2['default'].createElement(
@@ -27137,7 +27142,19 @@
 	            ),
 	            _react2['default'].createElement(
 	                'div',
-	                { className: 'col-md-11' },
+	                { className: 'col-md-1' },
+	                this.props.tokens_per_second,
+	                ' tps'
+	            ),
+	            _react2['default'].createElement(
+	                'div',
+	                { className: 'col-md-1' },
+	                this.props.tokens_per_second * 3600,
+	                ' tph'
+	            ),
+	            _react2['default'].createElement(
+	                'div',
+	                { className: 'col-md-9' },
 	                radioButtons
 	            )
 	        );
@@ -27147,16 +27164,21 @@
 	var RadioButton = _react2['default'].createClass({
 	    displayName: 'RadioButton',
 
+	    handleChangeTokensPerSecond: function handleChangeTokensPerSecond(tokens_per_hour) {
+	        var tokens_per_second = tokens_per_hour / 3600;
+	        this.props.onChangeTokensPerSecond(tokens_per_second);
+	    },
+
 	    render: function render() {
 	        var checked = "";
-	        if (this.props.rate === 5) {
+	        if (this.props.tokens_per_hour === 5) {
 	            checked = "checked";
 	        }
 	        return _react2['default'].createElement(
 	            'label',
 	            { className: 'radio-inline' },
-	            _react2['default'].createElement('input', { type: 'radio', name: 'optradio', checked: checked }),
-	            this.props.rate
+	            _react2['default'].createElement('input', { type: 'radio', name: 'optradio', checked: checked, onClick: this.handleChangeTokensPerSecond.bind(this, this.props.tokens_per_hour) }),
+	            this.props.tokens_per_hour
 	        );
 	    }
 	});
